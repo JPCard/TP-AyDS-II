@@ -1,5 +1,7 @@
 package emisor.modelo;
 
+import emisor.modelo.MensajeFactory.TipoMensaje;
+
 import emisor.persistencia.Agenda;
 
 import receptor.modelo.Receptor;
@@ -13,7 +15,10 @@ public class Emisor {
 
 
     private Emisor(int puerto, String IP, String nombre) {
-        super();
+        this.IP = IP;
+        this.puerto = puerto;
+        this.nombre = nombre;
+        this.agenda = new Agenda();
     }
     
     public Emisor getInstance(int puerto, String IP, String nombre) {
@@ -23,20 +28,15 @@ public class Emisor {
     }
     
     
-    public void enviarMensaje(String asunto, String cuerpo, Receptor receptor){
-        
+    public Mensaje enviarMensaje(String asunto, String cuerpo, Receptor receptor, TipoMensaje tipoMensaje){
+        Mensaje mensaje = MensajeFactory.crearMensaje(this, asunto, cuerpo, tipoMensaje);
+        return mensaje;
     }
     
-    public void enviarMensajeConAlerta(String asunto, String cuerpo, Receptor receptor){
-        
-    }
     
-    public void enviarMensajeConComprobante(String asunto, String cuerpo, Receptor receptor){
-        
-    }
     
     public String consultarAgenda(){
-        return "";
+        return ""; //TODO
     }
     
 
