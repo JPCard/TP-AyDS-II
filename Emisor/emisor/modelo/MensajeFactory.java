@@ -1,3 +1,4 @@
+
 package emisor.modelo;
 
 import java.util.GregorianCalendar;
@@ -40,3 +41,4 @@ public abstract class MensajeFactory {
         return instance;
     }
 }
+
