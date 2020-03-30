@@ -2,7 +2,7 @@ package emisor.modelo;
 
 
 public abstract class MensajeFactory {
-    enum TipoMensaje {
+    public enum TipoMensaje {
         MSJ_NORMAL,
         MSJ_ALERTA,
         MSJ_CON_COMPROBANTE;
