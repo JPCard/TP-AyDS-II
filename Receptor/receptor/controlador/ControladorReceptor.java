@@ -2,11 +2,14 @@ package receptor.controlador;
 
 import emisor.controlador.ControladorEmisor;
 
+import emisor.modelo.Emisor;
 import emisor.modelo.Mensaje;
 
 import emisor.vista.IVistaEmisor;
 
 import receptor.modelo.Comprobante;
+
+import receptor.red.TCPReceptor;
 
 import receptor.vista.IVistaReceptor;
 
@@ -29,12 +32,16 @@ public class ControladorReceptor {
         return instance;
     }
     
-    public void enviarComprobante(Comprobante comprobante){
-        
+    public void enviarComprobante(Comprobante comprobante,Emisor emisor){
+        TCPReceptor.getInstance().enviarComprobante(comprobante,emisor);
     }
     
     public void mostrarMensaje(Mensaje mensaje){
         this.vista.mostrarMensaje(mensaje);
         mensaje.onLlegada();
+    }
+    
+    public void activarAlerta(){
+        this.vista.activarAlerta();
     }
 }

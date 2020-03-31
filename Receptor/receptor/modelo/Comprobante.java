@@ -3,17 +3,17 @@ package receptor.modelo;
 import emisor.modelo.Mensaje;
 
 public class Comprobante {
-    private Mensaje mensaje;
+    private int idMensaje;
     private Receptor receptor;
 
 
-    public Comprobante(Mensaje mensaje, Receptor receptor) {
-        this.mensaje = mensaje;
+    public Comprobante(int idMensaje, Receptor receptor) {
+        this.idMensaje = idMensaje;
         this.receptor = receptor;
     }
 
-    public Mensaje getMensaje() {
-        return mensaje;
+    public int getidMensaje() {
+        return idMensaje;
     }
 
     public Receptor getReceptor() {
