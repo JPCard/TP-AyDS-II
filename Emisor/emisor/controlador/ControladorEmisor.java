@@ -55,6 +55,7 @@ public class ControladorEmisor {
     
     public void enviarMensaje(String asunto, String cuerpo,MensajeFactory.TipoMensaje tipo, ArrayList<Receptor> receptores){
         SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,receptores,tipo);
+        
     }
 
     

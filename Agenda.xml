@@ -4,13 +4,13 @@
   <void method="add">
    <object class="receptor.modelo.Receptor">
     <void property="IP">
-     <string>123.456.789.101</string>
+     <string>127.0.0.1</string>
     </void>
     <void property="nombre">
-     <string>Pedrito</string>
+     <string>Localhost</string>
     </void>
     <void property="puerto">
-     <int>27444</int>
+     <int>27015</int>
     </void>
    </object>
   </void>

@@ -61,7 +61,7 @@ public class SistemaEmisor {
         return tcpdeEmisor;
     }
 
-    public Mensaje enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, TipoMensaje tipoMensaje){
+    public void enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, TipoMensaje tipoMensaje){
         Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje,receptores);
         this.guardarMensaje(mensaje);
         
@@ -69,7 +69,7 @@ public class SistemaEmisor {
             mensajesConComprobante.put(mensaje.getId(),(MensajeConComprobante) mensaje);
         }
         
-        return mensaje;
+        this.getTcpdeEmisor().enviarMensaje(mensaje);
     }
     
     private void guardarMensaje(Mensaje mensaje){

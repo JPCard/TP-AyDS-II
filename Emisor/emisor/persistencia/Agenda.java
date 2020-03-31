@@ -8,13 +8,15 @@ import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 
 import java.util.Iterator;
 
 import receptor.modelo.Receptor;
 
-public class Agenda {
+public class Agenda implements Serializable{
     private ArrayList<Receptor> contactos = new ArrayList<Receptor>();
     public static final String AGENDA_FILE_PATH = "Agenda.xml";
     

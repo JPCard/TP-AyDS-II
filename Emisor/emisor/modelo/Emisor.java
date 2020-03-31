@@ -4,11 +4,13 @@ import emisor.modelo.MensajeFactory.TipoMensaje;
 
 import emisor.persistencia.Agenda;
 
+import java.io.Serializable;
+
 import java.util.Iterator;
 
 import receptor.modelo.Receptor;
 
-public class Emisor{
+public class Emisor implements Serializable{
     private String IP; //{id}
     private int puerto;
     private String nombre;
@@ -27,6 +29,11 @@ public class Emisor{
 
     public void setIP(String IP) {
         this.IP = IP;
+    }
+
+    @Override
+    public String toString() {
+        return "Nombre: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
     }
 
     public void setPuerto(int puerto) {

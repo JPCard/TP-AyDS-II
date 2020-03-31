@@ -8,10 +8,10 @@
    <object class="emisor.persistencia.Agenda"/>
   </void>
   <void property="nombre">
-   <string>pepito</string>
+   <string>napopan</string>
   </void>
   <void property="puerto">
-   <int>27015</int>
+   <int>27018</int>
   </void>
  </object>
 </java>
