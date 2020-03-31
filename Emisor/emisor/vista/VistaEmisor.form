@@ -184,6 +184,9 @@
                       <Dimension value="[150, 1000]"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="jListDestinatariosValueChanged"/>
+                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Receptor&gt;"/>
                   </AuxValues>
@@ -231,6 +234,9 @@
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" value="Escriba aqui el asunto"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldAsuntoKeyReleased"/>
+                  </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="North"/>
@@ -267,7 +273,11 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JEditorPane" name="jEditorPane1">
+                    <Component class="javax.swing.JEditorPane" name="jEditorCuerpo">
+                      <Events>
+                        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jEditorCuerpoKeyTyped"/>
+                        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jEditorCuerpoKeyReleased"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
