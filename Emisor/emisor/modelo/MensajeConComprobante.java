@@ -7,6 +7,7 @@ import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+import receptor.modelo.SistemaReceptor;
 
 public class MensajeConComprobante extends Mensaje {
 
@@ -17,7 +18,7 @@ public class MensajeConComprobante extends Mensaje {
     @Override
     public void onLlegada() {
         super.onLlegada();
-        Comprobante comprobante = new Comprobante(this.getId(),Receptor.getInstance());
+        Comprobante comprobante = new Comprobante(this.getId(),SistemaReceptor.getInstance().getReceptor());
         ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
     }
 

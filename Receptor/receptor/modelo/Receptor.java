@@ -1,19 +1,34 @@
 package receptor.modelo;
 
+import emisor.modelo.Emisor;
+import emisor.modelo.Mensaje;
+
+import emisor.modelo.SistemaEmisor;
+
+import emisor.red.TCPdeEmisor;
+
+import java.beans.XMLDecoder;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import java.util.HashMap;
+
 public class Receptor {
     private String IP;
     private int puerto;
     private String nombre;
-    private static Receptor instance;
 
-    public Receptor() {
-        super();
-    }
-
+    
     public Receptor(String IP, int puerto, String nombre) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
+    }
+
+    public Receptor(){
+        super();
     }
 
     @Override
@@ -37,13 +52,8 @@ public class Receptor {
         this.nombre = nombre;
     }
 
-    public static void setInstance(Receptor instance) {
-        Receptor.instance = instance;
-    }
 
-    public static Receptor getInstance(){
-        return instance;
-    }
+    
     
     public String getIP() {
         return IP;

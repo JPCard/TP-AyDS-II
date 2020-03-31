@@ -33,13 +33,12 @@ public abstract class MensajeFactory {
         Mensaje instance = null;
         
         switch (tipoMensaje) {
-        case MSJ_NORMAL: new Mensaje(emisor, asunto, cuerpo,receptores);
+        case MSJ_NORMAL: instance = new Mensaje(emisor, asunto, cuerpo,receptores);
             break;
-        case MSJ_CON_ALERTA: new MensajeConAlerta(emisor, asunto, cuerpo,receptores);    
+        case MSJ_CON_ALERTA: instance = new MensajeConAlerta(emisor, asunto, cuerpo,receptores);    
             break;
-        case MSJ_CON_COMPROBANTE: new MensajeConComprobante(emisor, asunto, cuerpo,receptores);
+        case MSJ_CON_COMPROBANTE: instance = new MensajeConComprobante(emisor, asunto, cuerpo,receptores);
             break;
-        default:
         }
         
         return instance;

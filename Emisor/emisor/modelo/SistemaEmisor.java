@@ -35,7 +35,6 @@ public class SistemaEmisor {
             decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(PARAMETROS_FILE_PATH)));
             emisor = (Emisor) decoder.readObject();
             
-        // todo algo que no me acuerdo, ver si el sistema tira la excepcion o que hace
         
         this.tcpdeEmisor = new TCPdeEmisor();
        
@@ -44,6 +43,9 @@ public class SistemaEmisor {
     public static void inicializar() throws FileNotFoundException {
         if(instance==null)
             instance = new SistemaEmisor();
+        
+        Thread t = new Thread(instance.tcpdeEmisor);
+        t.start();
     }
     
     public static SistemaEmisor getInstance(){

@@ -36,6 +36,8 @@ public class ControladorEmisor {
         this.vistaPrincipal = vista;
         try {
             SistemaEmisor.inicializar();
+            
+            
         } catch (FileNotFoundException e) {
             vistaPrincipal.mostrarErrorNoEmisor();
         }

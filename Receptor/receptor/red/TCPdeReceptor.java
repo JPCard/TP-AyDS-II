@@ -21,25 +21,18 @@ import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+import receptor.modelo.SistemaReceptor;
 
-public class TCPReceptor {
-    private static TCPReceptor instance = null;
+public class TCPdeReceptor  implements Runnable{
     
-    private TCPReceptor() {
+    public TCPdeReceptor() {
         super();
     }
 
-
-    
-    public static TCPReceptor getInstance(){
-        if(instance == null)
-            instance = new TCPReceptor();
-        return instance;
-    }
     
     public void run(){
         try {
-                            ServerSocket s = new ServerSocket(Receptor.getInstance().getPuerto());
+                            ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
 
                             while (true) {
                                 Socket soc = s.accept();
@@ -48,16 +41,12 @@ public class TCPReceptor {
                                 
 
                                 Mensaje mensaje = (Mensaje) xmlDecoder.readObject();
-                                this.onMensaje(mensaje);
+                                ControladorReceptor.getInstance().mostrarMensaje(mensaje);
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-    }
-
-    private void onMensaje(Mensaje mensaje) {
-        ControladorReceptor.getInstance().mostrarMensaje(mensaje);
     }
     
     public void enviarComprobante(Comprobante comprobante,Emisor emisor){
