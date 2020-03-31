@@ -13,10 +13,13 @@ import java.beans.XMLEncoder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import java.util.Iterator;
 
 import receptor.controlador.ControladorReceptor;
 
@@ -58,12 +61,11 @@ public class TCPdeReceptor  implements Runnable{
     public void enviarComprobante(Comprobante comprobante,Emisor emisor){
         
         try {
-            Socket socket = new Socket(emisor.getIP(),emisor.getPuerto());
-            
-            XMLEncoder xmlEncoder = new XMLEncoder(socket.getOutputStream());
-            xmlEncoder.writeObject(comprobante);
-            xmlEncoder.close();
-            socket.close();
+                Socket socket = new Socket(emisor.getIP(), emisor.getPuerto());
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                out.writeObject(comprobante);
+                out.close();
+                socket.close();
             
         } catch (Exception e) {
             e.printStackTrace();

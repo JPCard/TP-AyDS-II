@@ -3,28 +3,33 @@ package emisor.vista;
 
 import emisor.controlador.ControladorEmisor;
 
+import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
+
+import java.awt.Color;
 
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 
+import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 /**
  *
  * @author Mau
  */
-public class VistaComprobantes extends javax.swing.JFrame {
+public class VistaComprobantes extends javax.swing.JFrame implements IVistaComprobantes {
     
-    DefaultListModel listModel = new DefaultListModel<MensajeConComprobante>();
+    DefaultListModel<MensajeConComprobante> listModelMensajes = new DefaultListModel<MensajeConComprobante>();    
+    DefaultListModel<Receptor> listModelReceptores = new DefaultListModel<Receptor>();
 
     /** Creates new form VistaComprobantes */
     public VistaComprobantes() {
         initComponents();
         jTextAreaAsunto.setEditable(false);
         jTextAreaCuerpo.setEditable(false);
-        this.jListMensajes.setModel(listModel);
+        this.jListMensajes.setModel(listModelMensajes);
 
         this.iniciaMensajes();
     }
@@ -50,7 +55,7 @@ public class VistaComprobantes extends javax.swing.JFrame {
         jTextAreaCuerpo = new javax.swing.JTextArea();
         jPanelDestinatarios = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jListDestinatarios = new javax.swing.JList<>();
+        jListReceptores = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(662, 450));
@@ -63,15 +68,16 @@ public class VistaComprobantes extends javax.swing.JFrame {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListMensajes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jListMensajes.setModel(listModelMensajes);
         jListMensajes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListMensajes.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListMensajes.setMinimumSize(new java.awt.Dimension(300, 500));
         jListMensajes.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jListMensajes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListMensajesValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListMensajes);
 
         jPanelMensajes.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -111,16 +117,13 @@ public class VistaComprobantes extends javax.swing.JFrame {
 
         jScrollPane4.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListDestinatarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        jListDestinatarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jListDestinatarios.setMaximumSize(new java.awt.Dimension(3300, 8000));
-        jListDestinatarios.setMinimumSize(new java.awt.Dimension(300, 500));
-        jListDestinatarios.setPreferredSize(new java.awt.Dimension(150, 1000));
-        jScrollPane4.setViewportView(jListDestinatarios);
+        jListReceptores.setModel(listModelReceptores
+        );
+        jListReceptores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jListReceptores.setMaximumSize(new java.awt.Dimension(3300, 8000));
+        jListReceptores.setMinimumSize(new java.awt.Dimension(300, 500));
+        jListReceptores.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jScrollPane4.setViewportView(jListReceptores);
 
         jPanelDestinatarios.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
@@ -130,6 +133,40 @@ public class VistaComprobantes extends javax.swing.JFrame {
 
         pack();
     }//GEN-END:initComponents
+
+    private void jListMensajesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListMensajesValueChanged
+    MensajeConComprobante elegido = this.jListMensajes.getSelectedValue();
+    this.jTextAreaAsunto.setText(elegido.getAsunto());
+    this.jTextAreaCuerpo.setText(elegido.getCuerpo());
+    
+    this.listModelReceptores.clear();
+    this.jListReceptores.clearSelection();
+    
+    Iterator <Receptor> it = elegido.getReceptores();
+    while(it.hasNext()){
+        listModelReceptores.addElement(it.next());
+    }
+    
+    this.jListReceptores.setBackground(Color.red); //los demas son rojos
+    this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
+        
+    
+    Iterator <Receptor> receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
+    
+    while(receptoresConfirmados.hasNext()){
+        Receptor actual = receptoresConfirmados.next();
+        
+        int i;
+        for(i=0; i<listModelReceptores.getSize();i++){
+            if(listModelReceptores.get(i).equals(actual))
+                break;
+        }
+        
+        this.jListReceptores.addSelectionInterval(i, i);
+        
+    }
+    
+    }//GEN-LAST:event_jListMensajesValueChanged
 
     /**
      * @param args the command line arguments
@@ -201,8 +238,8 @@ public class VistaComprobantes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jListDestinatarios;
-    private javax.swing.JList<String> jListMensajes;
+    private javax.swing.JList<MensajeConComprobante> jListMensajes;
+    private javax.swing.JList<Receptor> jListReceptores;
     private javax.swing.JPanel jPanelAsunto;
     private javax.swing.JPanel jPanelContenido;
     private javax.swing.JPanel jPanelCuerpo;
@@ -219,9 +256,20 @@ public class VistaComprobantes extends javax.swing.JFrame {
 
 
     private void iniciaMensajes(){
-        Iterator<MensajeConComprobante> it = ControladorEmisor.getMensajesConComprobanteIterator();
+        Iterator<MensajeConComprobante> it = ControladorEmisor.getInstance().getMensajesConComprobanteIterator();
         while(it.hasNext()){
+            listModelMensajes.addElement(it.next());
         }
-        
+        ControladorEmisor.getInstance().setVistaComprobantes(this);
+    }
+
+    @Override
+    public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
+        listModelMensajes.addElement(mensaje);
+    }
+
+    @Override
+    public void actualizarComprobanteRecibidos(Comprobante comprobante) {
+        // TODO Implement this method
     }
 }

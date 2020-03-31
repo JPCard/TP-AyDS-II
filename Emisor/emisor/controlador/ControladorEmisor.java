@@ -11,6 +11,8 @@ import emisor.vista.IVistaComprobantes;
 import emisor.vista.IVistaContactos;
 import emisor.vista.IVistaEmisor;
 
+import emisor.vista.VistaComprobantes;
+
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
@@ -66,17 +68,27 @@ public class ControladorEmisor {
         }
     }
 
-    public static void agregarComprobante(Comprobante comprobante) {
+    public void agregarComprobante(Comprobante comprobante) {
         
-        instance.vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
+        SistemaEmisor.getInstance().agregarComprobante(comprobante);
+        
+        vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
     }
 
-    public static Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
+    public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
         return SistemaEmisor.getInstance().getMensajesConComprobanteIterator();
     }
 
     public Iterator<Receptor> getContactos() {
         return SistemaEmisor.getInstance().
                              consultarAgenda();
+    }
+
+    public void setVistaComprobantes(IVistaComprobantes this1) {
+        this.vistaComprobantes = this1;
+    }
+
+    public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) {
+        return SistemaEmisor.getInstance().getReceptoresConfirmados(idMensaje);
     }
 }
