@@ -8,18 +8,44 @@ import java.util.Iterator;
 
 import receptor.modelo.Receptor;
 
-public class Emisor {
+public class Emisor{
     private String IP; //{id}
     private int puerto;
     private String nombre;
     private Agenda agenda;
 
+    public Emisor() {
+        super();
+    }
+    
     public Emisor(int puerto, String IP, String nombre) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
         this.agenda = new Agenda();
     }
+
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public void setPuerto(int puerto) {
+        this.puerto = puerto;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
+    }
+
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
+   
 
     public String getIP() {
         return IP;

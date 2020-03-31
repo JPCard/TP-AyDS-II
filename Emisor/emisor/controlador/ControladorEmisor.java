@@ -71,4 +71,9 @@ public class ControladorEmisor {
     public static Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
         return SistemaEmisor.getInstance().getMensajesConComprobanteIterator();
     }
+
+    public Iterator<Receptor> getContactos() {
+        return SistemaEmisor.getInstance().
+                             consultarAgenda();
+    }
 }

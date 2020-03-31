@@ -3,11 +3,19 @@ package emisor.vista;
 
 import emisor.controlador.ControladorEmisor;
 
+import emisor.modelo.Emisor;
 import emisor.modelo.MensajeFactory;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+
+import java.beans.XMLEncoder;
+
+import java.io.BufferedOutputStream;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 import java.util.ArrayList;
 
@@ -30,16 +38,17 @@ import receptor.modelo.Receptor;
  */
 public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
-    DefaultListModel listModel = new DefaultListModel<Receptor>();
+    DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
 
 
     /** Creates new form VistaEmisor */
     public VistaEmisor() {
-
-
+        
         initComponents();
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
+        
+        this.cargarContactos();
     }
 
     /** This method is called from within the constructor to
@@ -478,6 +487,19 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jListDestinatarios.clearSelection();
         JOptionPane.showConfirmDialog(this, "Mensaje enviado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
+    
+    public void cargarContactos(){
+        System.out.println("eeee");
+        Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+        System.out.println(it);
+        while(it.hasNext()){
+            System.out.println("aaaa");
+            this.listModel.addElement(it.next());
+        }
+        
+        this.repaint();
+    }
+    
 }
 
 

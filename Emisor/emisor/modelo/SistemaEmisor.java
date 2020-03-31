@@ -22,7 +22,7 @@ import receptor.modelo.Receptor;
 public class SistemaEmisor {
     private Emisor emisor;
     private TCPdeEmisor tcpdeEmisor;
-    public static final String PARAMETROS_FILE_PATH = "/ParametrosEmisor.xml";
+    public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.xml";
     private static SistemaEmisor instance;
     
     private HashMap<Integer,Mensaje> mensajesEnviados = new HashMap<Integer,Mensaje>();
