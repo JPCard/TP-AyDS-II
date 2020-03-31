@@ -1,15 +1,32 @@
 
-package client;
+package emisor.vista;
+
+import emisor.controlador.ControladorEmisor;
+
+import emisor.modelo.MensajeConComprobante;
+
+import java.util.Iterator;
+
+import javax.swing.DefaultListModel;
+
+import receptor.modelo.Receptor;
 
 /**
  *
  * @author Mau
  */
 public class VistaComprobantes extends javax.swing.JFrame {
+    
+    DefaultListModel listModel = new DefaultListModel<MensajeConComprobante>();
 
     /** Creates new form VistaComprobantes */
     public VistaComprobantes() {
         initComponents();
+        jTextAreaAsunto.setEditable(false);
+        jTextAreaCuerpo.setEditable(false);
+        this.jListMensajes.setModel(listModel);
+
+        this.iniciaMensajes();
     }
 
     /** This method is called from within the constructor to
@@ -200,4 +217,11 @@ public class VistaComprobantes extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextAreaCuerpo;
     // End of variables declaration//GEN-END:variables
 
+
+    private void iniciaMensajes(){
+        Iterator<MensajeConComprobante> it = ControladorEmisor.getMensajesConComprobanteIterator();
+        while(it.hasNext()){
+        }
+        
+    }
 }

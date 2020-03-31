@@ -4,7 +4,7 @@ import emisor.modelo.Emisor;
 
 import emisor.modelo.Mensaje;
 
-import emisor.red.EmisionTCP;
+import emisor.red.TCPdeEmisor;
 
 import java.beans.XMLDecoder;
 
@@ -21,25 +21,18 @@ import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+import receptor.modelo.SistemaReceptor;
 
-public class RecepcionTCP {
-    private static RecepcionTCP instance = null;
+public class TCPdeReceptor  implements Runnable{
     
-    private RecepcionTCP() {
+    public TCPdeReceptor() {
         super();
     }
 
-
-    
-    public static RecepcionTCP getInstance(){
-        if(instance == null)
-            instance = new RecepcionTCP();
-        return instance;
-    }
     
     public void run(){
         try {
-                            ServerSocket s = new ServerSocket(Integer.parseInt(Receptor.getInstance().getPuerto()));
+                            ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
 
                             while (true) {
                                 Socket soc = s.accept();
@@ -48,23 +41,18 @@ public class RecepcionTCP {
                                 
 
                                 Mensaje mensaje = (Mensaje) xmlDecoder.readObject();
-                                this.onMensaje(mensaje);
+                                ControladorReceptor.getInstance().mostrarMensaje(mensaje);
                             }
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
     }
-
-    private void onMensaje(Mensaje mensaje) {
-        ControladorReceptor.getInstance().mostrarMensaje(mensaje);
-    }
     
-    public void enviarComprobante(Comprobante comprobante){
+    public void enviarComprobante(Comprobante comprobante,Emisor emisor){
         
         try {
-            Emisor e = comprobante.getMensaje().getEmisor();
-            Socket socket = new Socket(e.getIP(),e.getPuerto());
+            Socket socket = new Socket(emisor.getIP(),emisor.getPuerto());
             
             XMLEncoder xmlEncoder = new XMLEncoder(socket.getOutputStream());
             xmlEncoder.writeObject(comprobante);

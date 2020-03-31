@@ -1,15 +1,54 @@
 
-package client;
+package emisor.vista;
+
+import emisor.controlador.ControladorEmisor;
+
+import emisor.modelo.Emisor;
+import emisor.modelo.MensajeFactory;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
+
+import java.beans.XMLEncoder;
+
+import java.io.BufferedOutputStream;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
+import java.util.ArrayList;
+
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+
+import receptor.modelo.Comprobante;
+import receptor.modelo.Receptor;
 
 /**
  *
  * @author Mau
  */
-public class VistaEmisor extends javax.swing.JFrame {
+public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
+
+    DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
+
 
     /** Creates new form VistaEmisor */
     public VistaEmisor() {
+        
         initComponents();
+        this.jListDestinatarios.setModel(listModel);
+        ControladorEmisor.getInstance(this);
+        
+        this.cargarContactos();
     }
 
     /** This method is called from within the constructor to
@@ -126,11 +165,7 @@ public class VistaEmisor extends javax.swing.JFrame {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListDestinatarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jListDestinatarios.setModel(listModel);
         jListDestinatarios.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListDestinatarios.setMinimumSize(new java.awt.Dimension(300, 500));
         jListDestinatarios.setPreferredSize(new java.awt.Dimension(150, 1000));
@@ -185,6 +220,11 @@ public class VistaEmisor extends javax.swing.JFrame {
         jPanelBotonSimple.setPreferredSize(new java.awt.Dimension(100, 100));
 
         jButtonEnviarSimple.setText("Enviar mensaje Simple");
+        jButtonEnviarSimple.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEnviarSimpleActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelBotonSimpleLayout = new javax.swing.GroupLayout(jPanelBotonSimple);
         jPanelBotonSimple.setLayout(jPanelBotonSimpleLayout);
@@ -208,6 +248,11 @@ public class VistaEmisor extends javax.swing.JFrame {
         jPanelBotonAviso.setPreferredSize(new java.awt.Dimension(100, 100));
 
         jButtonEnviarAviso.setText("Enviar mensaje con aviso");
+        jButtonEnviarAviso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEnviarAvisoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelBotonAvisoLayout = new javax.swing.GroupLayout(jPanelBotonAviso);
         jPanelBotonAviso.setLayout(jPanelBotonAvisoLayout);
@@ -262,16 +307,59 @@ public class VistaEmisor extends javax.swing.JFrame {
     }//GEN-END:initComponents
 
     private void jButtonListaContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListaContactosActionPerformed
-        // TODO add your handling code here:
+        jButtonListaContactos.setEnabled(false);
+        JFrame vistaContactos = new VistaContactos();
+        vistaContactos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        vistaContactos.setVisible(true);
+
+        vistaContactos.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                jButtonListaContactos.setEnabled(true);
+            }
+        });
+        
     }//GEN-LAST:event_jButtonListaContactosActionPerformed
 
     private void jButtonVerComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerComprobanteActionPerformed
-        // TODO add your handling code here:
+        jButtonVerComprobante.setEnabled(false);
+        JFrame vistaComprobantes = new VistaComprobantes();
+        vistaComprobantes.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        vistaComprobantes.setVisible(true);
+
+
+        vistaComprobantes.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                jButtonVerComprobante.setEnabled(true);
+            }
+        });
     }//GEN-LAST:event_jButtonVerComprobanteActionPerformed
 
     private void jButtonEnviarConComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarConComprobanteActionPerformed
-        // TODO add your handling code here:
+        ControladorEmisor.getInstance()
+            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE,
+                           this.getDestinatarios());
+        this.envioExitoso();
     }//GEN-LAST:event_jButtonEnviarConComprobanteActionPerformed
+
+    private void jButtonEnviarSimpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarSimpleActionPerformed
+        ControladorEmisor.getInstance()
+            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_NORMAL, this.getDestinatarios());
+        this.envioExitoso();
+    }//GEN-LAST:event_jButtonEnviarSimpleActionPerformed
+
+    private void jButtonEnviarAvisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarAvisoActionPerformed
+        ControladorEmisor.getInstance()
+            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_ALERTA,
+                           this.getDestinatarios());
+        this.envioExitoso();
+    }//GEN-LAST:event_jButtonEnviarAvisoActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -349,7 +437,7 @@ public class VistaEmisor extends javax.swing.JFrame {
     private javax.swing.JButton jButtonListaContactos;
     private javax.swing.JButton jButtonVerComprobante;
     private javax.swing.JEditorPane jEditorPane1;
-    private javax.swing.JList<String> jListDestinatarios;
+    private javax.swing.JList<Receptor> jListDestinatarios;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanelAsunto;
@@ -369,4 +457,48 @@ public class VistaEmisor extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldAsunto;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public String getAsunto() {
+        return this.jTextFieldAsunto.getText();
+    }
+
+    @Override
+    public String getCuerpo() {
+        return this.jEditorPane1.getText();
+    }
+
+    @Override
+    public ArrayList<Receptor> getDestinatarios() {
+        return new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+    }
+
+    @Override
+    public void mostrarErrorNoEmisor() {
+        JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del emisor", "ERROR",
+                                      JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+        
+    }
+
+    public void envioExitoso() {
+        this.jTextFieldAsunto.setText("");
+        this.jEditorPane1.setText("");
+        this.jListDestinatarios.clearSelection();
+        JOptionPane.showConfirmDialog(this, "Mensaje enviado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
+    }
+    
+    public void cargarContactos(){
+        System.out.println("eeee");
+        Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+        System.out.println(it);
+        while(it.hasNext()){
+            System.out.println("aaaa");
+            this.listModel.addElement(it.next());
+        }
+        
+        this.repaint();
+    }
+    
 }
+
+

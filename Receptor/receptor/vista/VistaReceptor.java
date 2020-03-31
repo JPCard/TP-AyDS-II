@@ -1,15 +1,27 @@
+package receptor.vista;
 
-package client;
+import emisor.modelo.Mensaje;
+
+import java.awt.event.WindowEvent;
+
+import javax.swing.DefaultListModel;
+
+import javax.swing.JOptionPane;
+
+import receptor.controlador.ControladorReceptor;
 
 /**
  *
  * @author Mau
  */
-public class VistaReceptor extends javax.swing.JFrame {
+public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor {
+    DefaultListModel<Mensaje> listModel = new DefaultListModel<Mensaje>();
 
     /** Creates new form VistaReceptor */
     public VistaReceptor() {
+        
         initComponents();
+        ControladorReceptor.getInstance(this);
     }
 
     /** This method is called from within the constructor to
@@ -40,11 +52,7 @@ public class VistaReceptor extends javax.swing.JFrame {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListMensajes.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jListMensajes.setModel(listModel);
         jListMensajes.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListMensajes.setMinimumSize(new java.awt.Dimension(300, 500));
         jListMensajes.setPreferredSize(new java.awt.Dimension(150, 1000));
@@ -55,8 +63,13 @@ public class VistaReceptor extends javax.swing.JFrame {
         jLabel1.setText("Indicador de alerta:");
 
         jButtonSilenciar.setText("Silenciar");
+        jButtonSilenciar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSilenciarActionPerformed(evt);
+            }
+        });
 
-        jProgressBar1.setForeground(new java.awt.Color(255, 0, 0));
+        jProgressBar1.setForeground(new java.awt.Color(254, 0, 0));
         jProgressBar1.setMaximum(1);
 
         javax.swing.GroupLayout jPanelAbajoLayout = new javax.swing.GroupLayout(jPanelAbajo);
@@ -95,6 +108,10 @@ public class VistaReceptor extends javax.swing.JFrame {
 
         pack();
     }//GEN-END:initComponents
+
+    private void jButtonSilenciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSilenciarActionPerformed
+        this.jProgressBar1.setValue(0);
+    }//GEN-LAST:event_jButtonSilenciarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -168,11 +185,27 @@ public class VistaReceptor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSilenciar;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList<String> jListMensajes;
+    private javax.swing.JList<Mensaje> jListMensajes;
     private javax.swing.JPanel jPanelAbajo;
     private javax.swing.JPanel jPanelMensajes;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void activarAlerta() {
+        this.jProgressBar1.setValue(1);
+    }
+
+    @Override
+    public void mostrarMensaje(Mensaje mensaje) {
+        this.listModel.addElement(mensaje);
+    }
+
+    @Override
+    public void mostrarErrorNoReceptor() {
+        JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del receptor", "ERROR",
+                                      JOptionPane.ERROR_MESSAGE);
+        this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
 }

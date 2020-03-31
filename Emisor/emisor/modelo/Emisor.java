@@ -4,41 +4,65 @@ import emisor.modelo.MensajeFactory.TipoMensaje;
 
 import emisor.persistencia.Agenda;
 
+import java.util.Iterator;
+
 import receptor.modelo.Receptor;
 
-public class Emisor {
+public class Emisor{
     private String IP; //{id}
     private int puerto;
     private String nombre;
     private Agenda agenda;
-    private Emisor instance;
 
-
-    private Emisor(int puerto, String IP, String nombre) {
+    public Emisor() {
+        super();
+    }
+    
+    public Emisor(int puerto, String IP, String nombre) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
         this.agenda = new Agenda();
     }
-    
-    public Emisor getInstance(int puerto, String IP, String nombre) {
-        if (instance == null)
-               instance = new Emisor(puerto,IP,nombre);
-        return instance;
+
+    public void setIP(String IP) {
+        this.IP = IP;
     }
-    
-    
-    public Mensaje enviarMensaje(String asunto, String cuerpo, Receptor receptor, TipoMensaje tipoMensaje){
-        Mensaje mensaje = MensajeFactory.crearMensaje(this, asunto, cuerpo, tipoMensaje);
-        return mensaje;
+
+    public void setPuerto(int puerto) {
+        this.puerto = puerto;
     }
-    
-    
-    
-    public String consultarAgenda(){
-        return ""; //TODO
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
+
+    public void setAgenda(Agenda agenda) {
+        this.agenda = agenda;
+    }
+
+    public Agenda getAgenda() {
+        return agenda;
+    }
+
+   
+
+    public String getIP() {
+        return IP;
+    }
+
+    public int getPuerto() {
+        return puerto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
     
 
 
+    public Iterator<Receptor> consultarAgenda() {
+        return this.agenda.getIteratorContactos();
+    }
 }

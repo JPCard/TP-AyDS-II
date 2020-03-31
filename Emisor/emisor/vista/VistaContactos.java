@@ -1,15 +1,29 @@
 
-package client;
+package emisor.vista;
+
+import emisor.controlador.ControladorEmisor;
+
+import java.util.Iterator;
+
+import javax.swing.DefaultListModel;
+
+import javax.swing.ListModel;
+
+import receptor.modelo.Receptor;
 
 /**
  *
  * @author Mau
  */
 public class VistaContactos extends javax.swing.JFrame {
+    private DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
 
     /** Creates new form VistaContactos */
     public VistaContactos() {
         initComponents();
+        this.jListDestinatarios.setModel(listModel);
+        this.jListDestinatarios.setCellRenderer(new RendererContactos());
+        this.cargarContactos();
     }
 
     /** This method is called from within the constructor to
@@ -36,14 +50,11 @@ public class VistaContactos extends javax.swing.JFrame {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListDestinatarios.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jListDestinatarios.setModel(listModel);
         jListDestinatarios.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListDestinatarios.setMinimumSize(new java.awt.Dimension(300, 500));
         jListDestinatarios.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jListDestinatarios.setSelectionBackground(new java.awt.Color(52, 102, 153));
         jScrollPane1.setViewportView(jListDestinatarios);
 
         jPanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -123,9 +134,18 @@ public class VistaContactos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jListDestinatarios;
+    private javax.swing.JList<Receptor> jListDestinatarios;
     private javax.swing.JPanel jPanelDestinatarios;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
+    public void cargarContactos(){
+        Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+        System.out.println(it);
+        while(it.hasNext()){
+            this.listModel.addElement(it.next());
+        }
+        
+        this.repaint();
+    }
 }
