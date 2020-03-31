@@ -12,6 +12,7 @@ import java.beans.XMLEncoder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
@@ -20,8 +21,11 @@ import java.net.Socket;
 
 import java.util.Iterator;
 
+import receptor.controlador.ControladorReceptor;
+
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+import receptor.modelo.SistemaReceptor;
 
 public class TCPdeEmisor implements Runnable {
 
@@ -35,22 +39,26 @@ public class TCPdeEmisor implements Runnable {
      */
     public void run() {
         try {
-            ServerSocket s = new ServerSocket(SistemaEmisor.getInstance()
-                                                           .getEmisor()
-                                                           .getPuerto());
+                            ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
 
-            while (true) {
-                Socket soc = s.accept();
-                XMLDecoder xmlDecoder = new XMLDecoder(soc.getInputStream());
+                            while (true) {
+                                
+                                Socket socket = s.accept();
+                                System.out.println("ataje aglo!!!");
+                                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                                
+                                Comprobante comprobante = (Comprobante) in.readObject();
+                                System.out.println(comprobante.getClass().toString());
+                                
+                                ControladorEmisor.getInstance().agregarComprobante(comprobante);
+                                
+                                in.close();
+                                socket.close();
+                            }
 
-
-                Comprobante comprobante = (Comprobante) xmlDecoder.readObject();
-                this.onConfirmacion(comprobante);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+    }
     }
 
     public void enviarMensaje(Mensaje mensaje) {
@@ -79,7 +87,7 @@ public class TCPdeEmisor implements Runnable {
     }
 
     public void onConfirmacion(Comprobante comprobante) {
-        ControladorEmisor.agregarComprobante(comprobante);
+        ControladorEmisor.getInstance().agregarComprobante(comprobante);
     }
 
 }

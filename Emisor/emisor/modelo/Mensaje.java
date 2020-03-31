@@ -69,11 +69,11 @@ public class Mensaje implements Serializable{
         return datetime;
     }
 
-    private String getAsunto() {
+    public String getAsunto() {
         return asunto;
     }
 
-    private String getCuerpo() {
+    public String getCuerpo() {
         return cuerpo;
     }
 

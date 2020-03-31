@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public class SistemaEmisor {
@@ -27,6 +28,9 @@ public class SistemaEmisor {
     
     private HashMap<Integer,Mensaje> mensajesEnviados = new HashMap<Integer,Mensaje>();
     private HashMap<Integer,MensajeConComprobante> mensajesConComprobante = new HashMap<Integer,MensajeConComprobante>();
+    
+    private HashMap<Integer,ArrayList<Receptor>> listasReceptoresConfirmados = new HashMap<Integer,ArrayList<Receptor>>();
+    
     
     private SistemaEmisor() throws FileNotFoundException {
         super();
@@ -83,5 +87,28 @@ public class SistemaEmisor {
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
         
         return this.mensajesConComprobante.values().iterator();
+    }
+//ODEU
+    public void agregarComprobante(Comprobante comprobante) {
+        int idMensaje = comprobante.getidMensaje();
+        
+        if(this.mensajesConComprobante.containsKey(idMensaje)){
+                
+            if(!listasReceptoresConfirmados.containsKey(idMensaje))
+                listasReceptoresConfirmados.put(idMensaje,new ArrayList<Receptor>()); //si es el primer comprobante, crea el arraylist
+           
+
+            this.listasReceptoresConfirmados.get(idMensaje).add(comprobante.getReceptor());  
+        }
+        //else ////este mensaje no lo mandamos nosotros!
+    }
+
+    public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) {
+        
+        return this.listasReceptoresConfirmados.get(idMensaje).iterator();
+    }
+
+    public int getPuerto() {
+        return this.getEmisor().getPuerto();
     }
 }
