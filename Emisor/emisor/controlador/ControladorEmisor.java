@@ -2,6 +2,7 @@ package emisor.controlador;
 
 import emisor.modelo.Emisor;
 
+import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
 
@@ -58,6 +59,7 @@ public class ControladorEmisor {
     public void enviarMensaje(String asunto, String cuerpo,MensajeFactory.TipoMensaje tipo, ArrayList<Receptor> receptores){
         SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,receptores,tipo);
         
+        
     }
 
     
@@ -88,7 +90,13 @@ public class ControladorEmisor {
         this.vistaComprobantes = this1;
     }
 
-    public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) {
-        return SistemaEmisor.getInstance().getReceptoresConfirmados(idMensaje);
+    public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) throws Exception {
+        if(SistemaEmisor.getInstance().hayReceptoresConfirmados(idMensaje))
+            return SistemaEmisor.getInstance().getReceptoresConfirmados(idMensaje);
+        else throw new Exception("Todavia no hay receptores confirmados");
+    }
+
+    public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
+        vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }
 }

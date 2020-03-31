@@ -8,20 +8,41 @@ import emisor.modelo.MensajeConComprobante;
 
 import java.awt.Color;
 
+import java.awt.Component;
+
 import java.util.Iterator;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+
+import javax.swing.JList;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+
+import receptor.vista.RendererMensajesRecibidos;
 
 /**
  *
  * @author Mau
  */
 public class VistaComprobantes extends javax.swing.JFrame implements IVistaComprobantes {
-    
-    DefaultListModel<MensajeConComprobante> listModelMensajes = new DefaultListModel<MensajeConComprobante>();    
+
+    private class RedGreenCellRenderer extends DefaultListCellRenderer {
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
+            Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (isSelected) {
+                c.setBackground(Color.green); //yellow every even row
+            } else {
+                c.setBackground(Color.red);
+            }
+            return c;
+        }
+    }
+
+
+    DefaultListModel<MensajeConComprobante> listModelMensajes = new DefaultListModel<MensajeConComprobante>();
     DefaultListModel<Receptor> listModelReceptores = new DefaultListModel<Receptor>();
 
     /** Creates new form VistaComprobantes */
@@ -32,6 +53,10 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         this.jListMensajes.setModel(listModelMensajes);
 
         this.iniciaMensajes();
+        this.jListReceptores.setCellRenderer(new RedGreenCellRenderer());
+        
+        this.jListMensajes.setCellRenderer(new RendererMensajesRecibidos());
+        
     }
 
     /** This method is called from within the constructor to
@@ -119,7 +144,6 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
         jListReceptores.setModel(listModelReceptores
         );
-        jListReceptores.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListReceptores.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListReceptores.setMinimumSize(new java.awt.Dimension(300, 500));
         jListReceptores.setPreferredSize(new java.awt.Dimension(150, 1000));
@@ -135,36 +159,43 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     }//GEN-END:initComponents
 
     private void jListMensajesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListMensajesValueChanged
-    MensajeConComprobante elegido = this.jListMensajes.getSelectedValue();
-    this.jTextAreaAsunto.setText(elegido.getAsunto());
-    this.jTextAreaCuerpo.setText(elegido.getCuerpo());
-    
-    this.listModelReceptores.clear();
-    this.jListReceptores.clearSelection();
-    
-    Iterator <Receptor> it = elegido.getReceptores();
-    while(it.hasNext()){
-        listModelReceptores.addElement(it.next());
-    }
-    
-    this.jListReceptores.setBackground(Color.red); //los demas son rojos
-    this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
-        
-    
-    Iterator <Receptor> receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
-    
-    while(receptoresConfirmados.hasNext()){
-        Receptor actual = receptoresConfirmados.next();
-        
-        int i;
-        for(i=0; i<listModelReceptores.getSize();i++){
-            if(listModelReceptores.get(i).equals(actual))
-                break;
+        MensajeConComprobante elegido = this.jListMensajes.getSelectedValue();
+        this.jTextAreaAsunto.setText(elegido.getAsunto());
+        this.jTextAreaCuerpo.setText(elegido.getCuerpo());
+
+        this.listModelReceptores.clear();
+        this.jListReceptores.clearSelection();
+
+        Iterator<Receptor> it = elegido.getReceptores();
+        while (it.hasNext()) {
+            listModelReceptores.addElement(it.next());
         }
+
+        //this.jListReceptores.setBackground(Color.red); //los demas son rojos
+        //this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
+
+
+        Iterator<Receptor> receptoresConfirmados;
+        try {
+            receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
+            while (receptoresConfirmados.hasNext()) {
+                Receptor receptorActual = receptoresConfirmados.next();
+                int i = 0;
+                while (i < listModelReceptores.getSize()) {
+                    if (listModelReceptores.get(i).equals(receptorActual))
+                        break;
+                    i++;
+                }
+
+                if (i <= listModelReceptores.getSize())
+                    this.jListReceptores.addSelectionInterval(i, i);
+
+            }
+        } catch (Exception e) {
+            //no pasa nada, no confirmo nadie el programa sigue
+        }
+
         
-        this.jListReceptores.addSelectionInterval(i, i);
-        
-    }
     
     }//GEN-LAST:event_jListMensajesValueChanged
 
@@ -255,12 +286,14 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     // End of variables declaration//GEN-END:variables
 
 
-    private void iniciaMensajes(){
+    private void iniciaMensajes() {
         Iterator<MensajeConComprobante> it = ControladorEmisor.getInstance().getMensajesConComprobanteIterator();
-        while(it.hasNext()){
+        while (it.hasNext()) {
             listModelMensajes.addElement(it.next());
         }
         ControladorEmisor.getInstance().setVistaComprobantes(this);
+        this.jListMensajes.setSelectedIndex(this.listModelMensajes.getSize()-1);
+        
     }
 
     @Override
@@ -270,6 +303,22 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     @Override
     public void actualizarComprobanteRecibidos(Comprobante comprobante) {
-        // TODO Implement this method
+        if (jListMensajes.getSelectedValue().getId() == comprobante.getidMensaje()) {
+
+            int i = 0;
+            Receptor receptor = comprobante.getReceptor();
+            while (i < listModelReceptores.getSize()) {
+                if (listModelReceptores.get(i).equals(receptor))
+                    break;
+                i++;
+            }
+
+            if (i <= listModelReceptores.getSize())
+                this.jListReceptores.addSelectionInterval(i, i);
+        }
+
+
     }
 }
+
+

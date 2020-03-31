@@ -4,7 +4,7 @@
   <void method="add">
    <object class="receptor.modelo.Receptor">
     <void property="IP">
-     <string>190.188.128.224</string>
+     <string>127.0.0.1</string>
     </void>
     <void property="nombre">
      <string>Tosti</string>

@@ -36,7 +36,7 @@ public class Mensaje implements Serializable{
     }
 
     public int getId() {
-        return 0;
+        return id;
     }
     
     @Override

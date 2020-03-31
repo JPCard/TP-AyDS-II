@@ -71,6 +71,7 @@ public class SistemaEmisor {
         
         if(tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE){
             mensajesConComprobante.put(mensaje.getId(),(MensajeConComprobante) mensaje);
+            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante)mensaje);
         }
         
         this.getTcpdeEmisor().enviarMensaje(mensaje);
@@ -106,6 +107,10 @@ public class SistemaEmisor {
     public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) {
         
         return this.listasReceptoresConfirmados.get(idMensaje).iterator();
+    }
+    
+    public boolean hayReceptoresConfirmados(int idMensaje){
+        return this.listasReceptoresConfirmados.containsKey(idMensaje);
     }
 
     public int getPuerto() {
