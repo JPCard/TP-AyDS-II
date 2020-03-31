@@ -43,12 +43,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     /** Creates new form VistaEmisor */
     public VistaEmisor() {
-        
+
         initComponents();
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
         
         this.cargarContactos();
+        validacionBotonesEnviarMensaje();
     }
 
     /** This method is called from within the constructor to
@@ -74,7 +75,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jTextFieldAsunto = new javax.swing.JTextField();
         jPanelCuerpo = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jEditorPane1 = new javax.swing.JEditorPane();
+        jEditorCuerpo = new javax.swing.JEditorPane();
         jPanelBotonesAbajo = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanelBotonSimple = new javax.swing.JPanel();
@@ -169,6 +170,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jListDestinatarios.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListDestinatarios.setMinimumSize(new java.awt.Dimension(300, 500));
         jListDestinatarios.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jListDestinatarios.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListDestinatariosValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jListDestinatarios);
 
         jPanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -182,6 +188,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelAsunto.setLayout(new java.awt.BorderLayout());
 
         jTextFieldAsunto.setToolTipText("Escriba aqui el asunto");
+        jTextFieldAsunto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldAsuntoKeyReleased(evt);
+            }
+        });
         jPanelAsunto.add(jTextFieldAsunto, java.awt.BorderLayout.NORTH);
 
         jPanelMensaje.add(jPanelAsunto, java.awt.BorderLayout.NORTH);
@@ -189,7 +200,15 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelCuerpo.setBorder(javax.swing.BorderFactory.createTitledBorder("Cuerpo"));
         jPanelCuerpo.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(jEditorPane1);
+        jEditorCuerpo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jEditorCuerpoKeyTyped(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jEditorCuerpoKeyReleased(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jEditorCuerpo);
 
         jPanelCuerpo.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -360,6 +379,22 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.envioExitoso();
     }//GEN-LAST:event_jButtonEnviarAvisoActionPerformed
 
+    private void jEditorCuerpoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEditorCuerpoKeyTyped
+        
+    }//GEN-LAST:event_jEditorCuerpoKeyTyped
+
+    private void jEditorCuerpoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEditorCuerpoKeyReleased
+        validacionBotonesEnviarMensaje();
+    }//GEN-LAST:event_jEditorCuerpoKeyReleased
+
+    private void jTextFieldAsuntoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAsuntoKeyReleased
+        validacionBotonesEnviarMensaje();
+    }//GEN-LAST:event_jTextFieldAsuntoKeyReleased
+
+    private void jListDestinatariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDestinatariosValueChanged
+        validacionBotonesEnviarMensaje();
+    }//GEN-LAST:event_jListDestinatariosValueChanged
+
 
     /**
      * @param args the command line arguments
@@ -436,7 +471,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JButton jButtonEnviarSimple;
     private javax.swing.JButton jButtonListaContactos;
     private javax.swing.JButton jButtonVerComprobante;
-    private javax.swing.JEditorPane jEditorPane1;
+    private javax.swing.JEditorPane jEditorCuerpo;
     private javax.swing.JList<Receptor> jListDestinatarios;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
@@ -464,7 +499,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     @Override
     public String getCuerpo() {
-        return this.jEditorPane1.getText();
+        return this.jEditorCuerpo.getText();
     }
 
     @Override
@@ -477,28 +512,36 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del emisor", "ERROR",
                                       JOptionPane.ERROR_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-        
+
     }
 
     public void envioExitoso() {
         this.jTextFieldAsunto.setText("");
-        this.jEditorPane1.setText("");
+        this.jEditorCuerpo.setText("");
         this.jListDestinatarios.clearSelection();
         JOptionPane.showConfirmDialog(this, "Mensaje enviado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
-    
-    public void cargarContactos(){
+
+    public void cargarContactos() {
         System.out.println("eeee");
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
         System.out.println(it);
-        while(it.hasNext()){
+        while (it.hasNext()) {
             System.out.println("aaaa");
             this.listModel.addElement(it.next());
         }
-        
+
         this.repaint();
     }
-    
+
+    public void validacionBotonesEnviarMensaje() {
+        boolean mensajeOK = !(jTextFieldAsunto.getText().trim().equals("") || 
+                 jEditorCuerpo.getText().trim().equals("") || jListDestinatarios.isSelectionEmpty());
+        jButtonEnviarSimple.setEnabled(mensajeOK);
+        jButtonEnviarAviso.setEnabled(mensajeOK);
+        jButtonEnviarConComprobante.setEnabled(mensajeOK);
+    }
+
 }
 
 
