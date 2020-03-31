@@ -51,9 +51,10 @@ public class ControladorReceptor {
     }
     
     public void mostrarMensaje(Mensaje mensaje){
-        this.vistaReceptor.mostrarMensaje(mensaje);
         
+        this.vistaReceptor.mostrarMensaje(mensaje);
         mensaje.onLlegada();
+        
     }
     
     public void activarAlerta(){

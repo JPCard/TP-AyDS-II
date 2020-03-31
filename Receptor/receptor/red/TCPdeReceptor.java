@@ -12,6 +12,7 @@ import java.beans.XMLEncoder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 
 import java.net.ServerSocket;
@@ -35,13 +36,18 @@ public class TCPdeReceptor  implements Runnable{
                             ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
 
                             while (true) {
-                                Socket soc = s.accept();
                                 
-                                XMLDecoder xmlDecoder = new XMLDecoder(soc.getInputStream());
+                                Socket socket = s.accept();
+                                System.out.println("ataje aglo!!!");
+                                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                                 
-
-                                Mensaje mensaje = (Mensaje) xmlDecoder.readObject();
+                                Mensaje mensaje = (Mensaje) in.readObject();
+                                System.out.println(mensaje.getClass().toString());
+                                
                                 ControladorReceptor.getInstance().mostrarMensaje(mensaje);
+                                
+                                in.close();
+                                socket.close();
                             }
 
                         } catch (Exception e) {

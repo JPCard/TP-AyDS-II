@@ -2,6 +2,8 @@ package receptor.vista;
 
 import emisor.modelo.Mensaje;
 
+import emisor.vista.RendererContactos;
+
 import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultListModel;
@@ -22,6 +24,7 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         
         initComponents();
         ControladorReceptor.getInstance(this);
+        this.jListMensajes.setCellRenderer(new RendererMensajesRecibidos());
     }
 
     /** This method is called from within the constructor to
@@ -195,11 +198,14 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
     @Override
     public void activarAlerta() {
         this.jProgressBar1.setValue(1);
+        this.repaint();
     }
 
     @Override
     public void mostrarMensaje(Mensaje mensaje) {
         this.listModel.addElement(mensaje);
+        System.out.println("ASDSADSAD");
+        this.repaint();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package emisor.modelo;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 
@@ -10,7 +12,7 @@ import receptor.controlador.ControladorReceptor;
 import receptor.modelo.Receptor;
 
 
-public class Mensaje {
+public class Mensaje implements Serializable{
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
@@ -80,13 +82,34 @@ public class Mensaje {
     }
 
 
+    @Override
+    public String toString() {
+        Iterator<Receptor> itReceptores = this.getReceptores();
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.emisor.toString());
+        sb.append("\nFecha: ");
+        sb.append(this.datetime.getTime());
+        sb.append("\n Receptores: ");
+        while(itReceptores.hasNext())
+            sb.append(itReceptores.next()+",");
+        
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("\n===========================================");
+        sb.append("\nAsunto: ");
+        sb.append(this.getAsunto());
+        sb.append("\nCuerpo: ");
+        sb.append(this.getCuerpo());
+        return sb.toString();
+    }
+
     /**
      * <b>Pre:</b> datetime != null, emisor != null, asunto != null y asunto != "", cuerpo != null, cuerpo != "".
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
      * <b>Invariante:</b> datetime, asunto, cuerpo y emisor del mensaje no varían
      */
     public void onLlegada(){
-        ControladorReceptor.getInstance().mostrarMensaje(this);
+        // el mensaje comun no hace nada
+       //
     }
     
 }

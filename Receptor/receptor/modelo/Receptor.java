@@ -13,9 +13,11 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import java.io.Serializable;
+
 import java.util.HashMap;
 
-public class Receptor {
+public class Receptor implements Serializable{
     private String IP;
     private int puerto;
     private String nombre;
