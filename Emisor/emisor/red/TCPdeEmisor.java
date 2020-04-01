@@ -16,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -72,7 +73,10 @@ public class TCPdeEmisor implements Runnable {
             while (receptores.hasNext()) {
                 Receptor receptorActual= receptores.next();
                     
-                Socket socket = new Socket(receptorActual.getIP(), receptorActual.getPuerto());
+                Socket socket = new Socket();
+                InetSocketAddress addr = new InetSocketAddress(receptorActual.getIP(), receptorActual.getPuerto());
+                socket.connect(addr,500);
+                
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.writeObject(mensaje);

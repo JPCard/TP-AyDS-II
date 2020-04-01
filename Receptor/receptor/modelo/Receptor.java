@@ -22,7 +22,34 @@ public class Receptor implements Serializable{
     private int puerto;
     private String nombre;
 
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Receptor)) {
+            return false;
+        }
+        final Receptor other = (Receptor) object;
+        if (!(IP == null ? other.IP == null : IP.equals(other.IP))) {
+            return false;
+        }
+        if (puerto != other.puerto) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 1;
+        result = PRIME * result + ((IP == null) ? 0 : IP.hashCode());
+        result = PRIME * result + puerto;
+        return result;
+    }
+
     public Receptor(String IP, int puerto, String nombre) {
         this.IP = IP;
         this.puerto = puerto;

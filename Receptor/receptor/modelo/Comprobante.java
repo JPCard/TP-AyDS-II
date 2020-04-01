@@ -2,7 +2,9 @@ package receptor.modelo;
 
 import emisor.modelo.Mensaje;
 
-public class Comprobante {
+import java.io.Serializable;
+
+public class Comprobante implements Serializable {
     private int idMensaje;
     private Receptor receptor;
 
