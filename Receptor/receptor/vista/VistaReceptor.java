@@ -214,8 +214,8 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
     }
 
     @Override
-    public void mostrarMensaje(Mensaje mensaje) {
-        this.listModel.addElement(mensaje);
+    public void agregarMensaje(Mensaje mensaje) {
+        this.listModel.add(0,mensaje);
         this.repaint();
     }
 

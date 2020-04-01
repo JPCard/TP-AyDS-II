@@ -307,13 +307,16 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             listModelMensajes.addElement(it.next());
         }
         ControladorEmisor.getInstance().setVistaComprobantes(this);
-        this.jListMensajes.setSelectedIndex(this.listModelMensajes.getSize()-1);
+        this.jListMensajes.setSelectedIndex(0);
         
     }
 
     @Override
     public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
-        listModelMensajes.addElement(mensaje);
+        listModelMensajes.add(0, mensaje);
+        if(listModelMensajes.size() == 1){
+            this.jListMensajes.setSelectedIndex(0);
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class Emisor implements Serializable{
 
     @Override
     public String toString() {
-        return "Nombre: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
+        return "Emisor: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
     }
 
     public void setPuerto(int puerto) {
