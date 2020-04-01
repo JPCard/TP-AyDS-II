@@ -16,9 +16,7 @@ public class MensajeConAlerta extends Mensaje {
 
     @Override
     public void onLlegada() {
-        // TODO Implement this method
         super.onLlegada();
         ControladorReceptor.getInstance().activarAlerta();
-        System.out.println("ASDSADJHASVF");
     }
 }

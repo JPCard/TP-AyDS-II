@@ -141,7 +141,6 @@ public class VistaContactos extends javax.swing.JFrame {
 
     public void cargarContactos(){
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
-        System.out.println(it);
         while(it.hasNext()){
             this.listModel.addElement(it.next());
         }

@@ -10,6 +10,9 @@ import java.awt.Color;
 
 import java.awt.Component;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import java.util.Iterator;
 
 import javax.swing.DefaultListCellRenderer;
@@ -39,17 +42,16 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             VistaComprobantes v = (VistaComprobantes)ControladorEmisor.getInstance().getVistaComprobantes();
             Mensaje mensajeSeleccionado = v.jListMensajes.getSelectedValue();
             
-            System.out.println("a punto de elegir color");
-            //asd
             if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor)) {
-                System.out.println("VERDE");
                 c.setBackground(Color.green); //yellow every even row
             } else {
-                System.out.println("ROJO");
                 c.setBackground(Color.red);
             }
             return c;
         }
+       
+        
+        
     }
 
 
@@ -59,6 +61,16 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     /** Creates new form VistaComprobantes */
     public VistaComprobantes() {
         initComponents();
+        
+        this.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                ControladorEmisor.getInstance().setVistaComprobantes(null);
+            }
+        });
+        
         jTextAreaAsunto.setEditable(false);
         jTextAreaCuerpo.setEditable(false);
         this.jListMensajes.setModel(listModelMensajes);
@@ -190,30 +202,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
                 listModelReceptores.addElement(it.next());
             }
 
-            //this.jListReceptores.setBackground(Color.red); //los demas son rojos
-            //this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
-
-            System.out.println("napo");
-            Iterator<Receptor> receptoresConfirmados;
-            try {
-                receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido);
-                while (receptoresConfirmados.hasNext()) {
-                    Receptor receptorActual = receptoresConfirmados.next();
-                    int i = 0;
-                    while (i < listModelReceptores.getSize()) {
-                        if (listModelReceptores.get(i).equals(receptorActual))
-                            break;
-                        i++;
-                    }
-
-                    if (i <= listModelReceptores.getSize())
-                        this.jListReceptores.addSelectionInterval(i, i);
-
-                }
-            } catch (Exception e) {
-                //no pasa nada, no confirmo nadie el programa sigue
-                System.out.println("nadie confirmo todavia");
-            }
+           
 
         }
         
@@ -222,7 +211,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     }//GEN-LAST:event_jListMensajesValueChanged
 
     private void jListMensajesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListMensajesMouseClicked
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jListMensajesMouseClicked
 
     /**
@@ -329,10 +318,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     @Override
     public void actualizarComprobanteRecibidos(Comprobante comprobante) {
-        System.out.println("holus polus estoy pasando");
-        System.out.println(comprobante);
         if (this.listModelMensajes.size()==1 || jListMensajes.getSelectedValue().getId() == comprobante.getidMensaje()){
-            System.out.println("entre");
             int i = 0;
             Receptor receptor = comprobante.getReceptor();
             while (i < listModelReceptores.getSize()) {
@@ -347,6 +333,8 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
 
     }
+    
+    
 }
 
 

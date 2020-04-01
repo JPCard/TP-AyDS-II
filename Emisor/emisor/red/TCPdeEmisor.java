@@ -45,11 +45,9 @@ public class TCPdeEmisor implements Runnable {
                             while (true) {
                                 
                                 Socket socket = s.accept();
-                                System.out.println("ataje aglo!!!");
                                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                                 
                                 Comprobante comprobante = (Comprobante) in.readObject();
-                                System.out.println(comprobante.getClass().toString());
                                 
                                 ControladorEmisor.getInstance().agregarComprobante(comprobante);
                                 

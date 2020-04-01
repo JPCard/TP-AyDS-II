@@ -77,8 +77,8 @@ public class ControladorEmisor {
     public void agregarComprobante(Comprobante comprobante) {
         
         SistemaEmisor.getInstance().agregarComprobante(comprobante);
-        
-        vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
+        if(vistaComprobantes != null)
+            vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
     }
 
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
@@ -90,8 +90,8 @@ public class ControladorEmisor {
                              consultarAgenda();
     }
 
-    public void setVistaComprobantes(IVistaComprobantes this1) {
-        this.vistaComprobantes = this1;
+    public void setVistaComprobantes(IVistaComprobantes vistaComprobantes) {
+        this.vistaComprobantes = vistaComprobantes;
     }
 
     public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) throws Exception {
@@ -101,7 +101,8 @@ public class ControladorEmisor {
     }
 
     public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
-        vistaComprobantes.agregarMensajeConComprobante(mensaje);
+        if(vistaComprobantes != null)
+            vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }
 
     public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {

@@ -523,11 +523,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }
 
     public void cargarContactos() {
-        System.out.println("eeee");
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
-        System.out.println(it);
         while (it.hasNext()) {
-            System.out.println("aaaa");
             this.listModel.addElement(it.next());
         }
 
