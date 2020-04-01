@@ -1,57 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_211" class="java.beans.XMLDecoder">
- <object class="java.util.ArrayList">
-  <void method="add">
-   <object class="receptor.modelo.Receptor">
-    <void property="IP">
-     <string>127.0.0.1</string>
-    </void>
-    <void property="nombre">
-     <string>Tosti</string>
-    </void>
-    <void property="puerto">
-     <int>27024</int>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="receptor.modelo.Receptor">
-    <void property="IP">
-     <string>22.22.22.22</string>
-    </void>
-    <void property="nombre">
-     <string>Daniela</string>
-    </void>
-    <void property="puerto">
-     <int>25565</int>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="receptor.modelo.Receptor">
-    <void property="IP">
-     <string>192.123.456.1</string>
-    </void>
-    <void property="nombre">
-     <string>Lucas</string>
-    </void>
-    <void property="puerto">
-     <int>27010</int>
-    </void>
-   </object>
-  </void>
-  <void method="add">
-   <object class="receptor.modelo.Receptor">
-    <void property="IP">
-     <string>22.33.44.55</string>
-    </void>
-    <void property="nombre">
-     <string>Tomas</string>
-    </void>
-    <void property="puerto">
-     <int>27344</int>
-    </void>
-   </object>
+<java version="1.8.0_131" class="java.beans.XMLDecoder">
+ <object class="emisor.persistencia.Agenda" id="Agenda0">
+  <void property="contactos">
+   <void method="add">
+    <object class="receptor.modelo.Receptor">
+     <void property="IP">
+      <string>127.0.0.1</string>
+     </void>
+     <void property="nombre">
+      <string>Tosti</string>
+     </void>
+     <void property="puerto">
+      <int>27123</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="receptor.modelo.Receptor">
+     <void property="IP">
+      <string>190.1.2.23</string>
+     </void>
+     <void property="nombre">
+      <string>Daniela</string>
+     </void>
+     <void property="puerto">
+      <int>27123</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="receptor.modelo.Receptor">
+     <void property="IP">
+      <string>190.1.2.43</string>
+     </void>
+     <void property="nombre">
+      <string>Pepe</string>
+     </void>
+     <void property="puerto">
+      <int>27123</int>
+     </void>
+    </object>
+   </void>
+   <void method="add">
+    <object class="receptor.modelo.Receptor">
+     <void property="IP">
+      <string>190.3.12.23</string>
+     </void>
+     <void property="nombre">
+      <string>Tomas</string>
+     </void>
+     <void property="puerto">
+      <int>27123</int>
+     </void>
+    </object>
+   </void>
   </void>
  </object>
 </java>

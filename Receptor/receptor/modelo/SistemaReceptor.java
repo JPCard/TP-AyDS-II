@@ -6,12 +6,15 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import receptor.persistencia.PersistenciaReceptor;
+
 import receptor.red.TCPdeReceptor;
 
 public class SistemaReceptor {
     private static SistemaReceptor instance = null;
     private Receptor receptor;
     private TCPdeReceptor tcpdeReceptor = new TCPdeReceptor();
+    private PersistenciaReceptor persistencia = new PersistenciaReceptor();
 
     public TCPdeReceptor getTcpdeReceptor() {
         return tcpdeReceptor;
@@ -19,17 +22,14 @@ public class SistemaReceptor {
 
     private SistemaReceptor() throws FileNotFoundException {
         super();
-        XMLDecoder decoder;
-
-        decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(RECEPTOR_FILE_PATH)));
-        receptor = (Receptor) decoder.readObject();
+        this.receptor = persistencia.cargarReceptor();
 
     }
 
     public Receptor getReceptor() {
         return receptor;
     }
-    private static final String RECEPTOR_FILE_PATH = "ParametrosReceptor.xml";
+    
 
     public static void inicializar() throws FileNotFoundException {
         if (instance == null)

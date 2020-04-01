@@ -19,4 +19,10 @@ public class MensajeConAlerta extends Mensaje {
         super.onLlegada();
         ControladorReceptor.getInstance().activarAlerta();
     }
+
+
+    @Override
+    public String toString() {
+        return "Mensaje con Alerta\n"+super.toString();
+    }
 }

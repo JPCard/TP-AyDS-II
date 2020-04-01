@@ -4,6 +4,8 @@ import emisor.controlador.ControladorEmisor;
 
 import emisor.modelo.MensajeFactory.TipoMensaje;
 
+import emisor.persistencia.PersistenciaEmisor;
+
 import emisor.red.TCPdeEmisor;
 
 import java.beans.XMLDecoder;
@@ -23,22 +25,19 @@ import receptor.modelo.Receptor;
 public class SistemaEmisor {
     private Emisor emisor;
     private TCPdeEmisor tcpdeEmisor;
-    public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.xml";
+    
     private static SistemaEmisor instance;
     
     private HashMap<Integer,Mensaje> mensajesEnviados = new HashMap<Integer,Mensaje>();
     private HashMap<Integer,MensajeConComprobante> mensajesConComprobante = new HashMap<Integer,MensajeConComprobante>();
     
     private HashMap<Integer,ArrayList<Receptor>> listasReceptoresConfirmados = new HashMap<Integer,ArrayList<Receptor>>();
-    
+    private PersistenciaEmisor persistencia = new PersistenciaEmisor();
     
     private SistemaEmisor() throws FileNotFoundException {
         super();
-        XMLDecoder decoder;
-        
-            decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(PARAMETROS_FILE_PATH)));
-            emisor = (Emisor) decoder.readObject();
-            
+        emisor = persistencia.cargarEmisor();
+        emisor.setAgenda(persistencia.cargarAgenda());    
         
         this.tcpdeEmisor = new TCPdeEmisor();
        
@@ -51,6 +50,7 @@ public class SistemaEmisor {
         Thread t = new Thread(instance.tcpdeEmisor);
         t.start();
     }
+    
     
     public static SistemaEmisor getInstance(){
         return instance;

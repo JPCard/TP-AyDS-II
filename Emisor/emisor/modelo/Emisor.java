@@ -24,7 +24,6 @@ public class Emisor implements Serializable{
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
-        this.agenda = new Agenda();
     }
 
     public void setIP(String IP) {

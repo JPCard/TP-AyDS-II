@@ -42,7 +42,7 @@ public class ControladorEmisor {
             
             
         } catch (FileNotFoundException e) {
-            vistaPrincipal.mostrarErrorNoEmisor();
+            vistaPrincipal.mostrarErrorEmisorContactos();
         }
     }
     

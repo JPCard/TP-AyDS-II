@@ -115,13 +115,13 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jPanelMensajes.setMinimumSize(new java.awt.Dimension(600, 300));
         jPanelMensajes.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(1000, 50));
 
         jListMensajes.setModel(listModelMensajes);
         jListMensajes.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jListMensajes.setMaximumSize(new java.awt.Dimension(3300, 8000));
-        jListMensajes.setMinimumSize(new java.awt.Dimension(300, 500));
-        jListMensajes.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jListMensajes.setMinimumSize(new java.awt.Dimension(1000, 500));
+        jListMensajes.setPreferredSize(new java.awt.Dimension(400, 1000));
         jListMensajes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jListMensajesMouseClicked(evt);
@@ -321,20 +321,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     @Override
     public void actualizarComprobanteRecibidos(Comprobante comprobante) {
-        if (this.listModelMensajes.size()==1 || jListMensajes.getSelectedValue().getId() == comprobante.getidMensaje()){
-            int i = 0;
-            Receptor receptor = comprobante.getReceptor();
-            while (i < listModelReceptores.getSize()) {
-                if (listModelReceptores.get(i).equals(receptor))
-                    break;
-                i++;
-            }
-
-            if (i <= listModelReceptores.getSize())
-                this.jListReceptores.addSelectionInterval(i, i);
-        }
-
-
+        repaint();//le avisa a lista que tiene que actualiza el estado de un receptor a traves de su cell renderer
     }
     
     

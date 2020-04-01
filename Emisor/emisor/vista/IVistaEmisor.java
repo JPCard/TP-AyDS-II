@@ -12,5 +12,5 @@ public interface IVistaEmisor {
     public String getCuerpo();
     public ArrayList<Receptor> getDestinatarios();
 
-    public void mostrarErrorNoEmisor();
+    public void mostrarErrorEmisorContactos();
 }

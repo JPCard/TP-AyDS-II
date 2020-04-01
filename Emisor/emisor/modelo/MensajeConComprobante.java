@@ -22,5 +22,8 @@ public class MensajeConComprobante extends Mensaje {
         ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
     }
 
-    
+    @Override
+    public String toString() {
+        return "Mensaje con Comprobante\n"+super.toString();
+    } 
 }

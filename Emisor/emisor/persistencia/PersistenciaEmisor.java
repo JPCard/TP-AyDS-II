@@ -14,11 +14,16 @@ import receptor.modelo.Receptor;
 
 public class PersistenciaEmisor implements IPersistenciaEmisor {
     public static final String AGENDA_FILE_PATH = "Agenda.xml";
-
+    public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.xml";
+    
     @Override
-    public Emisor cargarEmisor() {
-        // TODO Implement this method
-        return null;
+    public Emisor cargarEmisor() throws FileNotFoundException {
+        Emisor emisor = null;
+        XMLDecoder decoder;
+        
+        decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(PARAMETROS_FILE_PATH)));
+        emisor = (Emisor) decoder.readObject();
+        return emisor;
     }
 
     @Override

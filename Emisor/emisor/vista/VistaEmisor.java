@@ -508,12 +508,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }
 
     @Override
-    public void mostrarErrorNoEmisor() {
-        JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del emisor", "ERROR",
+    public void mostrarErrorEmisorContactos() {
+        JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del emisor o de la agenda", "ERROR",
                                       JOptionPane.ERROR_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
     }
+    
+    
 
     public void envioExitoso() {
         this.jTextFieldAsunto.setText("");

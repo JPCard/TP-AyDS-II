@@ -20,7 +20,6 @@ public class Agenda implements Serializable{
     private ArrayList<Receptor> contactos = new ArrayList<Receptor>();
     
     public Agenda() {
-        new PersistenciaEmisor().cargarAgenda();
     }
 
     public void setContactos(ArrayList<Receptor> contactos) {
