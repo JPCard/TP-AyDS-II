@@ -104,16 +104,24 @@ public class SistemaEmisor {
         //else ////este mensaje no lo mandamos nosotros!
     }
 
-    public Iterator<Receptor> getReceptoresConfirmados(int idMensaje) {
+    public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) {
         
-        return this.listasReceptoresConfirmados.get(idMensaje).iterator();
+        return this.listasReceptoresConfirmados.get(mensaje.getId()).iterator();
     }
     
-    public boolean hayReceptoresConfirmados(int idMensaje){
-        return this.listasReceptoresConfirmados.containsKey(idMensaje);
+    public boolean hayReceptoresConfirmados(Mensaje mensaje){
+        return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
     }
 
     public int getPuerto() {
         return this.getEmisor().getPuerto();
+    }
+
+    public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {
+        ArrayList<Receptor> receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
+        if(receptoresConfirmados== null)
+            return false;
+        else
+            return receptoresConfirmados.contains(receptor);
     }
 }

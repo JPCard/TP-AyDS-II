@@ -519,7 +519,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jTextFieldAsunto.setText("");
         this.jEditorCuerpo.setText("");
         this.jListDestinatarios.clearSelection();
-        JOptionPane.showConfirmDialog(this, "Mensaje enviado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void cargarContactos() {
