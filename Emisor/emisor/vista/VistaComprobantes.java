@@ -28,14 +28,24 @@ import receptor.vista.RendererMensajesRecibidos;
  */
 public class VistaComprobantes extends javax.swing.JFrame implements IVistaComprobantes {
 
+
+
     private class RedGreenCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                       boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             
-            if (isSelected) {
+            Receptor receptor = (Receptor) value;
+            VistaComprobantes v = (VistaComprobantes)ControladorEmisor.getInstance().getVistaComprobantes();
+            Mensaje mensajeSeleccionado = v.jListMensajes.getSelectedValue();
+            
+            System.out.println("a punto de elegir color");
+            //asd
+            if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor)) {
+                System.out.println("VERDE");
                 c.setBackground(Color.green); //yellow every even row
             } else {
+                System.out.println("ROJO");
                 c.setBackground(Color.red);
             }
             return c;
@@ -186,7 +196,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             System.out.println("napo");
             Iterator<Receptor> receptoresConfirmados;
             try {
-                receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
+                receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido);
                 while (receptoresConfirmados.hasNext()) {
                     Receptor receptorActual = receptoresConfirmados.next();
                     int i = 0;
