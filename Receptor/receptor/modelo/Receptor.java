@@ -1,21 +1,9 @@
 package receptor.modelo;
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
 
-import emisor.modelo.SistemaEmisor;
-
-import emisor.red.TCPdeEmisor;
-
-import java.beans.XMLDecoder;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import java.io.Serializable;
 
-import java.util.HashMap;
 
 public class Receptor implements Serializable{
     private String IP;

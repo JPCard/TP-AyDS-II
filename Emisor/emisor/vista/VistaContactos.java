@@ -7,7 +7,6 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 
-import javax.swing.ListModel;
 
 import receptor.modelo.Receptor;
 

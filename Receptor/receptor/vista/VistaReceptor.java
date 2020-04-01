@@ -2,8 +2,6 @@ package receptor.vista;
 
 import emisor.modelo.Mensaje;
 
-import emisor.vista.RendererContactos;
-
 import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultListModel;

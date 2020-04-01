@@ -1,7 +1,6 @@
 package emisor.modelo;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import receptor.controlador.ControladorReceptor;
 

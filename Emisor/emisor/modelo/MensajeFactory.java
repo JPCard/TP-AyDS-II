@@ -2,9 +2,6 @@
 package emisor.modelo;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-
 import receptor.modelo.Receptor;
 
 

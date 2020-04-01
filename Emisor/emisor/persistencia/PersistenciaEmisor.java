@@ -8,9 +8,6 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import java.util.ArrayList;
-
-import receptor.modelo.Receptor;
 
 public class PersistenciaEmisor implements IPersistenciaEmisor {
     public static final String AGENDA_FILE_PATH = "Agenda.xml";

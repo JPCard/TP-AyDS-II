@@ -304,7 +304,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     private void iniciaMensajes() {
         Iterator<MensajeConComprobante> it = ControladorEmisor.getInstance().getMensajesConComprobanteIterator();
         while (it.hasNext()) {
-            listModelMensajes.addElement(it.next());
+            listModelMensajes.add(0,it.next());
         }
         ControladorEmisor.getInstance().setVistaComprobantes(this);
         this.jListMensajes.setSelectedIndex(0);

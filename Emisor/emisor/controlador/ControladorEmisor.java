@@ -1,7 +1,5 @@
 package emisor.controlador;
 
-import emisor.modelo.Emisor;
-
 import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
@@ -12,19 +10,13 @@ import emisor.vista.IVistaComprobantes;
 import emisor.vista.IVistaContactos;
 import emisor.vista.IVistaEmisor;
 
-import emisor.vista.VistaComprobantes;
-
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.JList;
-
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
-
-import receptor.vista.IVistaReceptor;
 
 public class ControladorEmisor {
     private IVistaEmisor vistaPrincipal;

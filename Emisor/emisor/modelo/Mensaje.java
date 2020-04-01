@@ -7,7 +7,6 @@ import java.util.GregorianCalendar;
 
 import java.util.Iterator;
 
-import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Receptor;
 

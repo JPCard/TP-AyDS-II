@@ -8,11 +8,6 @@ import emisor.persistencia.PersistenciaEmisor;
 
 import emisor.red.TCPdeEmisor;
 
-import java.beans.XMLDecoder;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;

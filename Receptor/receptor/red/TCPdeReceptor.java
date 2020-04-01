@@ -4,27 +4,16 @@ import emisor.modelo.Emisor;
 
 import emisor.modelo.Mensaje;
 
-import emisor.red.TCPdeEmisor;
-
-import java.beans.XMLDecoder;
-
-import java.beans.XMLEncoder;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import java.util.Iterator;
 
 import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
 public class TCPdeReceptor  implements Runnable{

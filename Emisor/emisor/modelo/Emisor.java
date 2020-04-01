@@ -1,6 +1,5 @@
 package emisor.modelo;
 
-import emisor.modelo.MensajeFactory.TipoMensaje;
 
 import emisor.persistencia.Agenda;
 

@@ -3,33 +3,18 @@ package emisor.vista;
 
 import emisor.controlador.ControladorEmisor;
 
-import emisor.modelo.Emisor;
 import emisor.modelo.MensajeFactory;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
-
-import java.beans.XMLEncoder;
-
-import java.io.BufferedOutputStream;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 import java.util.ArrayList;
 
 import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-
-import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 /**

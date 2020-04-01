@@ -1,6 +1,5 @@
 package receptor.modelo;
 
-import emisor.modelo.Mensaje;
 
 import java.io.Serializable;
 

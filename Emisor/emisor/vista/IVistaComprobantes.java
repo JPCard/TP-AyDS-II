@@ -1,6 +1,5 @@
 package emisor.vista;
 
-import emisor.modelo.Mensaje;
 
 import emisor.modelo.MensajeConComprobante;
 

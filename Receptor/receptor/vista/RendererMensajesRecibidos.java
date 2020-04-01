@@ -11,7 +11,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import receptor.modelo.Receptor;
 
 public class RendererMensajesRecibidos extends DefaultListCellRenderer {
     protected static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
