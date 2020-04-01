@@ -21,12 +21,6 @@ public class Agenda implements Serializable{
     public static final String AGENDA_FILE_PATH = "Agenda.xml";
     
     public Agenda() {
-        //todo borrar
-        
-        
-        
-        
-        //todo borrar hasta aca
         cargarAgenda();
     }
 
@@ -49,11 +43,9 @@ public class Agenda implements Serializable{
             contactos = (ArrayList<Receptor>) decoder.readObject();
         } 
         catch (FileNotFoundException e) {
-            System.out.println("uy");
             //si no estaba el archivo no carga nada
         }
         catch (ClassCastException e) {
-            System.out.println("ay");
             //si no estaba guardado un objeto tipo ArrayList<Receptor> en el archivo no hace nada
         }
     }

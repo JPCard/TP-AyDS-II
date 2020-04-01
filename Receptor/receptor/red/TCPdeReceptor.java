@@ -41,11 +41,9 @@ public class TCPdeReceptor  implements Runnable{
                             while (true) {
                                 
                                 Socket socket = s.accept();
-                                System.out.println("ataje aglo!!!");
                                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                                 
                                 Mensaje mensaje = (Mensaje) in.readObject();
-                                System.out.println(mensaje.getClass().toString());
                                 
                                 ControladorReceptor.getInstance().mostrarMensaje(mensaje);
                                 
