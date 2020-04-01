@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.DefaultListModel;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JOptionPane;
 
 import receptor.controlador.ControladorReceptor;
@@ -25,6 +26,17 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         initComponents();
         ControladorReceptor.getInstance(this);
         this.jListMensajes.setCellRenderer(new RendererMensajesRecibidos());
+        this.jListMensajes.setSelectionModel(new DefaultListSelectionModel(){
+
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
+            super.setSelectionInterval(-1, -1);
+        }
+        @Override
+        public void addSelectionInterval(int index0, int index1) {
+            super.setSelectionInterval(-1, -1);
+        }
+        });
     }
 
     /** This method is called from within the constructor to
