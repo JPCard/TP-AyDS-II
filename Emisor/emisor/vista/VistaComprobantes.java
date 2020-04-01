@@ -32,6 +32,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
                                                       boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            
             if (isSelected) {
                 c.setBackground(Color.green); //yellow every even row
             } else {
@@ -56,6 +57,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         this.jListReceptores.setCellRenderer(new RedGreenCellRenderer());
         
         this.jListMensajes.setCellRenderer(new RendererMensajesRecibidos());
+        
         
     }
 
@@ -98,6 +100,11 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jListMensajes.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListMensajes.setMinimumSize(new java.awt.Dimension(300, 500));
         jListMensajes.setPreferredSize(new java.awt.Dimension(150, 1000));
+        jListMensajes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListMensajesMouseClicked(evt);
+            }
+        });
         jListMensajes.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 jListMensajesValueChanged(evt);
@@ -160,44 +167,53 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     private void jListMensajesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListMensajesValueChanged
         MensajeConComprobante elegido = this.jListMensajes.getSelectedValue();
-        this.jTextAreaAsunto.setText(elegido.getAsunto());
-        this.jTextAreaCuerpo.setText(elegido.getCuerpo());
+        
+        if(elegido!=null){
+            this.jTextAreaAsunto.setText(elegido.getAsunto());
+            this.jTextAreaCuerpo.setText(elegido.getCuerpo());
 
-        this.listModelReceptores.clear();
-        this.jListReceptores.clearSelection();
+            this.listModelReceptores.clear();
+            this.jListReceptores.clearSelection();
 
-        Iterator<Receptor> it = elegido.getReceptores();
-        while (it.hasNext()) {
-            listModelReceptores.addElement(it.next());
-        }
-
-        //this.jListReceptores.setBackground(Color.red); //los demas son rojos
-        //this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
-
-
-        Iterator<Receptor> receptoresConfirmados;
-        try {
-            receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
-            while (receptoresConfirmados.hasNext()) {
-                Receptor receptorActual = receptoresConfirmados.next();
-                int i = 0;
-                while (i < listModelReceptores.getSize()) {
-                    if (listModelReceptores.get(i).equals(receptorActual))
-                        break;
-                    i++;
-                }
-
-                if (i <= listModelReceptores.getSize())
-                    this.jListReceptores.addSelectionInterval(i, i);
-
+            Iterator<Receptor> it = elegido.getReceptores();
+            while (it.hasNext()) {
+                listModelReceptores.addElement(it.next());
             }
-        } catch (Exception e) {
-            //no pasa nada, no confirmo nadie el programa sigue
-        }
 
+            //this.jListReceptores.setBackground(Color.red); //los demas son rojos
+            //this.jListReceptores.setForeground(Color.green); //los seleccionados son los que llegaron (confirmados)
+
+            System.out.println("napo");
+            Iterator<Receptor> receptoresConfirmados;
+            try {
+                receptoresConfirmados = ControladorEmisor.getInstance().getReceptoresConfirmados(elegido.getId());
+                while (receptoresConfirmados.hasNext()) {
+                    Receptor receptorActual = receptoresConfirmados.next();
+                    int i = 0;
+                    while (i < listModelReceptores.getSize()) {
+                        if (listModelReceptores.get(i).equals(receptorActual))
+                            break;
+                        i++;
+                    }
+
+                    if (i <= listModelReceptores.getSize())
+                        this.jListReceptores.addSelectionInterval(i, i);
+
+                }
+            } catch (Exception e) {
+                //no pasa nada, no confirmo nadie el programa sigue
+                System.out.println("nadie confirmo todavia");
+            }
+
+        }
+        
         
     
     }//GEN-LAST:event_jListMensajesValueChanged
+
+    private void jListMensajesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListMensajesMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListMensajesMouseClicked
 
     /**
      * @param args the command line arguments
@@ -303,8 +319,10 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     @Override
     public void actualizarComprobanteRecibidos(Comprobante comprobante) {
-        if (jListMensajes.getSelectedValue().getId() == comprobante.getidMensaje()) {
-
+        System.out.println("holus polus estoy pasando");
+        System.out.println(comprobante);
+        if (this.listModelMensajes.size()==1 || jListMensajes.getSelectedValue().getId() == comprobante.getidMensaje()){
+            System.out.println("entre");
             int i = 0;
             Receptor receptor = comprobante.getReceptor();
             while (i < listModelReceptores.getSize()) {
