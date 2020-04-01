@@ -107,6 +107,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jListReceptores = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mensajes con Comprobante");
         setMinimumSize(new java.awt.Dimension(662, 450));
 
         jPanelPrincipal.setLayout(new java.awt.BorderLayout(20, 20));

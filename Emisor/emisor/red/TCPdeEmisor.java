@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -34,24 +35,28 @@ public class TCPdeEmisor implements Runnable {
      */
     public void run() {
         try {
-                            ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
-
-                            while (true) {
-                                
-                                Socket socket = s.accept();
-                                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                                
-                                Comprobante comprobante = (Comprobante) in.readObject();
-                                
-                                ControladorEmisor.getInstance().agregarComprobante(comprobante);
-                                
-                                in.close();
-                                socket.close();
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-    }
+                ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
+    
+                while (true) {
+                    
+                    Socket socket = s.accept();
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                    
+                    Comprobante comprobante = (Comprobante) in.readObject();
+                    
+                    ControladorEmisor.getInstance().agregarComprobante(comprobante);
+                    
+                    in.close();
+                    socket.close();
+                }
+    
+            } 
+        catch (BindException e) { //IP y puerto ya estaban utilizados
+            System.exit(1);
+        }
+        catch (Exception e) {
+        e.printStackTrace();
+        }
     }
 
     public void enviarMensaje(Mensaje mensaje) {
