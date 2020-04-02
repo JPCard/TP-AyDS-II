@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import receptor.modelo.Comprobante;
 
 
+import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
 
@@ -55,5 +56,9 @@ public class ControladorReceptor {
     
     public void activarAlerta(){
         this.vistaReceptor.activarAlerta();
+    }
+
+    public Receptor getReceptor() {
+        return SistemaReceptor.getInstance().getReceptor();
     }
 }
