@@ -72,7 +72,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Envio de Mensajes");
-        setMinimumSize(new java.awt.Dimension(850, 500));
+        setMinimumSize(new java.awt.Dimension(960, 700));
+        setPreferredSize(new java.awt.Dimension(960, 700));
 
         jPanelBotonesArriba.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -91,16 +92,16 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelListaContactosLayout.setHorizontalGroup(
             jPanelListaContactosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaContactosLayout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addComponent(jButtonListaContactos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addGap(42, 42, 42)
+                .addComponent(jButtonListaContactos, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(71, Short.MAX_VALUE))
         );
         jPanelListaContactosLayout.setVerticalGroup(
             jPanelListaContactosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelListaContactosLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addGap(43, 43, 43)
                 .addComponent(jButtonListaContactos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanelBotonesArriba.add(jPanelListaContactos);
@@ -117,17 +118,17 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelVerComprobante.setLayout(jPanelVerComprobanteLayout);
         jPanelVerComprobanteLayout.setHorizontalGroup(
             jPanelVerComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVerComprobanteLayout.createSequentialGroup()
-                .addContainerGap(103, Short.MAX_VALUE)
-                .addComponent(jButtonVerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(83, 83, 83))
+            .addGroup(jPanelVerComprobanteLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jButtonVerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         jPanelVerComprobanteLayout.setVerticalGroup(
             jPanelVerComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelVerComprobanteLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addGap(43, 43, 43)
                 .addComponent(jButtonVerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanelBotonesArriba.add(jPanelVerComprobante);
@@ -243,9 +244,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelBotonSimpleLayout.setHorizontalGroup(
             jPanelBotonSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotonSimpleLayout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jButtonEnviarSimple, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jButtonEnviarSimple, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelBotonSimpleLayout.setVerticalGroup(
             jPanelBotonSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,10 +274,10 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelBotonAviso.setLayout(jPanelBotonAvisoLayout);
         jPanelBotonAvisoLayout.setHorizontalGroup(
             jPanelBotonAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotonAvisoLayout.createSequentialGroup()
-                .addContainerGap(53, Short.MAX_VALUE)
-                .addComponent(jButtonEnviarAviso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+            .addGroup(jPanelBotonAvisoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonEnviarAviso, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelBotonAvisoLayout.setVerticalGroup(
             jPanelBotonAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -305,9 +306,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelBotonComprobanteLayout.setHorizontalGroup(
             jPanelBotonComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotonComprobanteLayout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
-                .addComponent(jButtonEnviarConComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addComponent(jButtonEnviarConComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelBotonComprobanteLayout.setVerticalGroup(
             jPanelBotonComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
