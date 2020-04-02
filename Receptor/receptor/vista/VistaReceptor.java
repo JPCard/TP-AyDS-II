@@ -35,6 +35,7 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
             super.setSelectionInterval(-1, -1);
         }
         });
+        this.jListMensajes.setFixedCellHeight(300);
     }
 
     /** This method is called from within the constructor to
@@ -49,14 +50,17 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         jScrollPane1 = new javax.swing.JScrollPane();
         jListMensajes = new javax.swing.JList<>();
         jPanelAbajo = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jButtonSilenciar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jButtonSilenciar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Recepcion de Mensajes");
-        setMinimumSize(new java.awt.Dimension(600, 399));
-        setPreferredSize(new java.awt.Dimension(600, 399));
+        setMinimumSize(new java.awt.Dimension(960, 540));
+        setPreferredSize(new java.awt.Dimension(960, 540));
 
         jPanelMensajes.setBorder(javax.swing.BorderFactory.createTitledBorder("Mensajes"));
         jPanelMensajes.setMinimumSize(new java.awt.Dimension(600, 100));
@@ -73,47 +77,74 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
         jPanelMensajes.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        jPanelAbajo.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setMinimumSize(new java.awt.Dimension(200, 100));
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 100));
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jPanelAbajo.add(jPanel2, java.awt.BorderLayout.WEST);
+
+        jProgressBar1.setForeground(new java.awt.Color(254, 0, 0));
+        jProgressBar1.setMaximum(1);
+
         jLabel1.setText("Indicador de alerta:");
 
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        jPanelAbajo.add(jPanel3, java.awt.BorderLayout.CENTER);
+
         jButtonSilenciar.setText("Silenciar");
+        jButtonSilenciar.setMaximumSize(new java.awt.Dimension(53, 40));
+        jButtonSilenciar.setMinimumSize(new java.awt.Dimension(53, 40));
+        jButtonSilenciar.setPreferredSize(new java.awt.Dimension(53, 40));
         jButtonSilenciar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSilenciarActionPerformed(evt);
             }
         });
+        jPanel1.add(jButtonSilenciar);
 
-        jProgressBar1.setForeground(new java.awt.Color(254, 0, 0));
-        jProgressBar1.setMaximum(1);
-
-        javax.swing.GroupLayout jPanelAbajoLayout = new javax.swing.GroupLayout(jPanelAbajo);
-        jPanelAbajo.setLayout(jPanelAbajoLayout);
-        jPanelAbajoLayout.setHorizontalGroup(
-            jPanelAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelAbajoLayout.createSequentialGroup()
-                .addContainerGap(382, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(5, 5, 5)
-                .addComponent(jButtonSilenciar)
-                .addContainerGap())
-        );
-        jPanelAbajoLayout.setVerticalGroup(
-            jPanelAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelAbajoLayout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
-                .addGroup(jPanelAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAbajoLayout.createSequentialGroup()
-                        .addGroup(jPanelAbajoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButtonSilenciar)
-                            .addGroup(jPanelAbajoLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(2, 2, 2)))
-                        .addGap(36, 36, 36))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAbajoLayout.createSequentialGroup()
-                        .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29))))
-        );
+        jPanelAbajo.add(jPanel1, java.awt.BorderLayout.LINE_END);
 
         jPanelMensajes.add(jPanelAbajo, java.awt.BorderLayout.SOUTH);
 
@@ -199,6 +230,9 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
     private javax.swing.JButton jButtonSilenciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<Mensaje> jListMensajes;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelAbajo;
     private javax.swing.JPanel jPanelMensajes;
     private javax.swing.JProgressBar jProgressBar1;
