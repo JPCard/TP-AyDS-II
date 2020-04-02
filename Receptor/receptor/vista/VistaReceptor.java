@@ -4,6 +4,19 @@ import emisor.modelo.Mensaje;
 
 import java.awt.event.WindowEvent;
 
+import java.io.File;
+
+import java.io.IOException;
+
+import javax.sound.sampled.AudioInputStream;
+
+import javax.sound.sampled.AudioSystem;
+
+import javax.sound.sampled.Clip;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import javax.swing.DefaultListModel;
 
 import javax.swing.DefaultListSelectionModel;
@@ -17,6 +30,8 @@ import receptor.controlador.ControladorReceptor;
  */
 public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor {
     DefaultListModel<Mensaje> listModel = new DefaultListModel<Mensaje>();
+    private boolean sonando = false;
+    private Clip clip = null;
 
     /** Creates new form VistaReceptor */
     public VistaReceptor() {
@@ -151,6 +166,8 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
     private void jButtonSilenciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSilenciarActionPerformed
         this.jProgressBar1.setValue(0);
+        this.clip.stop();
+        this.sonando = false;
     }//GEN-LAST:event_jButtonSilenciarActionPerformed
 
     /**
@@ -237,9 +254,31 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
     @Override
     public void activarAlerta() {
-        this.jProgressBar1.setValue(1);
-        this.repaint();
+        if(!sonando){
+            this.jProgressBar1.setValue(1);
+            this.repaint();
+            this.sonando = true;
+            String soundName = "alert.wav";    
+            AudioInputStream audioInputStream;
+            this.sonando = true;
+            try {
+                audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
+                this.clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.loop(99999999);
+                    clip.start();
+                   
+            } catch (IOException | UnsupportedAudioFileException e) {
+                //nada
+            } catch (LineUnavailableException e) {
+            }
+            
+        }
+            
+            
+        
     }
+
 
     @Override
     public void agregarMensaje(Mensaje mensaje) {
