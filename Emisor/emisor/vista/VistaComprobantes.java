@@ -146,6 +146,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jPanelAsunto.setLayout(new java.awt.BorderLayout());
 
         jTextAreaAsunto.setColumns(20);
+        jTextAreaAsunto.setLineWrap(true);
         jTextAreaAsunto.setRows(5);
         jScrollPane3.setViewportView(jTextAreaAsunto);
 
@@ -157,6 +158,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jPanelCuerpo.setLayout(new java.awt.BorderLayout());
 
         jTextAreaCuerpo.setColumns(20);
+        jTextAreaCuerpo.setLineWrap(true);
         jTextAreaCuerpo.setRows(5);
         jScrollPane2.setViewportView(jTextAreaCuerpo);
 
