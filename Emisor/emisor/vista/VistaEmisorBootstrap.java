@@ -12,17 +12,8 @@ public class VistaEmisorBootstrap extends javax.swing.JFrame {
     /** Creates new form VistaEmisorBootstrap */
     public VistaEmisorBootstrap() {
         initComponents();
-        
-        new Thread(){
-            @Override
-            public void run() {
-                
-                super.run();
                 VistaEmisor e = new VistaEmisor();
                 e.setVisible(true);
-            }
-        }.run();
-        
     }
 
     /** This method is called from within the constructor to
