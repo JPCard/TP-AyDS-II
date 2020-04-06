@@ -66,11 +66,11 @@ public class TCPdeEmisor implements Runnable {
 
             Iterator<Receptor> receptores = mensaje.getReceptores();
 
-            Socket socket = new Socket();
+
             while (receptores.hasNext()) {
                 Receptor receptorActual= receptores.next();
                     
-                
+                Socket socket = new Socket();
                 InetSocketAddress addr = new InetSocketAddress(receptorActual.getIP(), receptorActual.getPuerto());
                 socket.connect(addr,500);
                 
@@ -78,9 +78,9 @@ public class TCPdeEmisor implements Runnable {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.writeObject(mensaje);
                 out.close();
-                
+                socket.close();
             }
-            socket.close();
+
 
         } catch (Exception e) {
             e.printStackTrace();
