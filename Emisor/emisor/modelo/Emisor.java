@@ -1,7 +1,7 @@
 package emisor.modelo;
 
 
-import emisor.persistencia.Agenda;
+import emisor.modelo.Agenda;
 
 import java.io.Serializable;
 

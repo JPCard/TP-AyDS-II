@@ -1,5 +1,6 @@
 package emisor.persistencia;
 
+import emisor.modelo.Agenda;
 import emisor.modelo.Emisor;
 
 import java.beans.XMLDecoder;

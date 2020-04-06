@@ -1,5 +1,13 @@
 package emisor.modelo;
 
+import java.beans.XMLDecoder;
+
+import java.io.BufferedInputStream;
+
+import java.io.FileInputStream;
+
+import java.io.FileNotFoundException;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -23,7 +31,9 @@ public class Agenda implements Serializable{
     }
 
 
-    
+    /**
+     * Post: se carga la agenda que estaba guardada si es que la habia.
+     */
    
     
     public Iterator<Receptor> getIteratorContactos(){

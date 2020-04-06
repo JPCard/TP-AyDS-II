@@ -5,7 +5,7 @@
    <string>127.0.0.1</string>
   </void>
   <void property="agenda">
-   <object class="emisor.persistencia.Agenda"/>
+   <object class="emisor.modelo.Agenda"/>
   </void>
   <void property="nombre">
    <string>bine</string>
