@@ -5,7 +5,7 @@
    <string>127.0.0.1</string>
   </void>
   <void property="nombre">
-   <string>pepito</string>
+   <string>localhost123</string>
   </void>
   <void property="puerto">
    <int>27123</int>
