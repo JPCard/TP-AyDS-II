@@ -24,19 +24,19 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
         return emisor;
     }
 
-    @Override
-    public Agenda cargarAgenda() {
-        Agenda agenda = null;
-        try {
-            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(AGENDA_FILE_PATH)));
-            agenda = (Agenda) decoder.readObject();
-        } 
-        catch (FileNotFoundException e) {
-            //si no estaba el archivo no carga nada
-        }
-        catch (ClassCastException e) {
-            //si no estaba guardado un objeto tipo ArrayList<Receptor> en el archivo no hace nada
-        }
-        return agenda;
-    }
+//    @Override
+//    public Agenda cargarAgenda() {
+//        Agenda agenda = null;
+//        try {
+//            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(AGENDA_FILE_PATH)));
+//            agenda = (Agenda) decoder.readObject();
+//        } 
+//        catch (FileNotFoundException e) {
+//            //si no estaba el archivo no carga nada
+//        }
+//        catch (ClassCastException e) {
+//            //si no estaba guardado un objeto tipo ArrayList<Receptor> en el archivo no hace nada
+//        }
+//        return agenda;
+//    }
 }

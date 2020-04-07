@@ -14,19 +14,21 @@ import java.util.ArrayList;
 
 import java.util.Iterator;
 
+import java.util.TreeSet;
+
 import receptor.modelo.Receptor;
 
 public class Agenda implements Serializable{
-    private ArrayList<Receptor> contactos = new ArrayList<Receptor>();
+    private TreeSet<Receptor> contactos = new TreeSet<Receptor>();
     
     public Agenda() {
     }
 
-    public void setContactos(ArrayList<Receptor> contactos) {
+    public void setContactos(TreeSet<Receptor> contactos) {
         this.contactos = contactos;
     }
 
-    public ArrayList<Receptor> getContactos() {
+    public TreeSet<Receptor> getContactos() {
         return contactos;
     }
 

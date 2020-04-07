@@ -5,10 +5,13 @@ package receptor.modelo;
 import java.io.Serializable;
 
 
-public class Receptor implements Serializable{
+public class Receptor implements Serializable,Comparable<Receptor>{
     private String IP;
     private int puerto;
     private String nombre;
+    private int ID;
+    private static int nextID = 0;
+    private boolean conectado = true; //administrado por el directorio
 
 
     @Override
@@ -20,10 +23,7 @@ public class Receptor implements Serializable{
             return false;
         }
         final Receptor other = (Receptor) object;
-        if (!(IP == null ? other.IP == null : IP.equals(other.IP))) {
-            return false;
-        }
-        if (puerto != other.puerto) {
+        if (ID != other.ID) {
             return false;
         }
         return true;
@@ -33,15 +33,27 @@ public class Receptor implements Serializable{
     public int hashCode() {
         final int PRIME = 37;
         int result = 1;
-        result = PRIME * result + ((IP == null) ? 0 : IP.hashCode());
-        result = PRIME * result + puerto;
+        result = PRIME * result + ID;
         return result;
+    }
+
+    public void setConectado(boolean conectado) {
+        this.conectado = conectado;
+    }
+
+    public boolean isConectado() {
+        return conectado;
+    }
+
+    public int getID() {
+        return ID;
     }
 
     public Receptor(String IP, int puerto, String nombre) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
+        this.ID=nextID++;
     }
 
     public Receptor(){
@@ -84,4 +96,9 @@ public class Receptor implements Serializable{
         return nombre;
     }
 
+
+    @Override
+    public int compareTo(Receptor receptor) {
+        return this.getNombre().compareTo(receptor.getNombre());
+    }
 }

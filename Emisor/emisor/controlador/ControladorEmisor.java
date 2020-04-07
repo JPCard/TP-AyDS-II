@@ -13,6 +13,7 @@ import emisor.vista.IVistaEmisor;
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import receptor.modelo.Comprobante;
@@ -99,5 +100,10 @@ public class ControladorEmisor {
 
     public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {
         return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor);
+    }
+
+    public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
+        SistemaEmisor.getInstance().setAgenda(destinatariosRegistrados);
+        this.vistaPrincipal.cargarContactos();
     }
 }
