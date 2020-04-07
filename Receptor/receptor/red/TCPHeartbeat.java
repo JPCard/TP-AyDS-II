@@ -50,7 +50,7 @@ public class TCPHeartbeat implements Runnable {
                     out.writeObject(receptor);
                     out.close();
                     socket.close();
-                    wait(TIEMPO_HEARTBEAT);
+                    Thread.sleep(TIEMPO_HEARTBEAT);
                 }
 
 

@@ -23,8 +23,8 @@ import receptor.modelo.Receptor;
 
 public class Directorio {
     private static int TIEMPO_TIMEOUT = 500;
-    TreeSet<Receptor> receptores = new TreeSet<Receptor>();
-    HashMap<Integer, Long> tiempos = new HashMap<Integer, Long>(); // <idReceptor,tiempoUltimoHearbeat>
+    private TreeSet<Receptor> receptores = new TreeSet<Receptor>();
+    private HashMap<Integer, Long> tiempos = new HashMap<Integer, Long>(); // <idReceptor,tiempoUltimoHearbeat>
 
     public Directorio() {
         super();
@@ -39,30 +39,39 @@ public class Directorio {
     }
 
     public void heartbeatRecibido(Receptor receptor) {
-        
-        if (this.receptores.contains(receptor)) {
-            this.receptores.remove(receptor); //por si alguien cambia de IP, puerto o nombre
+        synchronized(receptores){
+            if (this.receptores.contains(receptor)) {
+                this.receptores.remove(receptor); //por si alguien cambia de IP, puerto o nombre
+            }
+            this.receptores.add(receptor);
+
+
+            
+
         }
-        this.receptores.add(receptor);
-
-
-        this.tiempos.put(receptor.getID(), GregorianCalendar.getInstance().getTimeInMillis());
+        
+        synchronized(tiempos){
+            this.tiempos.put(receptor.getID(), GregorianCalendar.getInstance().getTimeInMillis());
+        }
         // lo metes al treeset y pones el tiempo actual en tiempos
-
+        
     }
 
-    public Collection<Receptor> getDestinatariosRegistrados() {
+    public Collection<Receptor> listaDestinatariosRegistrados() {
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
-        TreeSet<Receptor> destinatariosRegistrados = new TreeSet<Receptor>();
-        
-        for(Object obj : receptores.toArray()){
-            Receptor receptor = (Receptor) obj;
-            boolean online = (tiempoActual-this.tiempos.get(receptor.getID()))<=TIEMPO_TIMEOUT;
-            receptor.setConectado(online);
-            destinatariosRegistrados.add(receptor);
-            
+        synchronized(receptores){
+            for(Object obj : receptores.toArray()){
+                Receptor receptor = (Receptor) obj;
+                boolean online;
+                synchronized(tiempos){
+                online = (tiempoActual-this.tiempos.get(receptor.getID()))<=TIEMPO_TIMEOUT;
+                }
+                receptor.setConectado(online);
+                
+            }
         }
         
-        return destinatariosRegistrados;
+        
+        return this.getReceptores();
     }
 }

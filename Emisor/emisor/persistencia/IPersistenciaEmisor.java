@@ -7,5 +7,5 @@ import java.io.FileNotFoundException;
 
 public interface IPersistenciaEmisor {
     public Emisor cargarEmisor() throws FileNotFoundException ;
-    public Agenda cargarAgenda();
+    //public Agenda cargarAgenda(); no vamas
 }

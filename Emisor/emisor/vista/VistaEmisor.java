@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 
 import java.util.ArrayList;
 
+import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -525,8 +526,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void cargarContactos() {
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+        //listModel.clear();
         while (it.hasNext()) {
-            this.listModel.addElement(it.next());
+            Receptor receptor  = it.next();
+            if(!this.listModel.contains(receptor))
+                this.listModel.addElement(receptor);
         }
 
         this.repaint();

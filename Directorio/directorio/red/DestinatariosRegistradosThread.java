@@ -46,7 +46,7 @@ public class DestinatariosRegistradosThread extends Thread {
                 
                 
                 
-                out.writeObject(directorio.getDestinatariosRegistrados());
+                out.writeObject(directorio.listaDestinatariosRegistrados());
 
 
 

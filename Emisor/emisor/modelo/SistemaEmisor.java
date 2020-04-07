@@ -1,18 +1,25 @@
 package emisor.modelo;
 
+import directorio.modelo.DirectorioMain;
+
 import emisor.controlador.ControladorEmisor;
 
 import emisor.modelo.MensajeFactory.TipoMensaje;
 
+import emisor.persistencia.IPersistenciaEmisor;
 import emisor.persistencia.PersistenciaEmisor;
 
+import emisor.red.TCPDestinatariosRegistrados;
 import emisor.red.TCPdeEmisor;
 
 import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import java.util.TreeSet;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
@@ -27,23 +34,31 @@ public class SistemaEmisor {
     private HashMap<Integer,MensajeConComprobante> mensajesConComprobante = new HashMap<Integer,MensajeConComprobante>();
     
     private HashMap<Integer,ArrayList<Receptor>> listasReceptoresConfirmados = new HashMap<Integer,ArrayList<Receptor>>();
-    private PersistenciaEmisor persistencia = new PersistenciaEmisor();
+    private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
     
     private SistemaEmisor() throws FileNotFoundException {
         super();
         emisor = persistencia.cargarEmisor();
-        emisor.setAgenda(persistencia.cargarAgenda());    
+        //viejo no va mas
+        //emisor.setAgenda(persistencia.cargarAgenda());    
         
         this.tcpdeEmisor = new TCPdeEmisor();
        
     }
         
     public static void inicializar() throws FileNotFoundException {
-        if(instance==null)
+        if(instance==null){
             instance = new SistemaEmisor();
+            Thread hiloenviar = new Thread(instance.tcpdeEmisor);
+            hiloenviar.start();//TODO CAMBIAR DONDE ESTA LA IP
+            Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(DirectorioMain.DIRECTORIO_IP,DirectorioMain.GETDESTINATARIOS_PORT));
+            hiloDestinatarios.start();
+        }
+            
         
-        Thread t = new Thread(instance.tcpdeEmisor);
-        t.start();
+        
+        
+        
     }
     
     
@@ -118,5 +133,15 @@ public class SistemaEmisor {
             return false;
         else
             return receptoresConfirmados.contains(receptor);
+    }
+
+    public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
+        Agenda agenda = new Agenda();
+        TreeSet<Receptor> contactosT = new TreeSet<Receptor>(destinatariosRegistrados);
+        
+        
+        agenda.setContactos(contactosT);
+        
+        this.getEmisor().setAgenda(agenda);
     }
 }
