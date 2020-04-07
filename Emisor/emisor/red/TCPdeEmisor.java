@@ -17,6 +17,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 
@@ -75,7 +76,6 @@ public class TCPdeEmisor implements Runnable {
                 socket.connect(addr,500);
                 
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out.writeObject(mensaje);
                 out.close();
                 socket.close();
@@ -89,6 +89,13 @@ public class TCPdeEmisor implements Runnable {
 
     public void onConfirmacion(Comprobante comprobante) {
         ControladorEmisor.getInstance().agregarComprobante(comprobante);
+    }
+    
+    public Collection<Receptor> pedirDestinatariosRegistrados(){
+        
+        
+        //todo
+        return null;
     }
 
 }

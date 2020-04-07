@@ -25,6 +25,8 @@ public class TCPdeReceptor  implements Runnable{
 
     
     public void run(){
+            
+        
             try {
                     ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
     
