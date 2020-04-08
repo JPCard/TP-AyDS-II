@@ -13,4 +13,5 @@ public interface IVistaEmisor {
     public void cargarContactos();
     public void mostrarErrorEmisorContactos();
 
+    public void updateConectado(boolean estado);
 }

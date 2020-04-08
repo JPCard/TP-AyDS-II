@@ -5,6 +5,7 @@ import emisor.controlador.ControladorEmisor;
 
 import emisor.modelo.MensajeFactory;
 
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -64,6 +65,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jEditorCuerpo = new javax.swing.JEditorPane();
         jPanelBotonesAbajo = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
+        jLabelConexion = new javax.swing.JLabel();
+        jPanelEstadoConexion = new javax.swing.JPanel();
         jPanelBotonSimple = new javax.swing.JPanel();
         jButtonEnviarSimple = new javax.swing.JButton();
         jPanelBotonAviso = new javax.swing.JPanel();
@@ -215,15 +218,38 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 100));
 
+        jLabelConexion.setText("jLabel1");
+
+        javax.swing.GroupLayout jPanelEstadoConexionLayout = new javax.swing.GroupLayout(jPanelEstadoConexion);
+        jPanelEstadoConexion.setLayout(jPanelEstadoConexionLayout);
+        jPanelEstadoConexionLayout.setHorizontalGroup(
+            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 22, Short.MAX_VALUE)
+        );
+        jPanelEstadoConexionLayout.setVerticalGroup(
+            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 22, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 249, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabelConexion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(159, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap(66, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelConexion))
+                .addContainerGap())
         );
 
         jPanelBotonesAbajo.add(jPanel8);
@@ -472,6 +498,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JButton jButtonListaContactos;
     private javax.swing.JButton jButtonVerComprobante;
     private javax.swing.JEditorPane jEditorCuerpo;
+    private javax.swing.JLabel jLabelConexion;
     private javax.swing.JList<Receptor> jListDestinatarios;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
@@ -483,6 +510,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JPanel jPanelBotonesArriba;
     private javax.swing.JPanel jPanelCuerpo;
     private javax.swing.JPanel jPanelDestinatarios;
+    private javax.swing.JPanel jPanelEstadoConexion;
     private javax.swing.JPanel jPanelListaContactos;
     private javax.swing.JPanel jPanelMensaje;
     private javax.swing.JPanel jPanelPrincipal;
@@ -544,6 +572,17 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jButtonEnviarConComprobante.setEnabled(mensajeOK);
     }
 
+    @Override
+    public void updateConectado(boolean estado) {
+        if(estado){
+            this.jLabelConexion.setText("Conectado");
+            this.jPanelEstadoConexion.setBackground(Color.green);
+        }
+        else{
+            this.jLabelConexion.setText("Desconectado");
+            this.jPanelEstadoConexion.setBackground(Color.gray);
+        }
+    }
 }
 
 

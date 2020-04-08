@@ -20,10 +20,10 @@ public class DestinatariosRegistradosThread extends Thread {
     private final int GETDESTINATARIOS_PORT;
 
 
-    public DestinatariosRegistradosThread(Directorio directorio,int GETDESTINATARIOS_PORT) {
+    public DestinatariosRegistradosThread(Directorio directorio, int GETDESTINATARIOS_PORT) {
         super();
         this.directorio = directorio;
-        this.GETDESTINATARIOS_PORT =  GETDESTINATARIOS_PORT;
+        this.GETDESTINATARIOS_PORT = GETDESTINATARIOS_PORT;
     }
 
     @Override
@@ -31,33 +31,34 @@ public class DestinatariosRegistradosThread extends Thread {
         super.run();
         this.escucharEmisores();
     }
-    
-    
-    private void escucharEmisores(){
-        try {
-            ServerSocket s = new ServerSocket(GETDESTINATARIOS_PORT);
-
-            while (true) {
-                System.out.println("Hilo Destinatarios: Esperando una solicitud...");
-                Socket socket = s.accept();
-                System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
-                //aca llega un heartbeat
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                
-                
-                
-                out.writeObject(directorio.listaDestinatariosRegistrados());
 
 
+    private void escucharEmisores() {
+        while (true) {
+            try {
 
-                out.close();
-                socket.close();
+                ServerSocket s = new ServerSocket(GETDESTINATARIOS_PORT);
+
+                while (true) {
+                    System.out.println("Hilo Destinatarios: Esperando una solicitud...");
+                    Socket socket = s.accept();
+                    System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
+                    ObjectOutputStream out = null;
+                    if (socket.isConnected()) {
+                        out = new ObjectOutputStream(socket.getOutputStream());
+                        out.writeObject(directorio.listaDestinatariosRegistrados());
+                        out.close();
+                    }
+
+
+                    socket.close();
+                }
+
+            } catch (BindException e) { //IP y puerto ya estaban utilizados
+                System.exit(1);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-        } catch (BindException e) { //IP y puerto ya estaban utilizados
-            System.exit(1);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

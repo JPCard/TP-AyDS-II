@@ -61,4 +61,8 @@ public class ControladorReceptor {
     public Receptor getReceptor() {
         return SistemaReceptor.getInstance().getReceptor();
     }
+
+    public void updateConectado(boolean estado) {
+        this.vistaReceptor.updateConectado(estado);
+    }
 }
