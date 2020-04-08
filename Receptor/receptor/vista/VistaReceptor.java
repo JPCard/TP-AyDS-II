@@ -2,6 +2,7 @@ package receptor.vista;
 
 import emisor.modelo.Mensaje;
 
+import java.awt.Color;
 import java.awt.event.WindowEvent;
 
 import java.io.File;
@@ -66,6 +67,8 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         jListMensajes = new javax.swing.JList<>();
         jPanelAbajo = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jLabelConexion = new javax.swing.JLabel();
+        jPanelEstadoConexion = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
@@ -97,15 +100,39 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         jPanel2.setMinimumSize(new java.awt.Dimension(200, 100));
         jPanel2.setPreferredSize(new java.awt.Dimension(200, 100));
 
+        jLabelConexion.setText("Desconectado");
+
+        jPanelEstadoConexion.setBackground(new java.awt.Color(255, 0, 0));
+        jPanelEstadoConexion.setForeground(new java.awt.Color(51, 255, 0));
+
+        javax.swing.GroupLayout jPanelEstadoConexionLayout = new javax.swing.GroupLayout(jPanelEstadoConexion);
+        jPanelEstadoConexion.setLayout(jPanelEstadoConexionLayout);
+        jPanelEstadoConexionLayout.setHorizontalGroup(
+            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 22, Short.MAX_VALUE)
+        );
+        jPanelEstadoConexionLayout.setVerticalGroup(
+            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 22, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabelConexion)
+                .addGap(4, 4, 4)
+                .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(106, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 78, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelConexion, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         jPanelAbajo.add(jPanel2, java.awt.BorderLayout.WEST);
@@ -242,11 +269,13 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSilenciar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelConexion;
     private javax.swing.JList<Mensaje> jListMensajes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanelAbajo;
+    private javax.swing.JPanel jPanelEstadoConexion;
     private javax.swing.JPanel jPanelMensajes;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -291,5 +320,18 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del receptor", "ERROR",
                                       JOptionPane.ERROR_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+
+    @Override
+    public void updateConectado(boolean estado) {
+        if(estado){
+            this.jLabelConexion.setText("Conectado");
+            this.jPanelEstadoConexion.setBackground(Color.green);
+        }
+        else{
+            this.jLabelConexion.setText("Desconectado");
+            this.jPanelEstadoConexion.setBackground(Color.gray);
+        }
+        
     }
 }

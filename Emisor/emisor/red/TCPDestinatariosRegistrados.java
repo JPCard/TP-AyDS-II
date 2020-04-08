@@ -21,9 +21,9 @@ public class TCPDestinatariosRegistrados implements Runnable {
     private String IPDirectorio;
     private int PuertoDirectorio;
     public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 500; // en MS
-    
-    
-    public TCPDestinatariosRegistrados(String IPDirectorio,int PuertoDirectorio) {
+
+
+    public TCPDestinatariosRegistrados(String IPDirectorio, int PuertoDirectorio) {
         super();
         this.IPDirectorio = IPDirectorio;
         this.PuertoDirectorio = PuertoDirectorio;
@@ -31,28 +31,33 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
     @Override
     public void run() {
-        try {
+        while (true) {
+            try {
 
-            
-            while (true) {
-                Socket socket = new Socket();
-                InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.PuertoDirectorio);
-                socket.connect(addr,500);
-                
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                Collection<Receptor> destinatariosRegistrados;
-                destinatariosRegistrados = (Collection<Receptor>) in.readObject();
-                
-                ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
-                
-                in.close();
-                socket.close();
-                Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS);
+
+                while (true) {
+                    Socket socket = new Socket();
+                    InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.PuertoDirectorio);
+                    socket.connect(addr, 500);
+
+                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                    Collection<Receptor> destinatariosRegistrados;
+                    destinatariosRegistrados = (Collection<Receptor>) in.readObject();
+
+                    ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
+
+                    in.close();
+                    socket.close();
+                    ControladorEmisor.getInstance().updateConectado(true);
+                    Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS);
+                }
+
+
+            } catch (Exception e) {
+                //e.printStackTrace();
+                ControladorEmisor.getInstance().updateConectado(false);
             }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 }

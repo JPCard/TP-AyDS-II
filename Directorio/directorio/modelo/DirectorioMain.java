@@ -20,6 +20,8 @@ public class DirectorioMain {
         DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(directorio,GETDESTINATARIOS_PORT);
         destinatariosRegistrados.start();
         
+
+        
         
     }
 }

@@ -24,38 +24,42 @@ public class TCPHeartbeat implements Runnable {
     private String IPDirectorio;
     private int PuertoDirectorio;
     public static final int TIEMPO_HEARTBEAT = 500; // en MS
-    
+
     private Receptor receptor = SistemaReceptor.getInstance().getReceptor();
-    
-    public TCPHeartbeat(String IPDirectorio,int PuertoDirectorio) {
+
+    public TCPHeartbeat(String IPDirectorio, int PuertoDirectorio) {
         super();
         this.IPDirectorio = IPDirectorio;
         this.PuertoDirectorio = PuertoDirectorio;
     }
 
     @Override
-    public void run(){
-            
-        
+    public void run() {
+
+        while (true) {
             try {
 
 
                 while (true) {
                     Socket socket = new Socket();
                     InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.PuertoDirectorio);
-                    socket.connect(addr,500);
-                    
+                    socket.connect(addr, 500);
+
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                     //out.writeObject(SistemaReceptor.getInstance().getReceptor()); //si algun dato cambia y hay que mandar un receptor distinto
                     out.writeObject(receptor);
                     out.close();
                     socket.close();
+                    ControladorReceptor.getInstance().updateConectado(true);
                     Thread.sleep(TIEMPO_HEARTBEAT);
                 }
 
 
             } catch (Exception e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                ControladorReceptor.getInstance().updateConectado(false);
             }
         }
+
+    }
 }
