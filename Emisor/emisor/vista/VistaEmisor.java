@@ -17,6 +17,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import receptor.modelo.Receptor;
 
 /**
@@ -57,6 +59,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelDestinatarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListDestinatarios = new javax.swing.JList<>();
+        jScrollPaneConexionDestinatarios = new javax.swing.JScrollPane();
+        jPanelContainerConexionDestinatarios = new javax.swing.JPanel();
         jPanelMensaje = new javax.swing.JPanel();
         jPanelAsunto = new javax.swing.JPanel();
         jTextFieldAsunto = new javax.swing.JTextField();
@@ -65,8 +69,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jEditorCuerpo = new javax.swing.JEditorPane();
         jPanelBotonesAbajo = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jLabelConexion = new javax.swing.JLabel();
-        jPanelEstadoConexion = new javax.swing.JPanel();
+        jLabelConexionDirectorio = new javax.swing.JLabel();
+        jPanelConexionDirectorio = new javax.swing.JPanel();
         jPanelBotonSimple = new javax.swing.JPanel();
         jButtonEnviarSimple = new javax.swing.JButton();
         jPanelBotonAviso = new javax.swing.JPanel();
@@ -77,7 +81,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Envio de Mensajes");
         setMinimumSize(new java.awt.Dimension(960, 700));
-        setPreferredSize(new java.awt.Dimension(960, 700));
 
         jPanelBotonesArriba.setLayout(new java.awt.GridLayout(1, 3));
 
@@ -160,6 +163,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
 
+        jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
         jListDestinatarios.setModel(listModel);
         jListDestinatarios.setMaximumSize(new java.awt.Dimension(3300, 8000));
         jListDestinatarios.setMinimumSize(new java.awt.Dimension(300, 500));
@@ -172,6 +176,15 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jScrollPane1.setViewportView(jListDestinatarios);
 
         jPanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jScrollPaneConexionDestinatarios.setMinimumSize(new java.awt.Dimension(75, 21));
+        jScrollPaneConexionDestinatarios.setPreferredSize(new java.awt.Dimension(75, 100));
+
+        jPanelContainerConexionDestinatarios.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelContainerConexionDestinatarios.setLayout(new java.awt.GridLayout(0, 1));
+        jScrollPaneConexionDestinatarios.setViewportView(jPanelContainerConexionDestinatarios);
+
+        jPanelDestinatarios.add(jScrollPaneConexionDestinatarios, java.awt.BorderLayout.LINE_START);
 
         jPanelPrincipal.add(jPanelDestinatarios, java.awt.BorderLayout.WEST);
 
@@ -218,16 +231,16 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        jLabelConexion.setText("jLabel1");
+        jLabelConexionDirectorio.setText("jLabel1");
 
-        javax.swing.GroupLayout jPanelEstadoConexionLayout = new javax.swing.GroupLayout(jPanelEstadoConexion);
-        jPanelEstadoConexion.setLayout(jPanelEstadoConexionLayout);
-        jPanelEstadoConexionLayout.setHorizontalGroup(
-            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanelConexionDirectorioLayout = new javax.swing.GroupLayout(jPanelConexionDirectorio);
+        jPanelConexionDirectorio.setLayout(jPanelConexionDirectorioLayout);
+        jPanelConexionDirectorioLayout.setHorizontalGroup(
+            jPanelConexionDirectorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 22, Short.MAX_VALUE)
         );
-        jPanelEstadoConexionLayout.setVerticalGroup(
-            jPanelEstadoConexionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelConexionDirectorioLayout.setVerticalGroup(
+            jPanelConexionDirectorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 22, Short.MAX_VALUE)
         );
 
@@ -237,9 +250,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jLabelConexion)
+                .addComponent(jLabelConexionDirectorio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelConexionDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(159, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
@@ -247,8 +260,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                 .addContainerGap(66, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanelEstadoConexion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelConexion))
+                    .addComponent(jPanelConexionDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelConexionDirectorio))
                 .addContainerGap())
         );
 
@@ -498,7 +511,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JButton jButtonListaContactos;
     private javax.swing.JButton jButtonVerComprobante;
     private javax.swing.JEditorPane jEditorCuerpo;
-    private javax.swing.JLabel jLabelConexion;
+    private javax.swing.JLabel jLabelConexionDirectorio;
     private javax.swing.JList<Receptor> jListDestinatarios;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
@@ -508,15 +521,17 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JPanel jPanelBotonSimple;
     private javax.swing.JPanel jPanelBotonesAbajo;
     private javax.swing.JPanel jPanelBotonesArriba;
+    private javax.swing.JPanel jPanelConexionDirectorio;
+    private javax.swing.JPanel jPanelContainerConexionDestinatarios;
     private javax.swing.JPanel jPanelCuerpo;
     private javax.swing.JPanel jPanelDestinatarios;
-    private javax.swing.JPanel jPanelEstadoConexion;
     private javax.swing.JPanel jPanelListaContactos;
     private javax.swing.JPanel jPanelMensaje;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JPanel jPanelVerComprobante;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneConexionDestinatarios;
     private javax.swing.JTextField jTextFieldAsunto;
     // End of variables declaration//GEN-END:variables
 
@@ -555,14 +570,38 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public void cargarContactos() {
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
         //listModel.clear();
-        while (it.hasNext()) {
+        jPanelContainerConexionDestinatarios.removeAll(); //limpia los estados de receptores anteriores
+        this.jPanelContainerConexionDestinatarios.revalidate();
+        this.jPanelContainerConexionDestinatarios.repaint();
+        while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
             Receptor receptor  = it.next();
-            if(!this.listModel.contains(receptor))
-                this.listModel.addElement(receptor);
+            if(!this.listModel.contains(receptor)){
+                this.cargarContacto(receptor);
+                System.out.println(receptor.isConectado());
+            }
+            else{ //si ya estaba
+                //actualizarEstado(receptor);
+                this.addPanelEstadoConexion(receptor.isConectado());
+                System.out.println(receptor.isConectado());
+            }
         }
-
+        this.revalidate();
         this.repaint();
+        this.jScrollPaneConexionDestinatarios.revalidate();
+        this.jScrollPaneConexionDestinatarios.repaint();
+        
     }
+
+
+    /**
+     * Pre: !this.listModel.contains(receptor)
+     * @param receptor
+     */
+    public void cargarContacto(Receptor receptor){
+        this.listModel.addElement(receptor);
+        this.addPanelEstadoConexion(receptor.isConectado());
+    }
+    
 
     public void validacionBotonesEnviarMensaje() {
         boolean mensajeOK = !(jTextFieldAsunto.getText().trim().equals("") || 
@@ -575,13 +614,18 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     @Override
     public void updateConectado(boolean estado) {
         if(estado){
-            this.jLabelConexion.setText("Conectado");
-            this.jPanelEstadoConexion.setBackground(Color.green);
+            this.jLabelConexionDirectorio.setText("Conectado");
+            this.jPanelConexionDirectorio.setBackground(Color.green);
         }
         else{
-            this.jLabelConexion.setText("Desconectado");
-            this.jPanelEstadoConexion.setBackground(Color.gray);
+            this.jLabelConexionDirectorio.setText("Desconectado");
+            this.jPanelConexionDirectorio.setBackground(Color.gray);
         }
+    }
+    
+    public void addPanelEstadoConexion(boolean conectado){
+        jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
+        System.out.println("se agrego el icono");
     }
 }
 
