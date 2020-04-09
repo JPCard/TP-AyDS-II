@@ -10,11 +10,20 @@ import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import java.io.File;
+
 import java.util.ArrayList;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
+import javax.sound.sampled.Clip;
+
+import javax.sound.sampled.LineUnavailableException;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultListModel;
@@ -606,6 +615,74 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         
         HashMap<Integer,Receptor> seleccionadosHashmap = new HashMap<Integer,Receptor>();
         ArrayList<Receptor> seleccionadosArrayList = new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+        
+        
+        //para hacer ruiditos de conectado y desconectado
+        while(it.hasNext()){
+            Receptor r= it.next();
+            int posrviejo = this.listModel.indexOf(r);
+            if(posrviejo!=-1){
+                Receptor rviejo = listModel.getElementAt(posrviejo);
+                
+                if(rviejo.isConectado() && !r.isConectado()){
+                        try {
+                    AudioInputStream audioInputStream;
+                    Clip clip;
+                    audioInputStream = AudioSystem.getAudioInputStream(new File("alguiensedesconecto.wav").getAbsoluteFile());
+                    clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
+                    } catch (Exception e) {
+                        System.out.println("problemas de audio");
+                        e.printStackTrace();
+
+                    }
+                }
+                    //sonido se desconecto
+                else
+                if(!rviejo.isConectado() && r.isConectado()){
+                        try {
+                    AudioInputStream audioInputStream;
+                    Clip clip;
+                    audioInputStream = AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
+                    
+                        clip = AudioSystem.getClip();
+                    
+                    clip.open(audioInputStream);
+                    clip.start();
+                    } catch (Exception e) {
+                            System.out.println("problemas de audio");
+                        e.printStackTrace();
+
+                    }
+                }
+                        //sonido de se conecto
+            }
+            else { //es nuevo merece sonidito
+                
+                try {
+                AudioInputStream audioInputStream;
+                Clip clip;
+                audioInputStream = AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
+                clip = AudioSystem.getClip();
+                clip.open(audioInputStream);
+                clip.start();
+                } catch (Exception e) {
+                System.out.println("problemas de audio");
+                e.printStackTrace();
+
+                }
+            }
+            
+            
+            
+        }
+        
+        it = ControladorEmisor.getInstance().getContactos(); //reset por que lo gaste arriba. no peudo hacer todo junto xq ahi abajo no hay nada en el listmodel
+
+
+        //fin de eso
+        
         
         for(Receptor r : seleccionadosArrayList){
             seleccionadosHashmap.put(r.getID(),r);
