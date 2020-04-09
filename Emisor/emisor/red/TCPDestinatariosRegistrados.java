@@ -13,9 +13,6 @@ import java.net.Socket;
 import java.util.Collection;
 
 import receptor.modelo.Receptor;
-import receptor.modelo.SistemaReceptor;
-
-import receptor.red.TCPHeartbeat;
 
 public class TCPDestinatariosRegistrados implements Runnable {
     private String IPDirectorio;

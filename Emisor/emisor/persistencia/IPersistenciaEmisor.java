@@ -7,5 +7,8 @@ import java.io.FileNotFoundException;
 
 public interface IPersistenciaEmisor {
     public Emisor cargarEmisor() throws FileNotFoundException ;
+    public String cargarIPDirectorio()throws FileNotFoundException;
+    public int cargarPuertoGetDestinatarios() throws FileNotFoundException;
     //public Agenda cargarAgenda(); no vamas
+    
 }

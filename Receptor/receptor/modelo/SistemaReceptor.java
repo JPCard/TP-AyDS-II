@@ -31,32 +31,31 @@ public class SistemaReceptor {
     public Receptor getReceptor() {
         return receptor;
     }
-    
+
 
     public static void inicializar() throws FileNotFoundException {
-        if (instance == null){
+        if (instance == null) {
             instance = new SistemaReceptor();
             Thread hilo = new Thread(instance.tcpdeReceptor);
             hilo.start();
-            
-            Thread hiloHeartbeat =  new Thread(new TCPHeartbeat(DirectorioMain.DIRECTORIO_IP,DirectorioMain.HEARTBEAT_PORT));
+            IPersistenciaReceptor auxPersistencia = instance.persistencia;
+            Thread hiloHeartbeat =
+                new Thread(new TCPHeartbeat(auxPersistencia.cargarIPDirectorio(),
+                                            auxPersistencia.cargarPuertoHeartbeat(),
+                                            auxPersistencia.cargarPuertoRegistro()));
             hiloHeartbeat.start();
-            
+
         }
-            
-        
-    
-        
-        //TODO CAMBIAR DONDE ESTA LA IPDE L DIRECTORIO
-        
-        
+
+
+
     }
 
     public static SistemaReceptor getInstance() {
         return instance;
     }
-    
-    public int getPuerto(){
+
+    public int getPuerto() {
         return this.receptor.getPuerto();
     }
 }
