@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
+import javax.swing.BoundedRangeModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 
@@ -40,6 +42,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         ControladorEmisor.getInstance(this);
         
         this.cargarContactos();
+        BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados.getVerticalScrollBar().getModel(); 
+        this.jScrollPaneConexionDestinatarios.getVerticalScrollBar().setModel(modelVerticalScroll);
         validacionBotonesEnviarMensaje();
     }
 
@@ -59,7 +63,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanel3 = new javax.swing.JPanel();
         jPanelPrincipal = new javax.swing.JPanel();
         jPanelDestinatarios = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPaneDestanatariosRegistrados = new javax.swing.JScrollPane();
         jListDestinatarios = new javax.swing.JList<>();
         jScrollPaneConexionDestinatarios = new javax.swing.JScrollPane();
         jPanelContainerPrincipalEstadosDestinatarios = new javax.swing.JPanel();
@@ -165,7 +169,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(600, 300));
         jPanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane1.setMinimumSize(new java.awt.Dimension(200, 50));
+        jScrollPaneDestanatariosRegistrados.setMinimumSize(new java.awt.Dimension(200, 50));
 
         jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 22)); // NOI18N
         jListDestinatarios.setModel(listModel);
@@ -177,11 +181,12 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 jListDestinatariosValueChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(jListDestinatarios);
+        jScrollPaneDestanatariosRegistrados.setViewportView(jListDestinatarios);
 
-        jPanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanelDestinatarios.add(jScrollPaneDestanatariosRegistrados, java.awt.BorderLayout.CENTER);
 
         jScrollPaneConexionDestinatarios.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneConexionDestinatarios.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         jScrollPaneConexionDestinatarios.setMinimumSize(new java.awt.Dimension(75, 21));
         jScrollPaneConexionDestinatarios.setPreferredSize(new java.awt.Dimension(75, 100));
 
@@ -558,9 +563,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JPanel jPanelMensaje;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JPanel jPanelVerComprobante;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPaneConexionDestinatarios;
+    private javax.swing.JScrollPane jScrollPaneDestanatariosRegistrados;
     private javax.swing.JTextField jTextFieldAsunto;
     // End of variables declaration//GEN-END:variables
 
