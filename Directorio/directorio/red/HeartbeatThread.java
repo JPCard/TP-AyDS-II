@@ -52,18 +52,8 @@ public class HeartbeatThread extends Thread {
                     if (socket.isConnected()) {
                         in = new ObjectInputStream(socket.getInputStream());
                         Receptor receptor = (Receptor) in.readObject();
-                        int idAnt = receptor.getID();
                         directorio.heartbeatRecibido(receptor);
                         in.close();
-                        
-                        if(idAnt == Directorio.INVALID_ID){ //avisa al receptor cual es su ID si es que no lo tenia 
-                            InetSocketAddress addr = new InetSocketAddress(receptor.getIP(), DirectorioMain.PUERTO_RECIBIR_ID_RECEPTOR);
-                            Socket socketMandarID = new Socket();
-                            socketMandarID.connect(addr,250);
-                            ObjectOutputStream out = new ObjectOutputStream(socketMandarID.getOutputStream());
-                            out.writeObject(receptor.getID());
-                            out.close();
-                        }
                     }
                     
 
