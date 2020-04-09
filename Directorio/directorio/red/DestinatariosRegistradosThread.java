@@ -55,7 +55,7 @@ public class DestinatariosRegistradosThread extends Thread {
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
-                System.exit(1);
+                //System.exit(1); no lo dejamos cerrar
             } catch (Exception e) {
                 e.printStackTrace();
             }
