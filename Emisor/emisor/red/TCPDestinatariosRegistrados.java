@@ -20,7 +20,7 @@ import receptor.red.TCPHeartbeat;
 public class TCPDestinatariosRegistrados implements Runnable {
     private String IPDirectorio;
     private int PuertoDirectorio;
-    public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 500; // en MS
+    public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000; // en MS
 
 
     public TCPDestinatariosRegistrados(String IPDirectorio, int PuertoDirectorio) {
