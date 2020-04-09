@@ -32,6 +32,11 @@ public class Directorio {
         super();
     }
 
+
+    public static Integer getNextID() {
+        return nextID;
+    }
+
     public TreeSet<Receptor> getReceptores() {
         return receptores;
     }
@@ -41,21 +46,10 @@ public class Directorio {
     }
 
     public void heartbeatRecibido(Receptor receptor) {
-        synchronized (nextID) {
-            synchronized (receptores) {
-                if (!(receptor.getID() == INVALID_ID)) {
-                    if (this.receptores.contains(receptor)) {
-                        this.receptores.remove(receptor); //por si alguien cambia de IP, puerto o nombre
-                        this.receptores.add(receptor);
-                    }
-                    //else aca seria que viene con ID valido pero esta registrado!!!! -> no lo dejamos comunicarse con directorio
-                } else { //receptor nuevo por venir con id invalida o era valida pero no estaba en receptores
-                    receptor.setID(nextID++);
-                    this.receptores.add(receptor);
-                }
-
-
-            }
+        synchronized(receptores){
+            if (this.receptores.contains(receptor))
+                this.receptores.remove(receptor); //por si alguien cambia de IP, puerto o nombre
+            this.receptores.add(receptor);
         }
 
         synchronized (tiempos) {
@@ -81,5 +75,9 @@ public class Directorio {
 
 
         return this.getReceptores();
+    }
+
+    public static void incrementNextID() {
+        Directorio.nextID++;
     }
 }

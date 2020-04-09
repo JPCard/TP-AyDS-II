@@ -34,17 +34,22 @@ public class SistemaReceptor {
     
 
     public static void inicializar() throws FileNotFoundException {
-        if (instance == null)
+        if (instance == null){
             instance = new SistemaReceptor();
+            Thread hilo = new Thread(instance.tcpdeReceptor);
+            hilo.start();
+            
+            Thread hiloHeartbeat =  new Thread(new TCPHeartbeat(DirectorioMain.DIRECTORIO_IP,DirectorioMain.HEARTBEAT_PORT));
+            hiloHeartbeat.start();
+            
+        }
+            
         
-        Thread hilo = new Thread(instance.tcpdeReceptor);
-        hilo.start();
-        
+    
         
         //TODO CAMBIAR DONDE ESTA LA IPDE L DIRECTORIO
         
-        Thread hiloHeartbeat =  new Thread(new TCPHeartbeat(DirectorioMain.DIRECTORIO_IP,DirectorioMain.HEARTBEAT_PORT));
-        hiloHeartbeat.start();
+        
     }
 
     public static SistemaReceptor getInstance() {

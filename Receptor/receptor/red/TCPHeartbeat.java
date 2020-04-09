@@ -43,9 +43,21 @@ public class TCPHeartbeat implements Runnable {
 
         while (true) {
             try {
-
+                if(receptor.getID() == Directorio.INVALID_ID){ //el directorio avisa al receptor cual es su ID si es que no lo tenia 
+                    Socket socketRegistro = new Socket();
+                    InetSocketAddress addrRegistro = new InetSocketAddress(IPDirectorio, DirectorioMain.REGISTRO_PORT);
+                    socketRegistro.connect(addrRegistro,456);
+                    ObjectInputStream in = new ObjectInputStream(socketRegistro.getInputStream());
+                    Integer idReceptorDeDir;
+                    idReceptorDeDir = (Integer) in.readObject();
+                    SistemaReceptor.getInstance().getReceptor().setID(idReceptorDeDir);
+                    in.close(); 
+                    socketRegistro.close();
+                }
 
                 while (true) {
+                    Receptor receptor = SistemaReceptor.getInstance().getReceptor(); //MIRAR ESTO MIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTO
+                    System.out.println("MI ID eS "+SistemaReceptor.getInstance().getReceptor().getID());
                     Socket socket = new Socket();
                     InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.PuertoDirectorio);
                     socket.connect(addr, 500);
@@ -54,15 +66,7 @@ public class TCPHeartbeat implements Runnable {
                     //out.writeObject(SistemaReceptor.getInstance().getReceptor()); //si algun dato cambia y hay que mandar un receptor distinto
                     out.writeObject(receptor);
                     out.close();
-                    if(receptor.getID() == Directorio.INVALID_ID){ //el directorio avisa al receptor cual es su ID si es que no lo tenia 
-                        ServerSocket s = new ServerSocket(DirectorioMain.PUERTO_RECIBIR_ID_RECEPTOR);
-                        Socket socketRecibeID = s.accept();
-                        ObjectInputStream in = new ObjectInputStream(socketRecibeID.getInputStream());
-                        Integer idReceptorDeDir;
-                        idReceptorDeDir = (Integer) in.readObject();
-                        receptor.setID(idReceptorDeDir);
-                        in.close(); 
-                    }
+                    
                     socket.close();
                     ControladorReceptor.getInstance().updateConectado(true);
                     Thread.sleep(TIEMPO_HEARTBEAT);

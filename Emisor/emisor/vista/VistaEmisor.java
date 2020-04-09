@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
@@ -457,7 +458,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jTextFieldAsuntoKeyReleased
 
     private void jListDestinatariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDestinatariosValueChanged
-        validacionBotonesEnviarMensaje();
+        //validacionBotonesEnviarMensaje();
     }//GEN-LAST:event_jListDestinatariosValueChanged
 
 
@@ -597,19 +598,33 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void cargarContactos() {
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
-        //listModel.clear();
+        
+        HashMap<Integer,Receptor> seleccionadosHashmap = new HashMap<Integer,Receptor>();
+        ArrayList<Receptor> seleccionadosArrayList = new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+        
+        for(Receptor r : seleccionadosArrayList){
+            seleccionadosHashmap.put(r.getID(),r);
+        }
+        
+        
+        listModel.clear();
         this.deleteAllPanelesEstadoConexion();
+        int i=0;
         while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
             Receptor receptor  = it.next();
-            if(!this.listModel.contains(receptor)){
-                this.cargarContacto(receptor);
-                System.out.println(receptor.isConectado());
-            }
-            else{ //si ya estaba
-                //actualizarEstado(receptor);
-                this.addPanelEstadoConexion(receptor.isConectado());
-                System.out.println(receptor.isConectado());
-            }
+//            if(!this.listModel.contains(receptor)){
+//                this.cargarContacto(receptor);
+//                System.out.println(receptor.isConectado());
+//            }
+//            else{ //si ya estaba
+//                //actualizarEstado(receptor);
+//                this.addPanelEstadoConexion(receptor.isConectado());
+//                System.out.println(receptor.isConectado());
+//            }
+            this.cargarContacto(receptor);
+            if(seleccionadosHashmap.get(receptor.getID()) != null)
+                this.jListDestinatarios.addSelectionInterval(i, i);
+            i++;
         }
         this.jScrollPaneConexionDestinatarios.revalidate();
         this.jScrollPaneConexionDestinatarios.repaint();

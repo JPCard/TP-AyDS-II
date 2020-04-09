@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_211" class="java.beans.XMLDecoder">
+ <object class="receptor.modelo.Receptor">
+  <void property="IP">
+   <string>127.0.0.1</string>
+  </void>
+  <void property="nombre">
+   <string>capo</string>
+  </void>
+  <void property="puerto">
+   <int>27125</int>
+  </void>
+ </object>
+</java>
