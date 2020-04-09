@@ -43,22 +43,19 @@ public class SistemaEmisor {
         //emisor.setAgenda(persistencia.cargarAgenda());    
         
         this.tcpdeEmisor = new TCPdeEmisor();
-       
+        
+        
     }
         
     public static void inicializar() throws FileNotFoundException {
         if(instance==null){
             instance = new SistemaEmisor();
-            Thread hiloenviar = new Thread(instance.tcpdeEmisor);
-            hiloenviar.start();//TODO CAMBIAR DONDE ESTA LA IP
-            Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(DirectorioMain.DIRECTORIO_IP,DirectorioMain.GETDESTINATARIOS_PORT));
-            hiloDestinatarios.start();
         }
-            
         
-        
-        
-        
+        Thread hiloenviar = new Thread(instance.tcpdeEmisor);
+        hiloenviar.start();
+        Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),instance.persistencia.cargarPuertoGetDestinatarios()));
+        hiloDestinatarios.start();
     }
     
     

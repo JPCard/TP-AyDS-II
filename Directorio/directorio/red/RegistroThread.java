@@ -13,11 +13,13 @@ import java.net.Socket;
 import java.security.AccessControlContext;
 
 public class RegistroThread extends Thread {
-    Directorio directorio;
-    
-    
-    
-    
+    private int puertoRegistro;
+
+    public RegistroThread(int puertoRegistro) {
+        super();
+        this.puertoRegistro = puertoRegistro;
+    }
+
     @Override
     public void run() {
         super.run();
@@ -29,7 +31,7 @@ public class RegistroThread extends Thread {
             while (true) {
                 try {
 
-                    ServerSocket s = new ServerSocket(DirectorioMain.REGISTRO_PORT);
+                    ServerSocket s = new ServerSocket(this.puertoRegistro);
 
                     while (true) {
                         System.out.println("Hilo Registro: Esperando una solicitud...");
