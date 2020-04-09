@@ -463,7 +463,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jTextFieldAsuntoKeyReleased
 
     private void jListDestinatariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDestinatariosValueChanged
-        //validacionBotonesEnviarMensaje();
+        validacionBotonesEnviarMensaje();
     }//GEN-LAST:event_jListDestinatariosValueChanged
 
 
