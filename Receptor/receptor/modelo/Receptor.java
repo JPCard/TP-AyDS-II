@@ -1,6 +1,7 @@
 package receptor.modelo;
 
 
+import directorio.modelo.Directorio;
 
 import java.io.Serializable;
 
@@ -9,8 +10,7 @@ public class Receptor implements Serializable,Comparable<Receptor>{
     private String IP;
     private int puerto;
     private String nombre;
-    private int ID;
-    private static int nextID = 0;
+    private int ID = Directorio.INVALID_ID;
     private boolean conectado = true; //administrado por el directorio
 
 
@@ -53,7 +53,6 @@ public class Receptor implements Serializable,Comparable<Receptor>{
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
-        this.ID=nextID++;
     }
 
     public Receptor(){
@@ -100,5 +99,9 @@ public class Receptor implements Serializable,Comparable<Receptor>{
     @Override
     public int compareTo(Receptor receptor) {
         return this.getNombre().compareTo(receptor.getNombre());
+    }
+
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 }

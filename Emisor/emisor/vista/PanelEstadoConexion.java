@@ -24,8 +24,8 @@ public class PanelEstadoConexion extends JPanel{
         ImageIcon iconoDesconectado = new ImageIcon("iconoDesconectado.png", "icono desconectado");
         labelConectado = new JLabel(iconoConectado, JLabel.CENTER);
         labelDesconectado = new JLabel(iconoDesconectado, JLabel.CENTER);
-        this.setPreferredSize(new Dimension(50,25));
-        this.setMinimumSize(new Dimension(50,25));
+        this.setPreferredSize(new Dimension(50,50));
+        this.setMinimumSize(new Dimension(50,50));
         this.setBackground(Color.white);
         
         this.updateConectado(conectado);

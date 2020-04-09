@@ -6,6 +6,7 @@ import emisor.controlador.ControladorEmisor;
 import emisor.modelo.MensajeFactory;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -26,7 +27,7 @@ import receptor.modelo.Receptor;
  * @author Mau
  */
 public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
-
+    public static final int ICONO_CONECTADO_HEIGHT = 31;
     DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
 
 
@@ -60,7 +61,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jScrollPane1 = new javax.swing.JScrollPane();
         jListDestinatarios = new javax.swing.JList<>();
         jScrollPaneConexionDestinatarios = new javax.swing.JScrollPane();
+        jPanelContainerPrincipalEstadosDestinatarios = new javax.swing.JPanel();
         jPanelContainerConexionDestinatarios = new javax.swing.JPanel();
+        jPanelLlenadorEspacioEstadoDestinatarios = new javax.swing.JPanel();
         jPanelMensaje = new javax.swing.JPanel();
         jPanelAsunto = new javax.swing.JPanel();
         jTextFieldAsunto = new javax.swing.JTextField();
@@ -177,12 +180,35 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        jScrollPaneConexionDestinatarios.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPaneConexionDestinatarios.setMinimumSize(new java.awt.Dimension(75, 21));
         jScrollPaneConexionDestinatarios.setPreferredSize(new java.awt.Dimension(75, 100));
 
+        jPanelContainerPrincipalEstadosDestinatarios.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelContainerPrincipalEstadosDestinatarios.setLayout(new java.awt.BorderLayout());
+
         jPanelContainerConexionDestinatarios.setBackground(new java.awt.Color(255, 255, 255));
-        jPanelContainerConexionDestinatarios.setLayout(new java.awt.GridLayout(0, 1));
-        jScrollPaneConexionDestinatarios.setViewportView(jPanelContainerConexionDestinatarios);
+        jPanelContainerConexionDestinatarios.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
+        jPanelContainerPrincipalEstadosDestinatarios.add(jPanelContainerConexionDestinatarios, java.awt.BorderLayout.NORTH);
+
+        jPanelLlenadorEspacioEstadoDestinatarios.setBackground(new java.awt.Color(255, 255, 255));
+        jPanelLlenadorEspacioEstadoDestinatarios.setMinimumSize(new java.awt.Dimension(75, 500));
+        jPanelLlenadorEspacioEstadoDestinatarios.setPreferredSize(new java.awt.Dimension(75, 500));
+
+        javax.swing.GroupLayout jPanelLlenadorEspacioEstadoDestinatariosLayout = new javax.swing.GroupLayout(jPanelLlenadorEspacioEstadoDestinatarios);
+        jPanelLlenadorEspacioEstadoDestinatarios.setLayout(jPanelLlenadorEspacioEstadoDestinatariosLayout);
+        jPanelLlenadorEspacioEstadoDestinatariosLayout.setHorizontalGroup(
+            jPanelLlenadorEspacioEstadoDestinatariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 75, Short.MAX_VALUE)
+        );
+        jPanelLlenadorEspacioEstadoDestinatariosLayout.setVerticalGroup(
+            jPanelLlenadorEspacioEstadoDestinatariosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+
+        jPanelContainerPrincipalEstadosDestinatarios.add(jPanelLlenadorEspacioEstadoDestinatarios, java.awt.BorderLayout.CENTER);
+
+        jScrollPaneConexionDestinatarios.setViewportView(jPanelContainerPrincipalEstadosDestinatarios);
 
         jPanelDestinatarios.add(jScrollPaneConexionDestinatarios, java.awt.BorderLayout.LINE_START);
 
@@ -258,7 +284,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(66, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanelConexionDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelConexionDirectorio))
@@ -523,9 +549,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JPanel jPanelBotonesArriba;
     private javax.swing.JPanel jPanelConexionDirectorio;
     private javax.swing.JPanel jPanelContainerConexionDestinatarios;
+    private javax.swing.JPanel jPanelContainerPrincipalEstadosDestinatarios;
     private javax.swing.JPanel jPanelCuerpo;
     private javax.swing.JPanel jPanelDestinatarios;
     private javax.swing.JPanel jPanelListaContactos;
+    private javax.swing.JPanel jPanelLlenadorEspacioEstadoDestinatarios;
     private javax.swing.JPanel jPanelMensaje;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JPanel jPanelVerComprobante;
@@ -570,9 +598,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public void cargarContactos() {
         Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
         //listModel.clear();
-        jPanelContainerConexionDestinatarios.removeAll(); //limpia los estados de receptores anteriores
-        this.jPanelContainerConexionDestinatarios.revalidate();
-        this.jPanelContainerConexionDestinatarios.repaint();
+        this.deleteAllPanelesEstadoConexion();
         while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
             Receptor receptor  = it.next();
             if(!this.listModel.contains(receptor)){
@@ -585,10 +611,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 System.out.println(receptor.isConectado());
             }
         }
-        this.revalidate();
-        this.repaint();
         this.jScrollPaneConexionDestinatarios.revalidate();
         this.jScrollPaneConexionDestinatarios.repaint();
+        this.revalidate();
+        this.repaint();
+        
         
     }
 
@@ -624,8 +651,29 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }
     
     public void addPanelEstadoConexion(boolean conectado){
+        Dimension dimensionAnt = jPanelContainerConexionDestinatarios.getPreferredSize();
+        double anchoAct = dimensionAnt.getWidth(); //no cambia
+        double altoAct = dimensionAnt.getHeight() + ICONO_CONECTADO_HEIGHT;
+        Dimension nuevaDimension = new Dimension((int)anchoAct, (int)altoAct);
+        jPanelContainerConexionDestinatarios.setMinimumSize( nuevaDimension);
+        jPanelContainerConexionDestinatarios.setPreferredSize( nuevaDimension);
+        
+        jScrollPaneConexionDestinatarios.getHeight();
+        
         jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
         System.out.println("se agrego el icono");
+    }
+    
+    public void deleteAllPanelesEstadoConexion(){
+        jPanelContainerConexionDestinatarios.removeAll(); //limpia los estados de receptores anteriores
+        
+        Dimension nada = new Dimension(1,1);
+        jPanelContainerConexionDestinatarios.setMinimumSize( nada);
+        jPanelContainerConexionDestinatarios.setPreferredSize( nada);
+        
+        this.jPanelContainerConexionDestinatarios.revalidate();
+        this.jPanelContainerConexionDestinatarios.repaint();
+        
     }
 }
 
