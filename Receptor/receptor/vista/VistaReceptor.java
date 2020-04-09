@@ -102,7 +102,7 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
         jLabelConexion.setText("Desconectado");
 
-        jPanelEstadoConexion.setBackground(new java.awt.Color(255, 0, 0));
+        jPanelEstadoConexion.setBackground(new java.awt.Color(200, 200, 200));
         jPanelEstadoConexion.setForeground(new java.awt.Color(51, 255, 0));
 
         javax.swing.GroupLayout jPanelEstadoConexionLayout = new javax.swing.GroupLayout(jPanelEstadoConexion);

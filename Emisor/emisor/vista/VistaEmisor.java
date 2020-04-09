@@ -276,6 +276,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jLabelConexionDirectorio.setText("jLabel1");
 
+        jPanelConexionDirectorio.setBackground(new java.awt.Color(200, 200, 200));
+
         javax.swing.GroupLayout jPanelConexionDirectorioLayout = new javax.swing.GroupLayout(jPanelConexionDirectorio);
         jPanelConexionDirectorio.setLayout(jPanelConexionDirectorioLayout);
         jPanelConexionDirectorioLayout.setHorizontalGroup(
@@ -710,6 +712,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 this.jListDestinatarios.addSelectionInterval(i, i);
             i++;
         }
+        this.cambiarAltoPanelEstadoConexion(i); //cambia el alto 1 sola vez
         this.jScrollPaneConexionDestinatarios.revalidate();
         this.jScrollPaneConexionDestinatarios.repaint();
         this.revalidate();
@@ -749,18 +752,18 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         }
     }
     
-    public void addPanelEstadoConexion(boolean conectado){
-        Dimension dimensionAnt = jPanelContainerConexionDestinatarios.getPreferredSize();
-        double anchoAct = dimensionAnt.getWidth(); //no cambia
-        double altoAct = dimensionAnt.getHeight() + ICONO_CONECTADO_HEIGHT;
-        Dimension nuevaDimension = new Dimension((int)anchoAct, (int)altoAct);
-        jPanelContainerConexionDestinatarios.setMinimumSize( nuevaDimension);
-        jPanelContainerConexionDestinatarios.setPreferredSize( nuevaDimension);
-        
-        jScrollPaneConexionDestinatarios.getHeight();
+    public void addPanelEstadoConexion(boolean conectado){ //solo los añade pero no cambia el alto del panel
         
         jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
         System.out.println("se agrego el icono");
+    }
+    
+    public void cambiarAltoPanelEstadoConexion(int cantDestRegistrados){ //cambia el alto del panel
+        double anchoAct = jPanelContainerConexionDestinatarios.getPreferredSize().getWidth(); //no cambia
+        double altoAct = cantDestRegistrados * ICONO_CONECTADO_HEIGHT;
+        Dimension nuevaDimension = new Dimension((int)anchoAct, (int)altoAct);
+        jPanelContainerConexionDestinatarios.setMinimumSize( nuevaDimension);
+        jPanelContainerConexionDestinatarios.setPreferredSize( nuevaDimension);
     }
     
     public void deleteAllPanelesEstadoConexion(){
