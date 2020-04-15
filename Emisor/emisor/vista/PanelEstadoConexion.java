@@ -12,8 +12,6 @@ import receptor.vista.IVistaReceptor;
 import receptor.vista.VistaReceptor;
 
 public class PanelEstadoConexion extends JPanel{
-    //private boolean hasDesconectadoIcon;
-    //private boolean hasConectadoIcon;
     private JLabel labelConectado;
     private JLabel labelDesconectado;
     
@@ -42,8 +40,6 @@ public class PanelEstadoConexion extends JPanel{
      * @param conectado
      */
     public void updateConectado(boolean conectado) {
-        //this.remove(labelDesconectado);
-        //this.remove(labelConectado);
         
         if(conectado)
             this.add(labelConectado);

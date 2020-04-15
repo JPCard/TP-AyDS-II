@@ -51,14 +51,12 @@ public class TCPHeartbeat implements Runnable {
                 }
 
                 while (true) {
-                    Receptor receptor = SistemaReceptor.getInstance().getReceptor(); //MIRAR ESTO MIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTOMIRAR ESTO
-                    System.out.println("MI ID eS "+SistemaReceptor.getInstance().getReceptor().getID());
+                    Receptor receptor = SistemaReceptor.getInstance().getReceptor();
                     Socket socket = new Socket();
                     InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.puertoHeartbeat);
                     socket.connect(addr, 500);
 
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                    //out.writeObject(SistemaReceptor.getInstance().getReceptor()); //si algun dato cambia y hay que mandar un receptor distinto
                     out.writeObject(receptor);
                     out.close();
                     

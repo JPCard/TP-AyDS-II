@@ -43,7 +43,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             Mensaje mensajeSeleccionado = v.jListMensajes.getSelectedValue();
             
             if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor)) {
-                c.setBackground(Color.green); //yellow every even row
+                c.setBackground(Color.green);
             } else {
                 c.setBackground(Color.red);
             }

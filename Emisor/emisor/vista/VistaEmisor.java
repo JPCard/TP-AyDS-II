@@ -52,7 +52,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
         
-        this.cargarContactos();
+        //this.cargarContactos();
         BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados.getVerticalScrollBar().getModel(); 
         this.jScrollPaneConexionDestinatarios.getVerticalScrollBar().setModel(modelVerticalScroll);
         validacionBotonesEnviarMensaje();
@@ -614,8 +614,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
 
-    public void cargarContactos() {
-        Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+    public void cargarContactos(Collection<Receptor> destinatariosRegistrados) {
+        Iterator<Receptor> it = destinatariosRegistrados.iterator();
         
         HashMap<Integer,Receptor> seleccionadosHashmap = new HashMap<Integer,Receptor>();
         ArrayList<Receptor> seleccionadosArrayList = new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
@@ -682,7 +682,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             
         }
         
-        it = ControladorEmisor.getInstance().getContactos(); //reset por que lo gaste arriba. no peudo hacer todo junto xq ahi abajo no hay nada en el listmodel
+        it = ControladorEmisor.getInstance().getContactos(); //reset por que lo gaste arriba. no peudo hacer to  do junto xq ahi abajo no hay nada en el listmodel
 
 
         //fin de eso
@@ -698,15 +698,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         int i=0;
         while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
             Receptor receptor  = it.next();
-//            if(!this.listModel.contains(receptor)){
-//                this.cargarContacto(receptor);
-//                System.out.println(receptor.isConectado());
-//            }
-//            else{ //si ya estaba
-//                //actualizarEstado(receptor);
-//                this.addPanelEstadoConexion(receptor.isConectado());
-//                System.out.println(receptor.isConectado());
-//            }
+
             this.cargarContacto(receptor);
             if(seleccionadosHashmap.get(receptor.getID()) != null)
                 this.jListDestinatarios.addSelectionInterval(i, i);

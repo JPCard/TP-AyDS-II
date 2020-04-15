@@ -104,7 +104,7 @@ public class ControladorEmisor {
 
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
         SistemaEmisor.getInstance().setAgenda(destinatariosRegistrados);
-        this.vistaPrincipal.cargarContactos();
+        this.vistaPrincipal.cargarContactos(destinatariosRegistrados);
     }
 
     public void updateConectado(boolean estado) {
