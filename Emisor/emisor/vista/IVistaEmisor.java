@@ -10,8 +10,9 @@ public interface IVistaEmisor {
     public String getAsunto();
     public String getCuerpo();
     public ArrayList<Receptor> getDestinatarios();
-    public void cargarContactos();
     public void mostrarErrorEmisorContactos();
 
     public void updateConectado(boolean estado);
+
+    public void cargarContactos(Collection<Receptor> destinatariosRegistrados);
 }
