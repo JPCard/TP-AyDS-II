@@ -39,8 +39,6 @@ public class SistemaEmisor {
     private SistemaEmisor() throws FileNotFoundException {
         super();
         emisor = persistencia.cargarEmisor();
-        //viejo no va mas
-        //emisor.setAgenda(persistencia.cargarAgenda());    
         
         this.tcpdeEmisor = new TCPdeEmisor();
         
@@ -96,7 +94,7 @@ public class SistemaEmisor {
         
         return this.mensajesConComprobante.values().iterator();
     }
-//ODEU
+    
     public void agregarComprobante(Comprobante comprobante) {
         int idMensaje = comprobante.getidMensaje();
         
@@ -108,7 +106,7 @@ public class SistemaEmisor {
 
             this.listasReceptoresConfirmados.get(idMensaje).add(comprobante.getReceptor());  
         }
-        //else ////este mensaje no lo mandamos nosotros!
+        //else
     }
 
     public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) {
