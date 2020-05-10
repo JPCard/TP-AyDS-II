@@ -13,42 +13,84 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
+import java.io.IOException;
+
+import java.nio.file.Files;
+
+import java.nio.file.Paths;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.nio.charset.StandardCharsets;
+
+import org.json.simple.parser.ParseException;
 
 public class PersistenciaEmisor implements IPersistenciaEmisor {
-    public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.xml";
-    public static final String IPDIRECTORIO_FILE_PATH = "IPDirectorio.xml";
-    public static final String PUERTO_GET_DEST_PATH = "PuertoGetDestinatarios.xml";
-    
+    public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.json";
+    private Emisor emisor;
+    private boolean cargado = false;
+    private String ipDirectorio;
+    private int puertoDirectorio;
+    private String ipServidorMensajeria;
+    private int puertoServidorMensajeria;
+
+
+    public void cargarJSON(String ubicacion) {
+        JSONParser parser = new JSONParser();
+
+        try {
+            
+            String text = new String(Files.readAllBytes(Paths.get(ubicacion)), StandardCharsets.UTF_8);
+            
+            JSONObject obj2 = (JSONObject) parser.parse(text);
+            
+            this.puertoDirectorio = Integer.parseInt(obj2.get("PuertoDirectorio").toString());
+            this.ipDirectorio = obj2.get("IPDirectorio").toString();
+            
+            Emisor emisor = new Emisor(Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("IPPropia").toString(),obj2.get("Nombre").toString());
+            this.emisor = emisor;
+            
+            this.ipServidorMensajeria = obj2.get("IPServidorMensajeria").toString();
+            this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
+            
+            this.cargado=true;
+        } catch (IOException e) {
+            System.out.println("ERROR DE I/O En carga de emisor");
+        } catch (ParseException e) {
+            System.out.println("ERROR dE PARSEO");
+        }
+
+    }
+
     @Override
     public Emisor cargarEmisor() throws FileNotFoundException {
-        return (Emisor) cargarObjeto(PARAMETROS_FILE_PATH);
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+
+        return this.emisor;
     }
 
     @Override
     public String cargarIPDirectorio() throws FileNotFoundException {
-        return (String) cargarObjeto(IPDIRECTORIO_FILE_PATH);
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        
+        
+        return this.ipDirectorio;
     }
 
 
     @Override
-    public int cargarPuertoGetDestinatarios() throws FileNotFoundException {
-        int puertoGetDest;
-        XMLDecoder decoder;
+    public int cargarPuertoDirectorio() throws FileNotFoundException {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
         
-        decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(PUERTO_GET_DEST_PATH)));
-        puertoGetDest = (Integer) decoder.readObject();
-        decoder.close();
-        return puertoGetDest;
+        return this.puertoDirectorio;
     }
 
-    private Object cargarObjeto(String path) throws FileNotFoundException {
-        XMLDecoder decoder;
-        
-        decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(path)));
-        Object obj = decoder.readObject();
-        decoder.close();
-        return obj;
-    }
 
-    
+
 }

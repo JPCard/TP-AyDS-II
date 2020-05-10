@@ -14,6 +14,8 @@ import emisor.red.TCPdeEmisor;
 
 import java.io.FileNotFoundException;
 
+import java.io.StringWriter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,6 +25,12 @@ import java.util.TreeSet;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+
+//jsoneando
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.*;
 
 public class SistemaEmisor {
     private Emisor emisor;
@@ -52,8 +60,9 @@ public class SistemaEmisor {
         
         Thread hiloenviar = new Thread(instance.tcpdeEmisor);
         hiloenviar.start();
-        Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),instance.persistencia.cargarPuertoGetDestinatarios()));
+        Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),instance.persistencia.cargarPuertoDirectorio()));
         hiloDestinatarios.start();
+
     }
     
     

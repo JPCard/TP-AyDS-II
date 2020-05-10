@@ -1,5 +1,7 @@
 package receptor.persistencia;
 
+import emisor.modelo.Emisor;
+
 import java.beans.XMLDecoder;
 
 import java.beans.XMLEncoder;
@@ -12,45 +14,90 @@ import java.io.FileNotFoundException;
 
 import java.io.FileOutputStream;
 
+import java.io.IOException;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import receptor.modelo.Receptor;
 
 public class PersistenciaReceptor implements IPersistenciaReceptor{
-    private static final String RECEPTOR_FILE_PATH = "ParametrosReceptor.xml";
-    public static final String IPDIRECTORIO_FILE_PATH = "IPDirectorio.xml";
-    public static final String HEARTBEAT_PORT_FILE_PATH = "PuertoHeartbeat.xml";
-    public static final String REGISTRO_PORT_FILE_PATH = "PuertoRegistro.xml";
+    private static final String PARAMETROS_FILE_PATH = "ParametrosReceptor.json";
+    private boolean cargado = false;
+    private String ipDirectorio;
+    private int puertoDirectorioRegistro;
+    private int puertoDirectorioConexion;
+    private String ipServidorMensajeria;
+    private int puertoServidorMensajeria;
+    private Receptor receptor;
+    
     
     public PersistenciaReceptor() {
         super();
     }
+    
+    public void cargarJSON(String ubicacion) {
+        JSONParser parser = new JSONParser();
+
+        try {
+            
+            String text = new String(Files.readAllBytes(Paths.get(ubicacion)), StandardCharsets.UTF_8);
+            
+            JSONObject obj2 = (JSONObject) parser.parse(text);
+            
+            this.puertoDirectorioRegistro = Integer.parseInt(obj2.get("PuertoDirectorioRegistro").toString());
+            this.puertoDirectorioConexion = Integer.parseInt(obj2.get("PuertoDirectorioConexion").toString());
+            this.ipServidorMensajeria = obj2.get("IPServidorMensajeria").toString();
+            this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
+            this.ipDirectorio = obj2.get("IPDirectorio").toString();
+            
+            Receptor receptor = new Receptor(obj2.get("IPPropia").toString(),Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("Nombre").toString());
+            this.receptor = receptor;
+            System.out.println(receptor.descripcionCompleta());
+            
+            this.cargado=true;
+        } catch (IOException e) {
+            System.out.println("ERROR DE I/O En carga de emisor");
+        } catch (ParseException e) {
+            System.out.println("ERROR dE PARSEO");
+        }
+
+    }
+
 
     @Override
     public Receptor cargarReceptor() throws FileNotFoundException {
-        return (Receptor) cargarObjeto(RECEPTOR_FILE_PATH);
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.receptor;
     }
     
     @Override
     public String cargarIPDirectorio() throws FileNotFoundException {
-        return (String) cargarObjeto(IPDIRECTORIO_FILE_PATH);
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.ipDirectorio;
     }
     
     @Override
-    public int cargarPuertoHeartbeat() throws FileNotFoundException {
-        return (Integer) cargarObjeto(HEARTBEAT_PORT_FILE_PATH);
+    public int cargarPuertoConexion() throws FileNotFoundException {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoDirectorioConexion;
     }
     
     @Override
     public int cargarPuertoRegistro() throws FileNotFoundException {
-        return (Integer) cargarObjeto(REGISTRO_PORT_FILE_PATH);
-    }
-    
-    private Object cargarObjeto(String path) throws FileNotFoundException {
-        XMLDecoder decoder;
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
         
-        decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(path)));
-        Object obj = decoder.readObject();
-        decoder.close();
-        return obj;
+        return this.puertoDirectorioRegistro;
     }
     
 }

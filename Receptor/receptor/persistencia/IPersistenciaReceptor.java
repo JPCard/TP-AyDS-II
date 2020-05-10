@@ -12,7 +12,7 @@ import receptor.modelo.Receptor;
 public interface IPersistenciaReceptor {
     public Receptor cargarReceptor() throws FileNotFoundException ;
     public String cargarIPDirectorio() throws FileNotFoundException;
-    public int cargarPuertoHeartbeat() throws FileNotFoundException;
+    public int cargarPuertoConexion() throws FileNotFoundException;
     public int cargarPuertoRegistro() throws FileNotFoundException;
     
    
