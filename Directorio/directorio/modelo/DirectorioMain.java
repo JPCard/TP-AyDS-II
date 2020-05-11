@@ -2,7 +2,6 @@ package directorio.modelo;
 
 import directorio.red.DestinatariosRegistradosThread;
 import directorio.red.HeartbeatThread;
-import directorio.red.RegistroThread;
 import directorio.red.UltimoCambioThread;
 
 public class DirectorioMain {
@@ -23,8 +22,6 @@ public class DirectorioMain {
         DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(directorio,GETDESTINATARIOS_PORT);
         destinatariosRegistrados.start();
         
-        RegistroThread registroThread = new RegistroThread(REGISTRO_PORT);
-        registroThread.start();
         
         UltimoCambioThread ultimoCambioThread = new UltimoCambioThread(directorio,ULTIMOCAMBIO_PORT);
         ultimoCambioThread.start();

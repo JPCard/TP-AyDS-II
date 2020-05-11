@@ -38,17 +38,6 @@ public class TCPHeartbeat implements Runnable {
 
         while (true) {
             try {
-                if(receptor.getID() == Directorio.INVALID_ID){ //el directorio avisa al receptor cual es su ID si es que no lo tenia 
-                    Socket socketRegistro = new Socket();
-                    InetSocketAddress addrRegistro = new InetSocketAddress(IPDirectorio, puertoRegistro);
-                    socketRegistro.connect(addrRegistro,456);
-                    ObjectInputStream in = new ObjectInputStream(socketRegistro.getInputStream());
-                    Integer idReceptorDeDir;
-                    idReceptorDeDir = (Integer) in.readObject();
-                    SistemaReceptor.getInstance().getReceptor().setID(idReceptorDeDir);
-                    in.close(); 
-                    socketRegistro.close();
-                }
 
                 while (true) {
                     Receptor receptor = SistemaReceptor.getInstance().getReceptor();

@@ -43,8 +43,8 @@ public class SistemaEmisor {
     private HashMap<Integer, MensajeConComprobante> mensajesConComprobante =
         new HashMap<Integer, MensajeConComprobante>();
 
-    private HashMap<Integer, ArrayList<Receptor>> listasReceptoresConfirmados =
-        new HashMap<Integer, ArrayList<Receptor>>();
+    private HashMap<Integer, ArrayList<String>> listasReceptoresConfirmados = //ahora los identificamos con su usario
+        new HashMap<Integer, ArrayList<String>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
 
     private SistemaEmisor() throws IOException, ParseException {
@@ -116,42 +116,50 @@ public class SistemaEmisor {
 
     public void agregarComprobante(Comprobante comprobante) {
         int idMensaje = comprobante.getidMensaje();
-
-        if (this.mensajesConComprobante.containsKey(idMensaje)) {
-
-            if (!listasReceptoresConfirmados.containsKey(idMensaje))
-                listasReceptoresConfirmados.put(idMensaje,
-                                                new ArrayList<Receptor>()); //si es el primer comprobante, crea el arraylist
-
-
-            this.listasReceptoresConfirmados
-                .get(idMensaje)
-                .add(comprobante.getReceptor());
+        synchronized(mensajesConComprobante){
+            if (this.mensajesConComprobante.containsKey(idMensaje)) {
+                synchronized(listasReceptoresConfirmados){
+                    if (!listasReceptoresConfirmados.containsKey(idMensaje))
+                        listasReceptoresConfirmados.put(idMensaje,
+                                                        new ArrayList<String>()); //si es el primer comprobante, crea el arraylist
+        
+        
+                    this.listasReceptoresConfirmados
+                        .get(idMensaje)
+                        .add(comprobante.getReceptor().getUsuario());
+                }
+            }
         }
         //else
     }
 
-    public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) {
-
-        return this.listasReceptoresConfirmados
-                   .get(mensaje.getId())
-                   .iterator();
+    public Iterator<String> getReceptoresConfirmados(Mensaje mensaje) {
+        synchronized(listasReceptoresConfirmados){
+            return this.listasReceptoresConfirmados
+                       .get(mensaje.getId())
+                       .iterator();
+        }
     }
 
     public boolean hayReceptoresConfirmados(Mensaje mensaje) {
-        return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
+        synchronized(listasReceptoresConfirmados){
+            return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
+        }
     }
 
     public int getPuerto() {
         return this.getEmisor().getPuerto();
     }
 
-    public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {
-        ArrayList<Receptor> receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
+    public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
+        ArrayList<String> receptoresConfirmados = null;
+        synchronized(listasReceptoresConfirmados){
+            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
+        }
         if (receptoresConfirmados == null)
             return false;
         else
-            return receptoresConfirmados.contains(receptor);
+            return receptoresConfirmados.contains(usuarioReceptor);
     }
 
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
@@ -163,4 +171,5 @@ public class SistemaEmisor {
 
         this.getEmisor().setAgenda(agenda);
     }
+
 }

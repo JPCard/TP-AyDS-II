@@ -13,9 +13,11 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import receptor.modelo.Comprobante;
@@ -23,10 +25,8 @@ import receptor.modelo.Receptor;
 
 public class Directorio {
     private static int TIEMPO_TIMEOUT = 500;
-    public static final int INVALID_ID = -1;
-    private TreeSet<Receptor> receptores = new TreeSet<Receptor>();
-    private HashMap<Integer, Long> tiempos = new HashMap<Integer, Long>(); // <idReceptor,tiempoUltimoHearbeat>
-    private static Integer nextID = 0;
+    private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
+    private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
     private Long tiempoUltModif = new Long(0);
 
     public Directorio() {
@@ -34,69 +34,89 @@ public class Directorio {
     }
 
 
-    public static Integer getNextID() {
-        return nextID;
+    /**
+     *
+     * @return Coleccion ordenada por usuario de receptores
+     */
+    public Collection<Receptor> getReceptores() {
+        synchronized (receptores) {
+            return new ArrayList(receptores.values());
+        }
     }
 
-    public TreeSet<Receptor> getReceptores() {
-        return receptores;
-    }
-
-    public HashMap<Integer, Long> getTiempos() {
+    public HashMap<String, Long> getTiempos() {
         return tiempos;
     }
 
+    /**
+     * Este metodo debe llamarse cuando se agrega un nuevo receptor o cuando se modifica un receptor
+     * @param receptor
+     */
     public void heartbeatRecibido(Receptor receptor) {
-        synchronized(receptores){
-            
-            if (this.receptores.contains(receptor))//TODO REVISAR SI ALGUIEN cAMBIO SU IP O SU PUERTO
-                this.receptores.remove(receptor); //por si alguien cambia de IP, puerto o nombre
-            else{
-                this.updateTiempoUltModif();//cuando llega alguien ya sabe
-            }
-            this.receptores.add(receptor);
-        }
+        
+        synchronized (receptores) {
 
-        synchronized (tiempos) {
-            this.tiempos.put(receptor.getID(), GregorianCalendar.getInstance().getTimeInMillis());
+            if (this.receptores.containsKey(receptor.getUsuario())) { 
+                Receptor receptorAnt = receptores.remove(receptor.getUsuario());
+                if ( !receptorAnt.isConectado() || !Receptor.equalsDatosNoIdentif(receptorAnt, receptor)){
+                    //detecta si alguien cambia de estado de conexion (de desconectado a conectado), IP, puerto o nombre 
+                    receptor.setConectado(true); //acaba de llegar por lo que esta conectado
+                    this.updateTiempoUltModif();
+                }
+            } else {
+                receptor.setConectado(true); //acaba de llegar por lo que esta conectado
+                this.updateTiempoUltModif(); //cuando llega alguien ya sabe
+            }
+            this.receptores.put(receptor.getUsuario(), receptor);
         }
-        // lo metes al treeset y pones el tiempo actual en tiempos
+        
+        synchronized (tiempos) {
+            this.tiempos.put(receptor.getUsuario(), GregorianCalendar.getInstance().getTimeInMillis());
+        }
+        // lo metes al treemap y pones el tiempo actual en tiempos
 
     }
 
     public Collection<Receptor> listaDestinatariosRegistrados() {
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
-        synchronized(tiempoUltModif){
+        boolean alguienSeFue = false;
+        
         synchronized (receptores) {
-            for (Object obj : receptores.toArray()) {
+            for (Object obj : receptores.values()) {
                 Receptor receptor = (Receptor) obj;
                 boolean online;
                 synchronized (tiempos) {
-                    online = (tiempoActual - this.tiempos.get(receptor.getID())) <= TIEMPO_TIMEOUT;
+                    online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
                 }
-                if((receptor.isConectado() && !online) || (!receptor.isConectado() && online)) // SE FUE O VOLVIO
+                if (!alguienSeFue && (receptor.isConectado() && !online)) // se fue alguien
                 {
-                    this.updateTiempoUltModif();
+                    alguienSeFue = true;
                 }
-                
+
                 receptor.setConectado(online);
 
             }
         }
-        }
-
+       
+        
+        if(alguienSeFue)
+            this.updateTiempoUltModif(); 
+        
+        
+        
         return this.getReceptores();
     }
 
-    public static void incrementNextID() {
-        Directorio.nextID++;
-    }
 
     public long getTiempoUltModif() {
-        return this.tiempoUltModif;
+        synchronized (tiempoUltModif) {
+            return this.tiempoUltModif;
+        }
     }
 
     private void updateTiempoUltModif() {
-        this.tiempoUltModif = new GregorianCalendar().getTimeInMillis();
+        synchronized (tiempoUltModif) {
+            this.tiempoUltModif = new GregorianCalendar().getTimeInMillis();
+        }
     }
 }

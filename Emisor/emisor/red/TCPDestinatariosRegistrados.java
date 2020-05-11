@@ -46,7 +46,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                     Long tiempoUltimaActualizacion = (Long) inTiempo.readObject();
                     inTiempo.close();
                     socket.close();
-                    if (this.tiempoUltModif < tiempoUltimaActualizacion) {
+                    if (this.tiempoUltModif != tiempoUltimaActualizacion) { //el != permite detectar cuando se cae el directorio
                         
                         Socket socketDest = new Socket();
                         InetSocketAddress addr2 = new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);

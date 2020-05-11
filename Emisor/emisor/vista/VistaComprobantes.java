@@ -38,11 +38,11 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
                                                       boolean cellHasFocus) {
             Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             
-            Receptor receptor = (Receptor) value;
+            String usuarioReceptor = (String) value;
             VistaComprobantes v = (VistaComprobantes)ControladorEmisor.getInstance().getVistaComprobantes();
             Mensaje mensajeSeleccionado = v.jListMensajes.getSelectedValue();
             
-            if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor)) {
+            if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor)) {
                 c.setBackground(Color.green);
             } else {
                 c.setBackground(Color.red);

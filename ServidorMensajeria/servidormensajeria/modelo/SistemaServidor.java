@@ -15,13 +15,11 @@ import servidormensajeria.red.MensajeListener;
 public class SistemaServidor {
     private static SistemaServidor instance;
     private IPersistenciaServidor persistenciaServidor;
-//    private MensajeListener mensajeListener;
-//    private ComprobanteListener comprobanteListener;
     private TCPParaDirectorio tcpParaDirectorio;
     
     //cosas para saber donde estna los usuarios
-    private ArrayList<Receptor> receptores = null;
-    private long tiempoUltimaActualizacionReceptores = -1;
+    private ArrayList<Receptor> receptores = new ArrayList<Receptor>(); //necesario para el synchronized
+    private Long tiempoUltimaActualizacionReceptores = new Long(-1);
     
     public final static int PUERTO_MENSAJES = 27446;
     public final static int PUERTO_COMPROBANTES = 27447;
@@ -43,19 +41,27 @@ public class SistemaServidor {
 
 
     public long getTiempoUltimaActualizacionReceptores() {
-        return tiempoUltimaActualizacionReceptores;
+        synchronized(this.tiempoUltimaActualizacionReceptores){
+            return tiempoUltimaActualizacionReceptores;
+        }
     }
 
     public void setReceptores(ArrayList<Receptor> receptores) {
-        this.receptores = receptores;
+        synchronized(this.receptores){
+            this.receptores = receptores;
+        }
     }
 
     public ArrayList<Receptor> getReceptores() {
-        return receptores;
+        synchronized(this.receptores){
+            return receptores;
+        }
     }
 
     public void setTiempoUltimaActualizacionReceptores(long tiempoUltimaActualizacionReceptores) {
-        this.tiempoUltimaActualizacionReceptores = tiempoUltimaActualizacionReceptores;
+        synchronized(this.tiempoUltimaActualizacionReceptores){
+            this.tiempoUltimaActualizacionReceptores = tiempoUltimaActualizacionReceptores;
+        }
     }
 
     private SistemaServidor() {
@@ -84,4 +90,11 @@ public class SistemaServidor {
         return this.tcpParaDirectorio;
     }
 
+    /**
+     * @param usuarioActual
+     * @return null si el receptor no esta conectado, != null si el receptor esta conectado
+     */
+    Receptor getReceptor(String usuarioActual) {
+        return getDirectorio().getReceptor(usuarioActual);
+    }
 }
