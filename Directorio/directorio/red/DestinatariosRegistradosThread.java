@@ -46,12 +46,7 @@ public class DestinatariosRegistradosThread extends Thread {
                     ObjectOutputStream out = null;
                     if (socket.isConnected()) {
                         out = new ObjectOutputStream(socket.getOutputStream());
-                        
-                        Object paramandar = directorio.listaDestinatariosRegistrados();// este va antes para q el tiempo de ultima modificacion este actualizado
-                        //nuevo mandatiempos 7000
-                        out.writeObject(directorio.getTiempoUltModif()); //siempre en millis
-                        
-                        out.writeObject(paramandar);
+                        out.writeObject(directorio.listaDestinatariosRegistrados());
                         out.close();
                     }
 

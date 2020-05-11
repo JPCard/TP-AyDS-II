@@ -11,8 +11,10 @@ import org.json.simple.parser.ParseException;
 public interface IPersistenciaEmisor {
     public Emisor cargarEmisor() throws IOException, ParseException;
     public String cargarIPDirectorio() throws IOException, ParseException;
-    public int cargarPuertoDirectorio() throws IOException, ParseException;
     public String cargarIPServidorMensajeria() throws IOException, ParseException;
     public int cargarPuertoServidorMensajeria() throws IOException, ParseException ;
-    
+
+    public int cargarPuertoDirectorioTiempo()throws IOException, ParseException ;
+
+    public int cargarPuertoDirectorioDest()throws IOException, ParseException ;
 }

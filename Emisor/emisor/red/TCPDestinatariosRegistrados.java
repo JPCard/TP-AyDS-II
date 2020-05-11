@@ -19,15 +19,17 @@ import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPDestinatariosRegistrados implements Runnable {
     private String IPDirectorio;
-    private int PuertoDirectorio;
+    private int puertoDirectorioTiempo;
+    private int puertoDirectorioDestinatarios;
     public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000;// en MS
     private Long tiempoUltModif = new Long(-999); 
 
 
-    public TCPDestinatariosRegistrados(String IPDirectorio, int PuertoDirectorio) {
+    public TCPDestinatariosRegistrados(String IPDirectorio, int puertoDirectorioTiempo, int puertoDirectorioDestinatarios) {
         super();
         this.IPDirectorio = IPDirectorio;
-        this.PuertoDirectorio = PuertoDirectorio;
+        this.puertoDirectorioTiempo = puertoDirectorioTiempo;
+        this.puertoDirectorioDestinatarios = puertoDirectorioDestinatarios;
     }
 
     @Override
@@ -38,26 +40,30 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
                 while (true) {
                     Socket socket = new Socket();
-                    InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.PuertoDirectorio);
+                    InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.puertoDirectorioTiempo);
                     socket.connect(addr, 500);
-
-                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                    
-                    
-                    Long tiempoUltimaActualizacion = (Long) in.readObject();
+                    ObjectInputStream inTiempo = new ObjectInputStream(socket.getInputStream());
+                    Long tiempoUltimaActualizacion = (Long) inTiempo.readObject();
+                    inTiempo.close();
+                    socket.close();
                     if (this.tiempoUltModif < tiempoUltimaActualizacion) {
                         
+                        Socket socketDest = new Socket();
+                        InetSocketAddress addr2 = new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
+                        socketDest.connect(addr2, 500);
+                        ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
                         
                         Collection<Receptor> destinatariosRegistrados;
-                        destinatariosRegistrados = (Collection<Receptor>) in.readObject();
+                        destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
 
                         ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
                         
                         
                         this.tiempoUltModif = tiempoUltimaActualizacion;
+                        inDest.close();
+                        socketDest.close();
                     }
-                    in.close();
-                    socket.close();
+                    
                     ControladorEmisor.getInstance().updateConectado(true);
                     Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS);//no lo actualiza siempre xq es lindo
                 }

@@ -27,13 +27,14 @@ public class SistemaServidor {
     public final static int PUERTO_COMPROBANTES = 27447;
     
     public final static String IP_DIRECTORIO = "127.0.0.1";
-    public final static int PUERTO_DIRECTORIO = 27445; //TODO ESTO NO DEBERIA SER STATIC
+    public final static int PUERTO_DIRECTORIO_DESTINATARIOS = 27445; //TODO ESTO NO DEBERIA SER STATIC
+    public final static int PUERTO_DIRECTORIO_TIEMPO = 1; //TODO ESTO NO DEBERIA SER STATIC
 
     public static void main(String[] args) {
         getInstance();
         //la linea anterior hay que cargar del archivo el metodo de persistencia
         //getInstance().persistenciaServidor; TODO todavia no hay
-        getInstance().tcpParaDirectorio = new TCPParaDirectorio(IP_DIRECTORIO,PUERTO_DIRECTORIO);
+        getInstance().tcpParaDirectorio = new TCPParaDirectorio(IP_DIRECTORIO,PUERTO_DIRECTORIO_DESTINATARIOS,PUERTO_DIRECTORIO_TIEMPO);
         new Thread(new MensajeListener()).start();
         System.out.println("hola");
         new Thread(new ComprobanteListener()).start();

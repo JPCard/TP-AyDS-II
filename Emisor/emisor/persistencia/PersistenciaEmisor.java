@@ -31,7 +31,8 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     private Emisor emisor;
     private boolean cargado = false;
     private String ipDirectorio;
-    private int puertoDirectorio;
+    private int puertoDirectorioDest;
+    private int puertoDirectorioTiempo;
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
 
@@ -44,7 +45,9 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             
             JSONObject obj2 = (JSONObject) parser.parse(text);
             
-            this.puertoDirectorio = Integer.parseInt(obj2.get("PuertoDirectorio").toString());
+            this.puertoDirectorioDest = Integer.parseInt(obj2.get("PuertoDirectorioDest").toString());            
+            this.puertoDirectorioTiempo = Integer.parseInt(obj2.get("PuertoDirectorioTiempo").toString());
+            
             this.ipDirectorio = obj2.get("IPDirectorio").toString();
             
             Emisor emisor = new Emisor(Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("IPPropia").toString(),obj2.get("Nombre").toString());
@@ -77,11 +80,11 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
 
 
     @Override
-    public int cargarPuertoDirectorio() throws  IOException, ParseException {
+    public int cargarPuertoDirectorioDest() throws  IOException, ParseException {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
-        return this.puertoDirectorio;
+        return this.puertoDirectorioDest;
     }
 
 
@@ -97,5 +100,13 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             if(!this.cargado)
                 this.cargarJSON(PARAMETROS_FILE_PATH);
             return this.puertoServidorMensajeria;
+    }
+
+    @Override
+    public int cargarPuertoDirectorioTiempo() throws IOException, ParseException {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoDirectorioTiempo;
     }
 }

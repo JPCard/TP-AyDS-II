@@ -2,7 +2,8 @@
 	"PuertoPropio":"27234",
 	"Nombre":"bine",
 	"IPPropia":"127.0.0.1",
-	"PuertoDirectorio":"27445",
+	"PuertoDirectorioDest":"27445",
+	"PuertoDirectorioTiempo":"1"
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27446",
 	"IPServidorMensajeria":"127.0.0.1"
