@@ -26,8 +26,16 @@ import receptor.modelo.Receptor;
 
 public class TCPdeEmisor implements Runnable {
 
+    private String ipServidorMensajeria;
+    private int puertoServidorMensajeria;
+
     public TCPdeEmisor() {
         super();
+    }
+
+    public TCPdeEmisor(String ipServidorMensajeria, int puertoServidorMensajeria) {
+        this.ipServidorMensajeria = ipServidorMensajeria;
+        this.puertoServidorMensajeria = puertoServidorMensajeria;
     }
 
 
@@ -36,55 +44,39 @@ public class TCPdeEmisor implements Runnable {
      */
     public void run() {
         try {
-                ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
-    
-                while (true) {
-                    
-                    Socket socket = s.accept();
-                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                    
-                    Comprobante comprobante = (Comprobante) in.readObject();
-                    
-                    ControladorEmisor.getInstance().agregarComprobante(comprobante);
-                    
-                    in.close();
-                    socket.close();
-                }
-    
-            } 
-        catch (BindException e) { //IP y puerto ya estaban utilizados
-            System.exit(1);
-        }
-        catch (Exception e) {
-        e.printStackTrace();
-        }
-    }
-
-    public void enviarMensaje(Mensaje mensaje) {
-
-
-        try {
-
-            Iterator<Receptor> receptores = mensaje.getReceptores();
-
-
-            while (receptores.hasNext()) {
-                Receptor receptorActual= receptores.next();
-                    
-                Socket socket = new Socket();
-                InetSocketAddress addr = new InetSocketAddress(receptorActual.getIP(), receptorActual.getPuerto());
-                socket.connect(addr,500);
-                
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(mensaje);
-                out.close();
+            ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
+            while (true) {
+                Socket socket = s.accept();
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                Comprobante comprobante = (Comprobante) in.readObject();
+                ControladorEmisor.getInstance().agregarComprobante(comprobante);
+                in.close();
                 socket.close();
             }
 
-
+        } catch (BindException e) { //IP y puerto ya estaban utilizados
+            System.exit(1);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean enviarMensaje(Mensaje mensaje) {
+        try {
+            Socket socket = new Socket();
+            InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
+            socket.connect(addr, 500);
+
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            out.writeObject(mensaje);
+            out.close();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     public void onConfirmacion(Comprobante comprobante) {

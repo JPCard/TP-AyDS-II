@@ -56,7 +56,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
 
     DefaultListModel<MensajeConComprobante> listModelMensajes = new DefaultListModel<MensajeConComprobante>();
-    DefaultListModel<Receptor> listModelReceptores = new DefaultListModel<Receptor>();
+    DefaultListModel<String> listModelReceptores = new DefaultListModel<String>();
 
     /** Creates new form VistaComprobantes */
     public VistaComprobantes() {
@@ -200,7 +200,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             this.listModelReceptores.clear();
             this.jListReceptores.clearSelection();
 
-            Iterator<Receptor> it = elegido.getReceptores();
+            Iterator<String> it = elegido.getReceptores();
             while (it.hasNext()) {
                 listModelReceptores.addElement(it.next());
             }
@@ -288,7 +288,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<MensajeConComprobante> jListMensajes;
-    private javax.swing.JList<Receptor> jListReceptores;
+    private javax.swing.JList<String> jListReceptores;
     private javax.swing.JPanel jPanelAsunto;
     private javax.swing.JPanel jPanelContenido;
     private javax.swing.JPanel jPanelCuerpo;

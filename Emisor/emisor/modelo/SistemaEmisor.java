@@ -14,6 +14,8 @@ import emisor.red.TCPdeEmisor;
 
 import java.io.FileNotFoundException;
 
+import java.io.StringWriter;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,40 +26,54 @@ import java.util.TreeSet;
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
+//jsoneando
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.*;
+import org.json.simple.parser.ParseException;
+
 public class SistemaEmisor {
     private Emisor emisor;
     private TCPdeEmisor tcpdeEmisor;
-    
+
     private static SistemaEmisor instance;
-    
-    private HashMap<Integer,Mensaje> mensajesEnviados = new HashMap<Integer,Mensaje>();
-    private HashMap<Integer,MensajeConComprobante> mensajesConComprobante = new HashMap<Integer,MensajeConComprobante>();
-    
-    private HashMap<Integer,ArrayList<Receptor>> listasReceptoresConfirmados = new HashMap<Integer,ArrayList<Receptor>>();
+
+    private HashMap<Integer, Mensaje> mensajesEnviados = new HashMap<Integer, Mensaje>();
+    private HashMap<Integer, MensajeConComprobante> mensajesConComprobante =
+        new HashMap<Integer, MensajeConComprobante>();
+
+    private HashMap<Integer, ArrayList<Receptor>> listasReceptoresConfirmados =
+        new HashMap<Integer, ArrayList<Receptor>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
-    
-    private SistemaEmisor() throws FileNotFoundException {
+
+    private SistemaEmisor() throws IOException, ParseException {
         super();
         emisor = persistencia.cargarEmisor();
-        
-        this.tcpdeEmisor = new TCPdeEmisor();
-        
-        
+
+        this.tcpdeEmisor =
+            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria());
+
+
     }
-        
-    public static void inicializar() throws FileNotFoundException {
-        if(instance==null){
+
+    public static void inicializar() throws IOException, ParseException {
+        if (instance == null) {
             instance = new SistemaEmisor();
         }
-        
+
         Thread hiloenviar = new Thread(instance.tcpdeEmisor);
         hiloenviar.start();
-        Thread hiloDestinatarios = new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),instance.persistencia.cargarPuertoGetDestinatarios()));
+        Thread hiloDestinatarios =
+            new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),
+                                                       instance.persistencia.cargarPuertoDirectorioTiempo(),
+                                                       instance.persistencia.cargarPuertoDirectorioDest()));
         hiloDestinatarios.start();
+
     }
-    
-    
-    public static SistemaEmisor getInstance(){
+
+
+    public static SistemaEmisor getInstance() {
         return instance;
     }
 
@@ -70,51 +86,59 @@ public class SistemaEmisor {
         return tcpdeEmisor;
     }
 
-    public void enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, TipoMensaje tipoMensaje){
-        Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje,receptores);
+    public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
+                                 TipoMensaje tipoMensaje) {
+        Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
         this.guardarMensaje(mensaje);
-        
-        if(tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE){
-            mensajesConComprobante.put(mensaje.getId(),(MensajeConComprobante) mensaje);
-            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante)mensaje);
+
+        if (tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE) {
+            mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
+            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
-        
-        this.getTcpdeEmisor().enviarMensaje(mensaje);
+
+        return this.getTcpdeEmisor().enviarMensaje(mensaje);
     }
-    
-    private void guardarMensaje(Mensaje mensaje){
-        this.mensajesEnviados.put(mensaje.getId(),mensaje);
+
+    private void guardarMensaje(Mensaje mensaje) {
+        this.mensajesEnviados.put(mensaje.getId(), mensaje);
     }
-    
-    public Iterator<Receptor> consultarAgenda(){
+
+    public Iterator<Receptor> consultarAgenda() {
         return this.emisor.consultarAgenda();
     }
 
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
-        
-        return this.mensajesConComprobante.values().iterator();
+
+        return this.mensajesConComprobante
+                   .values()
+                   .iterator();
     }
-    
+
     public void agregarComprobante(Comprobante comprobante) {
         int idMensaje = comprobante.getidMensaje();
-        
-        if(this.mensajesConComprobante.containsKey(idMensaje)){
-                
-            if(!listasReceptoresConfirmados.containsKey(idMensaje))
-                listasReceptoresConfirmados.put(idMensaje,new ArrayList<Receptor>()); //si es el primer comprobante, crea el arraylist
-           
 
-            this.listasReceptoresConfirmados.get(idMensaje).add(comprobante.getReceptor());  
+        if (this.mensajesConComprobante.containsKey(idMensaje)) {
+
+            if (!listasReceptoresConfirmados.containsKey(idMensaje))
+                listasReceptoresConfirmados.put(idMensaje,
+                                                new ArrayList<Receptor>()); //si es el primer comprobante, crea el arraylist
+
+
+            this.listasReceptoresConfirmados
+                .get(idMensaje)
+                .add(comprobante.getReceptor());
         }
         //else
     }
 
     public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) {
-        
-        return this.listasReceptoresConfirmados.get(mensaje.getId()).iterator();
+
+        return this.listasReceptoresConfirmados
+                   .get(mensaje.getId())
+                   .iterator();
     }
-    
-    public boolean hayReceptoresConfirmados(Mensaje mensaje){
+
+    public boolean hayReceptoresConfirmados(Mensaje mensaje) {
         return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
     }
 
@@ -124,7 +148,7 @@ public class SistemaEmisor {
 
     public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {
         ArrayList<Receptor> receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
-        if(receptoresConfirmados== null)
+        if (receptoresConfirmados == null)
             return false;
         else
             return receptoresConfirmados.contains(receptor);
@@ -133,10 +157,10 @@ public class SistemaEmisor {
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
         Agenda agenda = new Agenda();
         TreeSet<Receptor> contactosT = new TreeSet<Receptor>(destinatariosRegistrados);
-        
-        
+
+
         agenda.setContactos(contactosT);
-        
+
         this.getEmisor().setAgenda(agenda);
     }
 }

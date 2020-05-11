@@ -19,18 +19,18 @@ public class Mensaje implements Serializable{
     private int id;
     private static int nextId = 0;
     
-    private ArrayList<Receptor> receptores = new ArrayList<Receptor>();
+    private ArrayList<String> usuariosReceptores = new ArrayList<String>();
 
-    public Iterator<Receptor> getReceptores() {
-        return receptores.iterator();
+    public Iterator<String> getReceptores() {
+        return usuariosReceptores.iterator();
     }
 
-    public Mensaje(Emisor emisor, String asunto, String cuerpo,ArrayList<Receptor> receptores) {
+    public Mensaje(Emisor emisor, String asunto, String cuerpo,ArrayList<String> usuariosReceptores) {
         this.datetime = new GregorianCalendar(); //fecha y hora actual
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         this.emisor = emisor;
-        this.receptores = receptores;
+        this.usuariosReceptores = usuariosReceptores;
         this.id = nextId++;
     }
 
@@ -83,7 +83,7 @@ public class Mensaje implements Serializable{
 
     @Override
     public String toString() {
-        Iterator<Receptor> itReceptores = this.getReceptores();
+        Iterator<String> itReceptores = this.getReceptores();
         StringBuilder sb = new StringBuilder();
         sb.append(this.emisor.toString());
         sb.append("\nFecha: ");

@@ -15,4 +15,7 @@ public interface IVistaEmisor {
     public void updateConectado(boolean estado);
 
     public void cargarContactos(Collection<Receptor> destinatariosRegistrados);
+
+    public void mostrarErrorServidorNoDisponible();
+    public void envioExitoso();
 }

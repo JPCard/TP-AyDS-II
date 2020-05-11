@@ -4,10 +4,17 @@ import emisor.modelo.Agenda;
 import emisor.modelo.Emisor;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
 
 public interface IPersistenciaEmisor {
-    public Emisor cargarEmisor() throws FileNotFoundException ;
-    public String cargarIPDirectorio()throws FileNotFoundException;
-    public int cargarPuertoGetDestinatarios() throws FileNotFoundException;
-    
+    public Emisor cargarEmisor() throws IOException, ParseException;
+    public String cargarIPDirectorio() throws IOException, ParseException;
+    public String cargarIPServidorMensajeria() throws IOException, ParseException;
+    public int cargarPuertoServidorMensajeria() throws IOException, ParseException ;
+
+    public int cargarPuertoDirectorioTiempo()throws IOException, ParseException ;
+
+    public int cargarPuertoDirectorioDest()throws IOException, ParseException ;
 }

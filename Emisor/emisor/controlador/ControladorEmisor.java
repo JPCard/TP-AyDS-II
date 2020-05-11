@@ -12,9 +12,13 @@ import emisor.vista.IVistaEmisor;
 
 import java.io.FileNotFoundException;
 
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+
+import org.json.simple.parser.ParseException;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
@@ -34,7 +38,10 @@ public class ControladorEmisor {
             SistemaEmisor.inicializar();
             
             
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            vistaPrincipal.mostrarErrorEmisorContactos();
+        }
+        catch(ParseException e){
             vistaPrincipal.mostrarErrorEmisorContactos();
         }
     }
@@ -50,7 +57,17 @@ public class ControladorEmisor {
     }
     
     public void enviarMensaje(String asunto, String cuerpo,MensajeFactory.TipoMensaje tipo, ArrayList<Receptor> receptores){
-        SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,receptores,tipo);
+        ArrayList<String> usuariosReceptores = new ArrayList<String>();
+        for(Receptor receptor : receptores){
+            usuariosReceptores.add(receptor.getUsuario());
+        }
+        
+        if(!SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,usuariosReceptores,tipo)) {
+            this.vistaPrincipal.mostrarErrorServidorNoDisponible();   
+        }
+        else{
+            this.vistaPrincipal.envioExitoso();
+        }
         
         
     }
