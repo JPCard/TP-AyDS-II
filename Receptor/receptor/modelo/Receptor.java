@@ -12,6 +12,7 @@ public class Receptor implements Serializable,Comparable<Receptor>{
     private String nombre;
     private int ID = Directorio.INVALID_ID;
     private boolean conectado = true; //administrado por el directorio
+    private String usuario;
 
 
     @Override
@@ -23,7 +24,7 @@ public class Receptor implements Serializable,Comparable<Receptor>{
             return false;
         }
         final Receptor other = (Receptor) object;
-        if (ID != other.ID) {
+        if (!(usuario == null ? other.usuario == null : usuario.equals(other.usuario))) {
             return false;
         }
         return true;
@@ -33,9 +34,10 @@ public class Receptor implements Serializable,Comparable<Receptor>{
     public int hashCode() {
         final int PRIME = 37;
         int result = 1;
-        result = PRIME * result + ID;
+        result = PRIME * result + ((usuario == null) ? 0 : usuario.hashCode());
         return result;
     }
+
 
     public void setConectado(boolean conectado) {
         this.conectado = conectado;
@@ -49,23 +51,29 @@ public class Receptor implements Serializable,Comparable<Receptor>{
         return ID;
     }
 
-    public Receptor(String IP, int puerto, String nombre) {
+    public Receptor(String IP, int puerto, String nombre,String usuario) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
+        this.usuario = usuario;
     }
 
     public Receptor(){
         super();
     }
 
+
+    public String getUsuario() {
+        return usuario;
+    }
+
     @Override
     public String toString() {
-        return this.getNombre();
+        return this.getUsuario();
     }
 
     public String descripcionCompleta(){
-        return "Nombre: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
+        return "Usuario: "+this.getUsuario()+"\nNombre: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
     }
 
     public void setIP(String IP) {

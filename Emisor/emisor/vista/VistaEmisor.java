@@ -444,23 +444,21 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jButtonVerComprobanteActionPerformed
 
     private void jButtonEnviarConComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarConComprobanteActionPerformed
-        ControladorEmisor.getInstance()
+       ControladorEmisor.getInstance()
             .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE,
                            this.getDestinatarios());
-        this.envioExitoso();
+       
     }//GEN-LAST:event_jButtonEnviarConComprobanteActionPerformed
 
     private void jButtonEnviarSimpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarSimpleActionPerformed
         ControladorEmisor.getInstance()
             .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_NORMAL, this.getDestinatarios());
-        this.envioExitoso();
     }//GEN-LAST:event_jButtonEnviarSimpleActionPerformed
 
     private void jButtonEnviarAvisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarAvisoActionPerformed
         ControladorEmisor.getInstance()
             .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_ALERTA,
                            this.getDestinatarios());
-        this.envioExitoso();
     }//GEN-LAST:event_jButtonEnviarAvisoActionPerformed
 
     private void jEditorCuerpoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEditorCuerpoKeyTyped
@@ -768,6 +766,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jPanelContainerConexionDestinatarios.revalidate();
         this.jPanelContainerConexionDestinatarios.repaint();
         
+    }
+
+    @Override
+    public void mostrarErrorServidorNoDisponible() {
+        JOptionPane.showConfirmDialog(this, "El mensaje no fue enviado por que el servidor no esta disponible, por favor intente nuevamente", "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 

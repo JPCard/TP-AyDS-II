@@ -8,7 +8,7 @@ import receptor.modelo.Receptor;
 
 public class MensajeConAlerta extends Mensaje {
 
-    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo,ArrayList<Receptor> receptores) {
+    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores) {
         super(emisor, asunto, cuerpo,receptores);
     }
 

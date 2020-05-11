@@ -36,10 +36,9 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     private int puertoServidorMensajeria;
 
 
-    public void cargarJSON(String ubicacion) {
+    public void cargarJSON(String ubicacion) throws IOException, ParseException {
         JSONParser parser = new JSONParser();
 
-        try {
             
             String text = new String(Files.readAllBytes(Paths.get(ubicacion)), StandardCharsets.UTF_8);
             
@@ -55,16 +54,10 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
             
             this.cargado=true;
-        } catch (IOException e) {
-            System.out.println("ERROR DE I/O En carga de emisor");
-        } catch (ParseException e) {
-            System.out.println("ERROR dE PARSEO");
-        }
-
     }
 
     @Override
-    public Emisor cargarEmisor() throws FileNotFoundException {
+    public Emisor cargarEmisor() throws IOException, ParseException {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
@@ -73,7 +66,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     }
 
     @Override
-    public String cargarIPDirectorio() throws FileNotFoundException {
+    public String cargarIPDirectorio() throws IOException, ParseException {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
@@ -84,7 +77,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
 
 
     @Override
-    public int cargarPuertoDirectorio() throws FileNotFoundException {
+    public int cargarPuertoDirectorio() throws  IOException, ParseException {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
@@ -92,5 +85,17 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     }
 
 
+    @Override
+    public String cargarIPServidorMensajeria() throws IOException, ParseException {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.ipServidorMensajeria;
+    }
 
+    @Override
+    public int cargarPuertoServidorMensajeria() throws IOException, ParseException {
+            if(!this.cargado)
+                this.cargarJSON(PARAMETROS_FILE_PATH);
+            return this.puertoServidorMensajeria;
+    }
 }

@@ -10,7 +10,7 @@ import receptor.modelo.SistemaReceptor;
 
 public class MensajeConComprobante extends Mensaje {
 
-    public MensajeConComprobante(Emisor emisor, String asunto, String cuerpo,ArrayList<Receptor> receptores) {
+    public MensajeConComprobante(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores) {
         super(emisor, asunto, cuerpo,receptores);
     }
 

@@ -26,7 +26,7 @@ import org.json.simple.parser.ParseException;
 
 import receptor.modelo.Receptor;
 
-public class PersistenciaReceptor implements IPersistenciaReceptor{
+public class PersistenciaReceptor implements IPersistenciaReceptor {
     private static final String PARAMETROS_FILE_PATH = "ParametrosReceptor.json";
     private boolean cargado = false;
     private String ipDirectorio;
@@ -35,32 +35,34 @@ public class PersistenciaReceptor implements IPersistenciaReceptor{
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private Receptor receptor;
-    
-    
+
+
     public PersistenciaReceptor() {
         super();
     }
-    
+
     public void cargarJSON(String ubicacion) {
         JSONParser parser = new JSONParser();
 
         try {
-            
+
             String text = new String(Files.readAllBytes(Paths.get(ubicacion)), StandardCharsets.UTF_8);
-            
+
             JSONObject obj2 = (JSONObject) parser.parse(text);
-            
+
             this.puertoDirectorioRegistro = Integer.parseInt(obj2.get("PuertoDirectorioRegistro").toString());
             this.puertoDirectorioConexion = Integer.parseInt(obj2.get("PuertoDirectorioConexion").toString());
             this.ipServidorMensajeria = obj2.get("IPServidorMensajeria").toString();
             this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
             this.ipDirectorio = obj2.get("IPDirectorio").toString();
-            
-            Receptor receptor = new Receptor(obj2.get("IPPropia").toString(),Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("Nombre").toString());
+
+            Receptor receptor =
+                new Receptor(obj2.get("IPPropia").toString(), Integer.parseInt(obj2.get("PuertoPropio").toString()),
+                             obj2.get("Nombre").toString(), obj2.get("Usuario").toString());
             this.receptor = receptor;
             System.out.println(receptor.descripcionCompleta());
-            
-            this.cargado=true;
+
+            this.cargado = true;
         } catch (IOException e) {
             System.out.println("ERROR DE I/O En carga de emisor");
         } catch (ParseException e) {
@@ -72,32 +74,32 @@ public class PersistenciaReceptor implements IPersistenciaReceptor{
 
     @Override
     public Receptor cargarReceptor() throws FileNotFoundException {
-        if(!this.cargado)
+        if (!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         return this.receptor;
     }
-    
+
     @Override
     public String cargarIPDirectorio() throws FileNotFoundException {
-        if(!this.cargado)
+        if (!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         return this.ipDirectorio;
     }
-    
+
     @Override
     public int cargarPuertoConexion() throws FileNotFoundException {
-        if(!this.cargado)
+        if (!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
-        
+
         return this.puertoDirectorioConexion;
     }
-    
+
     @Override
     public int cargarPuertoRegistro() throws FileNotFoundException {
-        if(!this.cargado)
+        if (!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
-        
+
         return this.puertoDirectorioRegistro;
     }
-    
+
 }

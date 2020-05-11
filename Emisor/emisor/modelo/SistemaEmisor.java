@@ -31,6 +31,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.json.simple.*;
+import org.json.simple.parser.ParseException;
 
 public class SistemaEmisor {
     private Emisor emisor;
@@ -44,16 +45,16 @@ public class SistemaEmisor {
     private HashMap<Integer,ArrayList<Receptor>> listasReceptoresConfirmados = new HashMap<Integer,ArrayList<Receptor>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
     
-    private SistemaEmisor() throws FileNotFoundException {
+    private SistemaEmisor() throws IOException, ParseException {
         super();
         emisor = persistencia.cargarEmisor();
         
-        this.tcpdeEmisor = new TCPdeEmisor();
+        this.tcpdeEmisor = new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
         
         
     }
         
-    public static void inicializar() throws FileNotFoundException {
+    public static void inicializar() throws IOException, ParseException {
         if(instance==null){
             instance = new SistemaEmisor();
         }
@@ -79,8 +80,8 @@ public class SistemaEmisor {
         return tcpdeEmisor;
     }
 
-    public void enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, TipoMensaje tipoMensaje){
-        Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje,receptores);
+    public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores, TipoMensaje tipoMensaje){
+        Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje,usuariosReceptores);
         this.guardarMensaje(mensaje);
         
         if(tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE){
@@ -88,7 +89,7 @@ public class SistemaEmisor {
             ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante)mensaje);
         }
         
-        this.getTcpdeEmisor().enviarMensaje(mensaje);
+        return this.getTcpdeEmisor().enviarMensaje(mensaje);
     }
     
     private void guardarMensaje(Mensaje mensaje){
