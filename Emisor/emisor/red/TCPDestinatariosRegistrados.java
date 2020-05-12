@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import java.util.Iterator;
+
 import receptor.modelo.Receptor;
 
 import servidormensajeria.modelo.SistemaServidor;
@@ -32,6 +34,10 @@ public class TCPDestinatariosRegistrados implements Runnable {
         this.puertoDirectorioDestinatarios = puertoDirectorioDestinatarios;
     }
 
+    public long getTiempoUltModif() { //para no tener que usar compareTo entre Longs
+        return tiempoUltModif;
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -46,8 +52,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                     Long tiempoUltimaActualizacion = (Long) inTiempo.readObject();
                     inTiempo.close();
                     socket.close();
-                    if (this.tiempoUltModif != tiempoUltimaActualizacion) { //el != permite detectar cuando se cae el directorio
-                        
+                    if (this.getTiempoUltModif() < tiempoUltimaActualizacion) {
                         Socket socketDest = new Socket();
                         InetSocketAddress addr2 = new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
                         socketDest.connect(addr2, 500);
@@ -58,6 +63,9 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
                         ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
                         
+                        //for(Iterator<Receptor> it = destinatariosRegistrados.iterator(); it.hasNext(); ){
+                        //    System.out.println(it.next().descripcionCompleta());
+                        //}
                         
                         this.tiempoUltModif = tiempoUltimaActualizacion;
                         inDest.close();

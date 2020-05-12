@@ -24,10 +24,10 @@ import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public class Directorio {
-    private static int TIEMPO_TIMEOUT = 500;
+    private static int TIEMPO_TIMEOUT = 700;
     private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
-    private Long tiempoUltModif = new Long(0);
+    private Long tiempoUltModif = new GregorianCalendar().getTimeInMillis(); //en estado inicial ya esta modificado
 
     public Directorio() {
         super();
@@ -40,7 +40,7 @@ public class Directorio {
      */
     public Collection<Receptor> getReceptores() {
         synchronized (receptores) {
-            return new ArrayList(receptores.values());
+            return new ArrayList(receptores.values()); //para poder serializar y mandar por red
         }
     }
 
@@ -55,24 +55,28 @@ public class Directorio {
     public void heartbeatRecibido(Receptor receptor) {
         
         synchronized (receptores) {
-
+            synchronized (tiempos) {
+                this.tiempos.put(receptor.getUsuario(), GregorianCalendar.getInstance().getTimeInMillis());
+            }
             if (this.receptores.containsKey(receptor.getUsuario())) { 
                 Receptor receptorAnt = receptores.remove(receptor.getUsuario());
                 if ( !receptorAnt.isConectado() || !Receptor.equalsDatosNoIdentif(receptorAnt, receptor)){
                     //detecta si alguien cambia de estado de conexion (de desconectado a conectado), IP, puerto o nombre 
                     receptor.setConectado(true); //acaba de llegar por lo que esta conectado
+                    this.receptores.put(receptor.getUsuario(), receptor);
                     this.updateTiempoUltModif();
                 }
+                else
+                    this.receptores.put(receptorAnt.getUsuario(), receptorAnt); //como no habia cambiado lo devuelvo
             } else {
                 receptor.setConectado(true); //acaba de llegar por lo que esta conectado
-                this.updateTiempoUltModif(); //cuando llega alguien ya sabe
+                this.receptores.put(receptor.getUsuario(), receptor);
+                this.updateTiempoUltModif();
             }
-            this.receptores.put(receptor.getUsuario(), receptor);
+            
         }
         
-        synchronized (tiempos) {
-            this.tiempos.put(receptor.getUsuario(), GregorianCalendar.getInstance().getTimeInMillis());
-        }
+        
         // lo metes al treemap y pones el tiempo actual en tiempos
 
     }
@@ -81,23 +85,24 @@ public class Directorio {
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
         boolean alguienSeFue = false;
         
-        synchronized (receptores) {
-            for (Object obj : receptores.values()) {
-                Receptor receptor = (Receptor) obj;
-                boolean online;
-                synchronized (tiempos) {
-                    online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
+        synchronized (tiempos) { //para que no puedan cambiar los tiempos mientras se evaluan los online de cada receptor
+            synchronized (receptores) {
+                for (Object obj : receptores.values()) {
+                    Receptor receptor = (Receptor) obj;
+                    boolean online;
+                    
+                        online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
+                    if (!alguienSeFue && receptor.isConectado() && !online) // se fue alguien
+                    {
+                        alguienSeFue = true;
+                    }
+    
+                    receptor.setConectado(online);
+    
                 }
-                if (!alguienSeFue && (receptor.isConectado() && !online)) // se fue alguien
-                {
-                    alguienSeFue = true;
-                }
-
-                receptor.setConectado(online);
-
             }
+
         }
-       
         
         if(alguienSeFue)
             this.updateTiempoUltModif(); 

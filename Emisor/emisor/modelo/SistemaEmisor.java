@@ -47,7 +47,7 @@ public class SistemaEmisor {
         new HashMap<Integer, ArrayList<String>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
 
-    private SistemaEmisor() throws IOException, ParseException {
+    private SistemaEmisor() throws Exception{
         super();
         emisor = persistencia.cargarEmisor();
 
@@ -57,7 +57,7 @@ public class SistemaEmisor {
 
     }
 
-    public static void inicializar() throws IOException, ParseException {
+    public static void inicializar() throws Exception {
         if (instance == null) {
             instance = new SistemaEmisor();
         }

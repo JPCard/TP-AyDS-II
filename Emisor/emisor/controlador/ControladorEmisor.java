@@ -44,6 +44,9 @@ public class ControladorEmisor {
         catch(ParseException e){
             vistaPrincipal.mostrarErrorEmisorContactos();
         }
+        catch(Exception e){
+            //error inesperado
+        }
     }
     
     public static ControladorEmisor getInstance(IVistaEmisor vista){

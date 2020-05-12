@@ -38,7 +38,7 @@ public class TCPParaDirectorio {
 
     /**
      * @param usuarioActual
-     * @return null si el receptor no esta conectado, != null si el receptor esta conectado
+     * @return null si el receptor no esta conectado o no lo encontró, != null si el receptor esta conectado
      */
     public Receptor getReceptor(String usuarioActual) {
         try {

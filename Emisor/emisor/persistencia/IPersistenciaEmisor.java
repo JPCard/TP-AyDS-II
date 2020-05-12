@@ -1,20 +1,17 @@
 package emisor.persistencia;
 
-import emisor.modelo.Agenda;
 import emisor.modelo.Emisor;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.json.simple.parser.ParseException;
 
 public interface IPersistenciaEmisor {
-    public Emisor cargarEmisor() throws IOException, ParseException;
-    public String cargarIPDirectorio() throws IOException, ParseException;
-    public String cargarIPServidorMensajeria() throws IOException, ParseException;
-    public int cargarPuertoServidorMensajeria() throws IOException, ParseException ;
+    
+    //dejamos que tiren excepciones para que luego puedan tirar cualquier excepcion que la clase concreta necesite.
+    public Emisor cargarEmisor() throws Exception;
+    public String cargarIPDirectorio() throws Exception;
+    public String cargarIPServidorMensajeria() throws Exception;
+    public int cargarPuertoServidorMensajeria() throws Exception;
 
-    public int cargarPuertoDirectorioTiempo()throws IOException, ParseException ;
+    public int cargarPuertoDirectorioTiempo()throws Exception;
 
-    public int cargarPuertoDirectorioDest()throws IOException, ParseException ;
+    public int cargarPuertoDirectorioDest()throws Exception;
 }

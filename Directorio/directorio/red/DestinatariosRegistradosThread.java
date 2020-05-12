@@ -17,13 +17,13 @@ import receptor.modelo.Receptor;
 
 public class DestinatariosRegistradosThread extends Thread {
     private Directorio directorio;
-    private final int GETDESTINATARIOS_PORT;
+    private int getDestinatariosPort;
 
 
-    public DestinatariosRegistradosThread(Directorio directorio, int GETDESTINATARIOS_PORT) {
+    public DestinatariosRegistradosThread(Directorio directorio, int getDestinatariosPort) {
         super();
         this.directorio = directorio;
-        this.GETDESTINATARIOS_PORT = GETDESTINATARIOS_PORT;
+        this.getDestinatariosPort = getDestinatariosPort;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DestinatariosRegistradosThread extends Thread {
         while (true) {
             try {
 
-                ServerSocket s = new ServerSocket(GETDESTINATARIOS_PORT);
+                ServerSocket s = new ServerSocket(getDestinatariosPort);
 
                 while (true) {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
