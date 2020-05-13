@@ -44,6 +44,9 @@ public class ControladorEmisor {
         catch(ParseException e){
             vistaPrincipal.mostrarErrorEmisorContactos();
         }
+        catch(Exception e){
+            //error inesperado
+        }
     }
     
     public static ControladorEmisor getInstance(IVistaEmisor vista){
@@ -104,7 +107,7 @@ public class ControladorEmisor {
         this.vistaComprobantes = vistaComprobantes;
     }
 
-    public Iterator<Receptor> getReceptoresConfirmados(Mensaje mensaje) throws Exception {
+    public Iterator<String> getReceptoresConfirmados(Mensaje mensaje) throws Exception {
         if(SistemaEmisor.getInstance().hayReceptoresConfirmados(mensaje))
             return SistemaEmisor.getInstance().getReceptoresConfirmados(mensaje);
         else throw new Exception("Todavia no hay receptores confirmados");
@@ -115,8 +118,8 @@ public class ControladorEmisor {
             vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }
 
-    public boolean isComprobado(Mensaje mensajeSeleccionado, Receptor receptor) {
-        return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,receptor);
+    public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
+        return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor);
     }
 
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
@@ -127,4 +130,5 @@ public class ControladorEmisor {
     public void updateConectado(boolean estado) {
         this.vistaPrincipal.updateConectado(estado);
     }
+
 }

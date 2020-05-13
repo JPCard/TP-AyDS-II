@@ -615,7 +615,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public void cargarContactos(Collection<Receptor> destinatariosRegistrados) {
         Iterator<Receptor> it = destinatariosRegistrados.iterator();
         
-        HashMap<Integer,Receptor> seleccionadosHashmap = new HashMap<Integer,Receptor>();
+        HashMap<String,Receptor> seleccionadosHashmap = new HashMap<String,Receptor>();
         ArrayList<Receptor> seleccionadosArrayList = new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
         
         
@@ -687,7 +687,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         
         
         for(Receptor r : seleccionadosArrayList){
-            seleccionadosHashmap.put(r.getID(),r);
+            seleccionadosHashmap.put(r.getUsuario(),r);
         }
         
         
@@ -698,14 +698,17 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             Receptor receptor  = it.next();
 
             this.cargarContacto(receptor);
-            if(seleccionadosHashmap.get(receptor.getID()) != null)
+            //System.out.println("Se agrego en lista "+receptor);
+            if(seleccionadosHashmap.get(receptor.getUsuario()) != null)
                 this.jListDestinatarios.addSelectionInterval(i, i);
             i++;
         }
         this.cambiarAltoPanelEstadoConexion(i); //cambia el alto 1 sola vez
-        this.jScrollPaneConexionDestinatarios.revalidate();
+        this.jScrollPaneConexionDestinatarios.validate();
         this.jScrollPaneConexionDestinatarios.repaint();
-        this.revalidate();
+        this.jScrollPaneDestanatariosRegistrados.validate();
+        this.jScrollPaneDestanatariosRegistrados.repaint();
+        this.validate();
         this.repaint();
         
         
@@ -718,6 +721,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
      */
     public void cargarContacto(Receptor receptor){
         this.listModel.addElement(receptor);
+        //System.out.println("Se agrego "+ receptor);
         this.addPanelEstadoConexion(receptor.isConectado());
     }
     
@@ -745,7 +749,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public void addPanelEstadoConexion(boolean conectado){ //solo los añade pero no cambia el alto del panel
         
         jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
-        System.out.println("se agrego el icono");
+        //System.out.println("se agrego el icono");
     }
     
     public void cambiarAltoPanelEstadoConexion(int cantDestRegistrados){ //cambia el alto del panel
@@ -763,8 +767,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelContainerConexionDestinatarios.setMinimumSize( nada);
         jPanelContainerConexionDestinatarios.setPreferredSize( nada);
         
-        this.jPanelContainerConexionDestinatarios.revalidate();
-        this.jPanelContainerConexionDestinatarios.repaint();
+        validate();
+        repaint();
         
     }
 

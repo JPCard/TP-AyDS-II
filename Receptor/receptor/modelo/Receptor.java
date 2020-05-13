@@ -6,11 +6,10 @@ import directorio.modelo.Directorio;
 import java.io.Serializable;
 
 
-public class Receptor implements Serializable,Comparable<Receptor>{
+public class Receptor implements Serializable, Comparable<Receptor> {
     private String IP;
     private int puerto;
     private String nombre;
-    private int ID = Directorio.INVALID_ID;
     private boolean conectado = true; //administrado por el directorio
     private String usuario;
 
@@ -38,6 +37,10 @@ public class Receptor implements Serializable,Comparable<Receptor>{
         return result;
     }
 
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
 
     public void setConectado(boolean conectado) {
         this.conectado = conectado;
@@ -47,18 +50,14 @@ public class Receptor implements Serializable,Comparable<Receptor>{
         return conectado;
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public Receptor(String IP, int puerto, String nombre,String usuario) {
+    public Receptor(String IP, int puerto, String nombre, String usuario) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
         this.usuario = usuario;
     }
 
-    public Receptor(){
+    public Receptor() {
         super();
     }
 
@@ -72,8 +71,9 @@ public class Receptor implements Serializable,Comparable<Receptor>{
         return this.getUsuario();
     }
 
-    public String descripcionCompleta(){
-        return "Usuario: "+this.getUsuario()+"\nNombre: "+this.getNombre()+"\nIP: "+this.getIP()+"\nPuerto: "+this.getPuerto();
+    public String descripcionCompleta() {
+        return "Usuario: " + this.getUsuario() + "\nNombre: " + this.getNombre() + "\nIP: " + this.getIP() +
+               "\nPuerto: " + this.getPuerto();
     }
 
     public void setIP(String IP) {
@@ -89,8 +89,6 @@ public class Receptor implements Serializable,Comparable<Receptor>{
     }
 
 
-    
-    
     public String getIP() {
         return IP;
     }
@@ -106,10 +104,18 @@ public class Receptor implements Serializable,Comparable<Receptor>{
 
     @Override
     public int compareTo(Receptor receptor) {
-        return this.getNombre().compareTo(receptor.getNombre());
+        return this.getUsuario().compareTo(receptor.getUsuario());
     }
 
-    public void setID(Integer ID) {
-        this.ID = ID;
+    /**
+     * Pre: receptor1 != null, receptor2 != null
+     * @param receptor1
+     * @param receptor2
+     * @return el estado de verdad de la afirmacion de que receptor1 y receptor2 tienen los mismos datos no identificatorios
+     */
+    public static boolean equalsDatosNoIdentif(Receptor receptor1, Receptor receptor2) {
+        return (receptor1.getIP()).equals(receptor2.getIP()) && (receptor1.getPuerto() == receptor2.getPuerto()) &&
+               (receptor1.getNombre()).equals(receptor2.getNombre());
     }
+
 }
