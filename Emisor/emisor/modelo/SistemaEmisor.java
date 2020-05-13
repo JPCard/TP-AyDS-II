@@ -47,7 +47,7 @@ public class SistemaEmisor {
         new HashMap<Integer, ArrayList<String>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
 
-    private SistemaEmisor() throws Exception{
+    private SistemaEmisor() throws Exception {
         super();
         emisor = persistencia.cargarEmisor();
 
@@ -116,17 +116,17 @@ public class SistemaEmisor {
 
     public void agregarComprobante(Comprobante comprobante) {
         int idMensaje = comprobante.getidMensaje();
-        synchronized(mensajesConComprobante){
+        synchronized (mensajesConComprobante) {
             if (this.mensajesConComprobante.containsKey(idMensaje)) {
-                synchronized(listasReceptoresConfirmados){
+                synchronized (listasReceptoresConfirmados) {
                     if (!listasReceptoresConfirmados.containsKey(idMensaje))
                         listasReceptoresConfirmados.put(idMensaje,
                                                         new ArrayList<String>()); //si es el primer comprobante, crea el arraylist
-        
-        
+
+
                     this.listasReceptoresConfirmados
                         .get(idMensaje)
-                        .add(comprobante.getReceptor().getUsuario());
+                        .add(comprobante.getUsuarioReceptor());
                 }
             }
         }
@@ -134,7 +134,7 @@ public class SistemaEmisor {
     }
 
     public Iterator<String> getReceptoresConfirmados(Mensaje mensaje) {
-        synchronized(listasReceptoresConfirmados){
+        synchronized (listasReceptoresConfirmados) {
             return this.listasReceptoresConfirmados
                        .get(mensaje.getId())
                        .iterator();
@@ -142,7 +142,7 @@ public class SistemaEmisor {
     }
 
     public boolean hayReceptoresConfirmados(Mensaje mensaje) {
-        synchronized(listasReceptoresConfirmados){
+        synchronized (listasReceptoresConfirmados) {
             return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
         }
     }
@@ -153,7 +153,7 @@ public class SistemaEmisor {
 
     public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
         ArrayList<String> receptoresConfirmados = null;
-        synchronized(listasReceptoresConfirmados){
+        synchronized (listasReceptoresConfirmados) {
             receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
         }
         if (receptoresConfirmados == null)

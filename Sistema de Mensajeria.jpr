@@ -490,6 +490,10 @@
             <value n="id" v="Json-simple-1.1.1.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="Gson-2.8.6.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
@@ -502,11 +506,24 @@
                <value n="id" v="Json-simple-1.1.1.jar"/>
                <value n="locked" v="true"/>
             </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="librerias/gson-2.8.6.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Gson-2.8.6.jar"/>
+               <value n="id" v="Gson-2.8.6.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
          </list>
       </hash>
       <list n="libraryReferences">
          <hash>
             <value n="id" v="Json-simple-1.1.1.jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="Gson-2.8.6.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

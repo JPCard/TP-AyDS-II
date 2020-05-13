@@ -5,23 +5,22 @@ import java.io.Serializable;
 
 public class Comprobante implements Serializable {
     private int idMensaje;
-    private Receptor receptor;
+    private String usuarioReceptor;
 
 
-    public Comprobante(int idMensaje, Receptor receptor) {
+    public Comprobante(int idMensaje, String usuarioReceptor) {
         this.idMensaje = idMensaje;
-        this.receptor = receptor;
+        this.usuarioReceptor = usuarioReceptor;
     }
 
     public int getidMensaje() {
         return idMensaje;
     }
 
-    public Receptor getReceptor() {
-        return receptor;
+
+    public String getUsuarioReceptor() {
+        return usuarioReceptor;
     }
-
-
 
 
 }

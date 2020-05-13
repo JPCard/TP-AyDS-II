@@ -4,6 +4,8 @@ import emisor.modelo.Emisor;
 import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
 
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.nio.charset.StandardCharsets;
@@ -12,9 +14,12 @@ import java.nio.file.Paths;
 
 import java.util.Iterator;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
@@ -26,7 +31,8 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
     private int puertoDirectorioDest;
     private int puertoDirectorioTiempo;
     private String idMetodoPersistencia;
-
+    
+    
     public PersistenciaParametrosServidor() {
         super();
     }
@@ -77,4 +83,7 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
         
         return this.idMetodoPersistencia;
     }
+
+
+
 }
