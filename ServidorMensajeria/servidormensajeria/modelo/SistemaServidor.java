@@ -4,6 +4,7 @@ import emisor.modelo.Mensaje;
 
 import java.util.ArrayList;
 
+import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
@@ -18,7 +19,7 @@ import servidormensajeria.red.MensajeListener;
 
 public class SistemaServidor {
     public final static int PUERTO_MENSAJES = 27446;
-    public final static int PUERTO_COMPROBANTES = 27447;
+    public final static int PUERTO_COMPROBANTES = 27447; //todo estos supongo tendrian q salir de algun archivo
     
     private static SistemaServidor instance;
     private IPersistenciaMensajesServidor persistenciaMensajes;
@@ -102,5 +103,9 @@ public class SistemaServidor {
      */
     Receptor getReceptor(String usuarioActual) {
         return getDirectorio().getReceptor(usuarioActual);
+    }
+
+    public void arriboComprobante(Comprobante comprobante) {
+        new Thread(new ComprobanteHandler(comprobante)).start();
     }
 }

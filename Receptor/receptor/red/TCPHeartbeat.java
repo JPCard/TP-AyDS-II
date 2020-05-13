@@ -20,17 +20,15 @@ import receptor.modelo.SistemaReceptor;
 public class TCPHeartbeat implements Runnable {
     private String IPDirectorio;
     private int puertoHeartbeat;
-    private int puertoRegistro;
     public static final int TIEMPO_HEARTBEAT = 500; // en MS
     
 
     private Receptor receptor = SistemaReceptor.getInstance().getReceptor();
 
-    public TCPHeartbeat(String IPDirectorio, int puertoHeartbeat, int puertoRegistro) {
+    public TCPHeartbeat(String IPDirectorio, int puertoHeartbeat) {
         super();
         this.IPDirectorio = IPDirectorio;
         this.puertoHeartbeat = puertoHeartbeat;
-        this.puertoRegistro = puertoRegistro;
     }
 
     @Override

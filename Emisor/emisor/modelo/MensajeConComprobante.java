@@ -17,7 +17,7 @@ public class MensajeConComprobante extends Mensaje {
     @Override
     public void onLlegada() {
         super.onLlegada();
-        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor());
+        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor(),emisor);
         ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
     }
 
