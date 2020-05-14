@@ -35,8 +35,9 @@ public class ComprobanteHandler implements Runnable {
             System.out.println("lo escribi!!!");
             out.close();
             socket.close();
-
-            //else no hago nada porque el receptor estaba desconectado
+            
+            SistemaServidor.getInstance().guardarComp(comprobante);
+            
 
         } catch (Exception e) {
             e.printStackTrace();
