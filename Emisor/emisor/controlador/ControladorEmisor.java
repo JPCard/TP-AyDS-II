@@ -28,6 +28,7 @@ public class ControladorEmisor {
     private IVistaContactos vistaContactos;
     private IVistaComprobantes vistaComprobantes;
     private static ControladorEmisor instance = null;
+    private boolean directorioConectado =false;
     
     
     
@@ -128,7 +129,12 @@ public class ControladorEmisor {
     }
 
     public void updateConectado(boolean estado) {
+        this.directorioConectado=estado;
         this.vistaPrincipal.updateConectado(estado);
+    }
+
+    public boolean isDirectorioConectado() {
+        return directorioConectado;
     }
 
 }

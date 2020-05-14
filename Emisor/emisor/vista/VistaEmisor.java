@@ -42,6 +42,7 @@ import receptor.modelo.Receptor;
  */
 public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public static final int ICONO_CONECTADO_HEIGHT = 31;
+
     DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
 
 
@@ -51,10 +52,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         initComponents();
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
-        
+
         //this.cargarContactos();
-        BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados.getVerticalScrollBar().getModel(); 
-        this.jScrollPaneConexionDestinatarios.getVerticalScrollBar().setModel(modelVerticalScroll);
+        BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados
+                                                    .getVerticalScrollBar()
+                                                    .getModel();
+        this.jScrollPaneConexionDestinatarios
+            .getVerticalScrollBar()
+            .setModel(modelVerticalScroll);
         validacionBotonesEnviarMensaje();
     }
 
@@ -444,7 +449,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jButtonVerComprobanteActionPerformed
 
     private void jButtonEnviarConComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarConComprobanteActionPerformed
-       ControladorEmisor.getInstance()
+        ControladorEmisor.getInstance()
             .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE,
                            this.getDestinatarios());
        
@@ -597,13 +602,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     @Override
     public void mostrarErrorEmisorContactos() {
-        JOptionPane.showMessageDialog(this, "Error: no se pudo encontrar el archivo con los datos del emisor o de la agenda", "ERROR",
-                                      JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this,
+                                      "Error: no se pudo encontrar el archivo con los datos del emisor o de la agenda",
+                                      "ERROR", JOptionPane.ERROR_MESSAGE);
         this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
     }
-    
-    
+
 
     public void envioExitoso() {
         this.jTextFieldAsunto.setText("");
@@ -614,92 +619,95 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void cargarContactos(Collection<Receptor> destinatariosRegistrados) {
         Iterator<Receptor> it = destinatariosRegistrados.iterator();
-        
-        HashMap<String,Receptor> seleccionadosHashmap = new HashMap<String,Receptor>();
-        ArrayList<Receptor> seleccionadosArrayList = new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
-        
-        
+
+        HashMap<String, Receptor> seleccionadosHashmap = new HashMap<String, Receptor>();
+        ArrayList<Receptor> seleccionadosArrayList =
+            new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+
+
         //para hacer ruiditos de conectado y desconectado
-        while(it.hasNext()){
-            Receptor r= it.next();
+        while (it.hasNext()) {
+            Receptor r = it.next();
             int posrviejo = this.listModel.indexOf(r);
-            if(posrviejo!=-1){
+            if (posrviejo != -1) {
                 Receptor rviejo = listModel.getElementAt(posrviejo);
-                
-                if(rviejo.isConectado() && !r.isConectado()){
-                        try {
-                    AudioInputStream audioInputStream;
-                    Clip clip;
-                    audioInputStream = AudioSystem.getAudioInputStream(new File("alguiensedesconecto.wav").getAbsoluteFile());
-                    clip = AudioSystem.getClip();
-                    clip.open(audioInputStream);
-                    clip.start();
+
+                if (rviejo.isConectado() && !r.isConectado()) {
+                    try {
+                        AudioInputStream audioInputStream;
+                        Clip clip;
+                        audioInputStream =
+                            AudioSystem.getAudioInputStream(new File("alguiensedesconecto.wav").getAbsoluteFile());
+                        clip = AudioSystem.getClip();
+                        clip.open(audioInputStream);
+                        clip.start();
                     } catch (Exception e) {
                         System.out.println("problemas de audio");
                         e.printStackTrace();
 
                     }
                 }
-                    //sonido se desconecto
-                else
-                if(!rviejo.isConectado() && r.isConectado()){
-                        try {
-                    AudioInputStream audioInputStream;
-                    Clip clip;
-                    audioInputStream = AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
-                    
+                //sonido se desconecto
+                else if (!rviejo.isConectado() && r.isConectado()) {
+                    try {
+                        AudioInputStream audioInputStream;
+                        Clip clip;
+                        audioInputStream =
+                            AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
+
                         clip = AudioSystem.getClip();
-                    
-                    clip.open(audioInputStream);
-                    clip.start();
+
+                        clip.open(audioInputStream);
+                        clip.start();
                     } catch (Exception e) {
-                            System.out.println("problemas de audio");
+                        System.out.println("problemas de audio");
                         e.printStackTrace();
 
                     }
                 }
-                        //sonido de se conecto
-            }
-            else { //es nuevo merece sonidito
-                
+                //sonido de se conecto
+            } else { //es nuevo merece sonidito
+
                 try {
-                AudioInputStream audioInputStream;
-                Clip clip;
-                audioInputStream = AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
-                clip = AudioSystem.getClip();
-                clip.open(audioInputStream);
-                clip.start();
+                    AudioInputStream audioInputStream;
+                    Clip clip;
+                    audioInputStream =
+                        AudioSystem.getAudioInputStream(new File("alguienseconecto.wav").getAbsoluteFile());
+                    clip = AudioSystem.getClip();
+                    clip.open(audioInputStream);
+                    clip.start();
                 } catch (Exception e) {
-                System.out.println("problemas de audio");
-                e.printStackTrace();
+                    System.out.println("problemas de audio");
+                    e.printStackTrace();
 
                 }
             }
-            
-            
-            
+
+
         }
-        
-        it = ControladorEmisor.getInstance().getContactos(); //reset por que lo gaste arriba. no peudo hacer to  do junto xq ahi abajo no hay nada en el listmodel
+
+        it =
+            ControladorEmisor.getInstance()
+            .getContactos(); //reset por que lo gaste arriba. no peudo hacer to  do junto xq ahi abajo no hay nada en el listmodel
 
 
         //fin de eso
-        
-        
-        for(Receptor r : seleccionadosArrayList){
-            seleccionadosHashmap.put(r.getUsuario(),r);
+
+
+        for (Receptor r : seleccionadosArrayList) {
+            seleccionadosHashmap.put(r.getUsuario(), r);
         }
-        
-        
+
+
         listModel.clear();
         this.deleteAllPanelesEstadoConexion();
-        int i=0;
+        int i = 0;
         while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
-            Receptor receptor  = it.next();
+            Receptor receptor = it.next();
 
             this.cargarContacto(receptor);
             //System.out.println("Se agrego en lista "+receptor);
-            if(seleccionadosHashmap.get(receptor.getUsuario()) != null)
+            if (seleccionadosHashmap.get(receptor.getUsuario()) != null)
                 this.jListDestinatarios.addSelectionInterval(i, i);
             i++;
         }
@@ -710,8 +718,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jScrollPaneDestanatariosRegistrados.repaint();
         this.validate();
         this.repaint();
-        
-        
+
+        System.out.println("CARGARCONTACTOS");
     }
 
 
@@ -719,62 +727,100 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
      * Pre: !this.listModel.contains(receptor)
      * @param receptor
      */
-    public void cargarContacto(Receptor receptor){
+    public void cargarContacto(Receptor receptor) {
         this.listModel.addElement(receptor);
         //System.out.println("Se agrego "+ receptor);
         this.addPanelEstadoConexion(receptor.isConectado());
     }
-    
+
 
     public void validacionBotonesEnviarMensaje() {
-        boolean mensajeOK = !(jTextFieldAsunto.getText().trim().equals("") || 
-                 jEditorCuerpo.getText().trim().equals("") || jListDestinatarios.isSelectionEmpty());
+        boolean mensajeOK =
+            !(jTextFieldAsunto.getText()
+                                              .trim()
+                                              .equals("") || jEditorCuerpo.getText()
+                                                                          .trim()
+                                                                          .equals("") ||
+              jListDestinatarios.isSelectionEmpty());
         jButtonEnviarSimple.setEnabled(mensajeOK);
         jButtonEnviarAviso.setEnabled(mensajeOK);
         jButtonEnviarConComprobante.setEnabled(mensajeOK);
     }
 
+    private boolean oldEstadoDirectorio=true;
+
     @Override
     public void updateConectado(boolean estado) {
-        if(estado){
-            this.jLabelConexionDirectorio.setText("Conectado");
-            this.jPanelConexionDirectorio.setBackground(Color.green);
-        }
-        else{
-            this.jLabelConexionDirectorio.setText("Desconectado");
-            this.jPanelConexionDirectorio.setBackground(Color.gray);
-        }
+        if (estado != oldEstadoDirectorio || estado)
+            if (estado) {
+                this.jLabelConexionDirectorio.setText("Conectado");
+                this.jPanelConexionDirectorio.setBackground(Color.green);
+                oldEstadoDirectorio= estado;
+            } else {
+                this.jLabelConexionDirectorio.setText("Desconectado");
+                this.jPanelConexionDirectorio.setBackground(Color.gray);
+                //todo PONER TODO AMARILLO
+                this.deleteAllPanelesEstadoConexion();
+                this.agregarTodosPanelesEstadoIncierto();
+
+                this.jScrollPaneConexionDestinatarios.validate();
+                this.jScrollPaneConexionDestinatarios.repaint();
+                this.jScrollPaneDestanatariosRegistrados.validate();
+                this.jScrollPaneDestanatariosRegistrados.repaint();
+                this.validate();
+                this.repaint();
+                oldEstadoDirectorio = estado;
+            }
     }
-    
-    public void addPanelEstadoConexion(boolean conectado){ //solo los añade pero no cambia el alto del panel
+
+    public void agregarTodosPanelesEstadoIncierto() {
+        int i = 0;
+        while(i < this.listModel.getSize()){
+            jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion());
+            
+            i++;
+        }
         
-        jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
-        //System.out.println("se agrego el icono");
+        this.cambiarAltoPanelEstadoConexion(i); //cambia el alto 1 sola vez
+        this.jScrollPaneConexionDestinatarios.validate();
+        this.jScrollPaneConexionDestinatarios.repaint();
+        this.jScrollPaneDestanatariosRegistrados.validate();
+        this.jScrollPaneDestanatariosRegistrados.repaint();
+        this.validate();
+        this.repaint();
     }
-    
-    public void cambiarAltoPanelEstadoConexion(int cantDestRegistrados){ //cambia el alto del panel
+
+    public void addPanelEstadoConexion(boolean conectado) { //solo los añade pero no cambia el alto del panel
+
+        jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
+    }
+  
+
+    public void cambiarAltoPanelEstadoConexion(int cantDestRegistrados) { //cambia el alto del panel
         double anchoAct = jPanelContainerConexionDestinatarios.getPreferredSize().getWidth(); //no cambia
         double altoAct = cantDestRegistrados * ICONO_CONECTADO_HEIGHT;
-        Dimension nuevaDimension = new Dimension((int)anchoAct, (int)altoAct);
-        jPanelContainerConexionDestinatarios.setMinimumSize( nuevaDimension);
-        jPanelContainerConexionDestinatarios.setPreferredSize( nuevaDimension);
+        Dimension nuevaDimension = new Dimension((int) anchoAct, (int) altoAct);
+        jPanelContainerConexionDestinatarios.setMinimumSize(nuevaDimension);
+        jPanelContainerConexionDestinatarios.setPreferredSize(nuevaDimension);
     }
-    
-    public void deleteAllPanelesEstadoConexion(){
+
+    public void deleteAllPanelesEstadoConexion() {
         jPanelContainerConexionDestinatarios.removeAll(); //limpia los estados de receptores anteriores
-        
-        Dimension nada = new Dimension(1,1);
-        jPanelContainerConexionDestinatarios.setMinimumSize( nada);
-        jPanelContainerConexionDestinatarios.setPreferredSize( nada);
-        
+
+        Dimension nada = new Dimension(1, 1);
+        jPanelContainerConexionDestinatarios.setMinimumSize(nada);
+        jPanelContainerConexionDestinatarios.setPreferredSize(nada);
+
         validate();
         repaint();
-        
+
     }
 
     @Override
     public void mostrarErrorServidorNoDisponible() {
-        JOptionPane.showConfirmDialog(this, "El mensaje no fue enviado por que el servidor no esta disponible, por favor intente nuevamente", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showConfirmDialog(this,
+                                      "El mensaje no fue enviado por que el servidor no esta disponible, por favor intente nuevamente",
+                                      "Error", JOptionPane.ERROR_MESSAGE);
     }
 }
 
