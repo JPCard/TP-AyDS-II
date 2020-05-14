@@ -52,7 +52,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         initComponents();
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
-
+        
+        
         //this.cargarContactos();
         BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados
                                                     .getVerticalScrollBar()

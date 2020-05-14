@@ -39,6 +39,8 @@ public class ControladorEmisor {
             SistemaEmisor.inicializar();
             
             
+            
+            
         } catch (IOException e) {
             vistaPrincipal.mostrarErrorEmisorContactos();
         }
@@ -47,6 +49,7 @@ public class ControladorEmisor {
         }
         catch(Exception e){
             //error inesperado
+            e.printStackTrace();
         }
     }
     
