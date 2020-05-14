@@ -20,6 +20,7 @@ import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
 import servidormensajeria.persistencia.IPersistenciaParametrosServidor;
 
 import servidormensajeria.persistencia.PersistenciaMensajesServidorJSON;
+import servidormensajeria.persistencia.PersistenciaMensajesServidorXML;
 import servidormensajeria.persistencia.PersistenciaParametrosServidor;
 
 import servidormensajeria.red.TCPParaDirectorio;
@@ -58,7 +59,7 @@ public class SistemaServidor {
         //metodoPersistenciaMsjsFactory.instance(id_metodo); TODO
         
         
-        sistema.persistenciaMensajes = new PersistenciaMensajesServidorJSON();//TODO cambiar para que se cargue desp
+        sistema.persistenciaMensajes = new PersistenciaMensajesServidorXML();//TODO cambiar para que se cargue desp
         
         
         IPersistenciaParametrosServidor persistencia = sistema.persistenciaParametros;
