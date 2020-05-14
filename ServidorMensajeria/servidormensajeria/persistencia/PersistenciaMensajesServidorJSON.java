@@ -30,13 +30,13 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     public static final String MENSAJES_FILE_PATH = "Mensajes.json"; //<idMensaje,Mensaje>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH = "IdMensajesEnviadosReceptores.json";      //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH = "IdMensajesPendientesReceptores.json";  //<usuarioReceptor,Collection<idMensaje>>
-    public static final String MENSAJES_COMPROBADOS_EMISORES_FILE_PATH = "IdMensajesComprobadosEmisores.json";    //<Emisor, <idMensaje, Collection<usuarioReceptor> > >
+    public static final String MENSAJES_COMPROBADOS_EMISORES_FILE_PATH = "IdMensajesComprobadosEmisores.json";    //<nombreEmisor, <idMensaje, Collection<usuarioReceptor> > >
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private HashMap<Integer,Mensaje> mensajes = new HashMap<Integer,Mensaje>();
-    private HashMap<String,Collection<Integer>> idMensajesEntregadosRecep = new HashMap<String,Collection<Integer>>();
-    private HashMap<String,Collection<Integer>> idMensajesEntregarRecep = new HashMap<String,Collection<Integer>>();
-    private HashMap<Emisor,HashMap<Integer,Collection<String>>> idMensajesComprobadosEmisores = new HashMap<Emisor,HashMap<Integer,Collection<String>>>();
+    private HashMap<Integer,Mensaje> mensajes;
+    private HashMap<String,Collection<Integer>> idMensajesEntregadosRecep;
+    private HashMap<String,Collection<Integer>> idMensajesEntregarRecep;
+    private HashMap<String,Collection<Integer>> idMensajesComprobadosEmisores;
 
 
     private Integer proximoIdMensaje;
@@ -49,6 +49,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         cargaInicialIdMensajesEntregarRecep();
         cargaInicialIdMensajesComprobadosEmisores();
         proximoIdMensaje = cargarMaxIdMsjGuardado() + 1;
+        System.out.println(proximoIdMensaje);
     }
 
     /**
@@ -96,10 +97,10 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     private void cargaInicialIdMensajesComprobadosEmisores(){
         try {
             String json = new String(Files.readAllBytes(Paths.get(MENSAJES_COMPROBADOS_EMISORES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<Emisor,HashMap<Integer,Collection<String>>>>() {}.getType();
+            Type mapType = new TypeToken<HashMap<String,Collection<Integer>>>() {}.getType();
             idMensajesComprobadosEmisores = this.gson.fromJson(json, mapType);
         } catch (IOException e) {
-            idMensajesComprobadosEmisores = new HashMap<Emisor,HashMap<Integer,Collection<String>>>();
+            idMensajesComprobadosEmisores = new HashMap<String,Collection<Integer>>();
         }
     }
     
@@ -162,20 +163,20 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         }
         
         if(mensaje instanceof MensajeConComprobante){
-            Emisor emisor = mensaje.getEmisor();
+            String nombreEmisor = mensaje.getEmisor().getNombre();
             synchronized (idMensajesComprobadosEmisores){
-                HashMap<Integer,Collection<String>> idMensajesComprobadoAct;
-                if(idMensajesComprobadosEmisores.containsKey(emisor)){
-                    idMensajesComprobadoAct = idMensajesComprobadosEmisores.remove(mensaje.getEmisor());
+                Collection<Integer> idMensajesComprobadoAct;
+                if(idMensajesComprobadosEmisores.containsKey(nombreEmisor)){
+                    idMensajesComprobadoAct = idMensajesComprobadosEmisores.remove(nombreEmisor);
                 }
                 else{
-                    idMensajesComprobadoAct = new HashMap<Integer,Collection<String>>();
+                    idMensajesComprobadoAct = new ArrayList<Integer>();
                 }
-                idMensajesComprobadoAct.put(mensaje.getId(), new ArrayList<String>());
-                idMensajesComprobadosEmisores.put(emisor, idMensajesComprobadoAct);
+                idMensajesComprobadoAct.add(mensaje.getId());
+                idMensajesComprobadosEmisores.put(nombreEmisor, idMensajesComprobadoAct);
                 
-                json = gson.toJson(idMensajesComprobadosEmisores);
-            
+                Type mapType = new TypeToken<HashMap<Emisor,Collection<Integer>>>() {}.getType();
+                json = gson.toJson(idMensajesComprobadosEmisores, mapType);
                 synchronized (MENSAJES_COMPROBADOS_EMISORES_FILE_PATH){
                     file = new FileWriter(MENSAJES_COMPROBADOS_EMISORES_FILE_PATH);
                     file.write(json);
@@ -192,7 +193,6 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
 
     @Override
     public void guardarComp(Comprobante comprobante) throws Exception {
-        // guardar en COMPROBANTES_FILE_PATH <idMensaje,Collection<String>>
         String json = "";
         FileWriter file;
         
@@ -201,22 +201,9 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             mensaje = (MensajeConComprobante) mensajes.get(comprobante.getidMensaje());
             mensaje.addReceptorConfirmado(comprobante.getUsuarioReceptor());
             mensajes.put(mensaje.getId(),mensaje);
-        }
-        
-        Emisor emisor = mensaje.getEmisor();
-        int idMensaje = mensaje.getId();
-        synchronized (idMensajesComprobadosEmisores){
-            HashMap<Integer,Collection<String>> idMensajesComprobadoAct;
-            //if(idMensajesComprobadosEmisores.containsKey(emisor)) cumple porque se guarda cuando se recibio el mensaje
-            idMensajesComprobadoAct = idMensajesComprobadosEmisores.remove(emisor);
-            Collection<String> receptoresConfirmados = idMensajesComprobadoAct.remove(idMensaje);
-            receptoresConfirmados.add(comprobante.getUsuarioReceptor());
-            idMensajesComprobadoAct.put(idMensaje,receptoresConfirmados);
-            idMensajesComprobadosEmisores.put(emisor, idMensajesComprobadoAct);
-            json = gson.toJson(idMensajesComprobadosEmisores);
             
-            synchronized (MENSAJES_COMPROBADOS_EMISORES_FILE_PATH){
-                file = new FileWriter(MENSAJES_COMPROBADOS_EMISORES_FILE_PATH);
+            synchronized (MENSAJES_FILE_PATH){
+                file = new FileWriter(MENSAJES_FILE_PATH);
                 file.write(json);
                 file.close();
             }
@@ -245,9 +232,9 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     @Override
     public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
         Collection<MensajeConComprobante> mensajesComprobados = new ArrayList<MensajeConComprobante>();
-        
+        String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesComprobadosEmisores){
-            Collection<Integer> idMensajesComprobadosAct = idMensajesComprobadosEmisores.get(emisor).keySet();
+            Collection<Integer> idMensajesComprobadosAct = idMensajesComprobadosEmisores.get(nombreEmisor);
             synchronized(mensajes){
                 for(int id : idMensajesComprobadosAct){
                     mensajesComprobados.add( (MensajeConComprobante) mensajes.get(id));
