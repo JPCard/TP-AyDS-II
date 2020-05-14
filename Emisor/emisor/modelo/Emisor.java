@@ -25,6 +25,30 @@ public class Emisor implements Serializable{
         this.nombre = nombre;
     }
 
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Emisor)) {
+            return false;
+        }
+        final Emisor other = (Emisor) object;
+        if (!(nombre == null ? other.nombre == null : nombre.equals(other.nombre))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int PRIME = 37;
+        int result = 1;
+        result = PRIME * result + ((nombre == null) ? 0 : nombre.hashCode());
+        return result;
+    }
+
     public void setIP(String IP) {
         this.IP = IP;
     }
@@ -70,4 +94,6 @@ public class Emisor implements Serializable{
     public Iterator<Receptor> consultarAgenda() {
         return this.agenda.getIteratorContactos();
     }
+    
+    
 }

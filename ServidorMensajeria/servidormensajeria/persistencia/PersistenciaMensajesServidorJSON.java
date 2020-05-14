@@ -30,7 +30,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     public static final String MENSAJES_FILE_PATH = "Mensajes.json"; //<idMensaje,Mensaje>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH = "IdMensajesEnviadosReceptores.json";      //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH = "IdMensajesPendientesReceptores.json";  //<usuarioReceptor,Collection<idMensaje>>
-    public static final String MENSAJES_COMPROBADOS_EMISORES_FILE_PATH = "IdMensajesComprobadosEmisores.json";    //<nombreEmisor, <idMensaje, Collection<usuarioReceptor> > >
+    public static final String MENSAJES_COMPROBADOS_EMISORES_FILE_PATH = "IdMensajesComprobadosEmisores.json";    //<nombreEmisor, <Collection<idMensaje> >
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private HashMap<Integer,Mensaje> mensajes;
@@ -49,7 +49,6 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         cargaInicialIdMensajesEntregarRecep();
         cargaInicialIdMensajesComprobadosEmisores();
         proximoIdMensaje = cargarMaxIdMsjGuardado() + 1;
-        System.out.println(proximoIdMensaje);
     }
 
     /**
@@ -58,7 +57,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
      * @return
      */
     private int cargarMaxIdMsjGuardado(){
-        if(mensajes.size() == 0)
+        if(mensajes.size() == 0) 
             return -1;
         else 
             return Collections.max(mensajes.keySet());
@@ -69,6 +68,8 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             String json = new String(Files.readAllBytes(Paths.get(MENSAJES_FILE_PATH)), StandardCharsets.UTF_8);
             Type mapType = new TypeToken<HashMap<Integer,Mensaje>>() {}.getType();
             mensajes = this.gson.fromJson(json, mapType);
+            if(mensajes == null)//se fija si es null porque puede pasar si el archivo existe pero esta vacio
+                mensajes = new HashMap<Integer,Mensaje>(); 
         } catch (IOException e) {
             mensajes = new HashMap<Integer,Mensaje>();
         }
@@ -175,13 +176,13 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesComprobadoAct.add(mensaje.getId());
                 idMensajesComprobadosEmisores.put(nombreEmisor, idMensajesComprobadoAct);
                 
-                Type mapType = new TypeToken<HashMap<Emisor,Collection<Integer>>>() {}.getType();
-                json = gson.toJson(idMensajesComprobadosEmisores, mapType);
+                json = gson.toJson(idMensajesComprobadosEmisores);
                 synchronized (MENSAJES_COMPROBADOS_EMISORES_FILE_PATH){
                     file = new FileWriter(MENSAJES_COMPROBADOS_EMISORES_FILE_PATH);
                     file.write(json);
                     file.close();
                 }
+                
             }
             
             
@@ -202,6 +203,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             mensaje.addReceptorConfirmado(comprobante.getUsuarioReceptor());
             mensajes.put(mensaje.getId(),mensaje);
             
+            json = gson.toJson(mensajes);
             synchronized (MENSAJES_FILE_PATH){
                 file = new FileWriter(MENSAJES_FILE_PATH);
                 file.write(json);
@@ -286,14 +288,16 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             idMensajesEntregadosRecep.put(usuarioReceptor, idMensajesRecibidos);
             
             json = gson.toJson(idMensajesEntregadosRecep);
+            
+            synchronized (MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH){
+                
+                file = new FileWriter(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH);
+                file.write(json);
+                file.close();
+            }
         }
         
-        synchronized (MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH){
-            
-            file = new FileWriter(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH);
-            file.write(json);
-            file.close();
-        }
+        
     }
 
     @Override
