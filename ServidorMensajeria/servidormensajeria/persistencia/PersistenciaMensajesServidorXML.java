@@ -1,48 +1,44 @@
 package servidormensajeria.persistencia;
 
-import com.google.gson.Gson;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
 import emisor.modelo.Emisor;
 import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
 
+import java.beans.XMLDecoder;
+
+import java.beans.XMLEncoder;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Type;
-
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
+
+import java.util.TreeMap;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
-public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesServidor {
-    public static final String MENSAJES_FILE_PATH = "Mensajes.json"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH = "IdMensajesEnviadosReceptores.json";      //<usuarioReceptor,Collection<idMensaje>>
-    public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH = "IdMensajesPendientesReceptores.json";  //<usuarioReceptor,Collection<idMensaje>>
-    public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH = "IdMensajesConComprobanteEmisores.json";    //<nombreEmisor, <Collection<idMensaje> >
+public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesServidor {
+    public static final String MENSAJES_FILE_PATH = "Mensajes.xml"; //<idMensaje,Mensaje>
+    public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH = "IdMensajesEnviadosReceptores.xml";      //<usuarioReceptor,Collection<idMensaje>>
+    public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH = "IdMensajesPendientesReceptores.xml";  //<usuarioReceptor,Collection<idMensaje>>
+    public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH = "IdMensajesConComprobanteEmisores.xml";    //<nombreEmisor, <Collection<idMensaje> >
 
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private HashMap<Integer,Mensaje> mensajes;
-    private HashMap<String,Collection<Integer>> idMensajesEntregadosRecep;
-    private HashMap<String,Collection<Integer>> idMensajesEntregarRecep;
-    private HashMap<String,Collection<Integer>> idMensajesConComprobEmisores;
-
-
-    private Integer proximoIdMensaje;
-
+    private TreeMap<Integer,Mensaje> mensajes; //usamos TreeMap porque es serializable
+    private TreeMap<String,Collection<Integer>> idMensajesEntregadosRecep;
+    private TreeMap<String,Collection<Integer>> idMensajesEntregarRecep;
+    private TreeMap<String,Collection<Integer>> idMensajesConComprobEmisores;
     
-    public PersistenciaMensajesServidorJSON() {
+    private Integer proximoIdMensaje;
+    
+    public PersistenciaMensajesServidorXML() {
         super();
         cargaInicialMensajes(); 
         cargaInicialIdMensajesEntregadosRecep();
@@ -50,7 +46,8 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         cargaInicialidMensajesConComprobEmisores();
         proximoIdMensaje = cargarMaxIdMsjGuardado() + 1;
     }
-
+    
+    
     /**
      * Pre: llamar a este metodo solamente en instanciacion de PersistenciaMensajesServidorJSON,
      *      los mensajes ya estan cargados
@@ -65,53 +62,52 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     
     private void cargaInicialMensajes(){
         try {
-            String json = new String(Files.readAllBytes(Paths.get(MENSAJES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<Integer,Mensaje>>() {}.getType();
-            mensajes = this.gson.fromJson(json, mapType);
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream( new FileInputStream(MENSAJES_FILE_PATH)));
+            mensajes = (TreeMap<Integer, Mensaje>) decoder.readObject();
+            decoder.close();
             if(mensajes == null)//se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                mensajes = new HashMap<Integer,Mensaje>(); 
+                mensajes = new TreeMap<Integer,Mensaje>(); 
         } catch (IOException e) {
-            mensajes = new HashMap<Integer,Mensaje>();
+            mensajes = new TreeMap<Integer,Mensaje>();
         }
     }
     
     private void cargaInicialIdMensajesEntregadosRecep(){
         try {
-            String json = new String(Files.readAllBytes(Paths.get(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<String,Collection<Integer>>>() {}.getType();
-            idMensajesEntregadosRecep = this.gson.fromJson(json, mapType);
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream( new FileInputStream(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH)));
+            idMensajesEntregadosRecep = (TreeMap<String, Collection<Integer>>) decoder.readObject();
+            decoder.close();
             if(idMensajesEntregadosRecep == null)//se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                idMensajesEntregadosRecep = new HashMap<String,Collection<Integer>>();
+                idMensajesEntregadosRecep = new TreeMap<String,Collection<Integer>>();
         } catch (IOException e) {
-            idMensajesEntregadosRecep = new HashMap<String,Collection<Integer>>();
+            idMensajesEntregadosRecep = new TreeMap<String,Collection<Integer>>();
         }
     }
     
     private void cargaInicialIdMensajesEntregarRecep(){
         try {
-            String json = new String(Files.readAllBytes(Paths.get(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<String,Collection<Integer>>>() {}.getType();
-            idMensajesEntregarRecep = this.gson.fromJson(json, mapType);
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream( new FileInputStream(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)));
+            idMensajesEntregarRecep = (TreeMap<String, Collection<Integer>>) decoder.readObject();
+            decoder.close();
             if(idMensajesEntregarRecep == null)//se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                idMensajesEntregarRecep = new HashMap<String,Collection<Integer>>();
+                idMensajesEntregarRecep = new TreeMap<String,Collection<Integer>>();
         } catch (IOException e) {
-            idMensajesEntregarRecep = new HashMap<String,Collection<Integer>>();
+            idMensajesEntregarRecep = new TreeMap<String,Collection<Integer>>();
         }
     }
     
     private void cargaInicialidMensajesConComprobEmisores(){
         try {
-            String json = new String(Files.readAllBytes(Paths.get(MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<String,Collection<Integer>>>() {}.getType();
-            idMensajesConComprobEmisores = this.gson.fromJson(json, mapType);
+            XMLDecoder decoder = new XMLDecoder(new BufferedInputStream( new FileInputStream(MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH)));
+            idMensajesConComprobEmisores = (TreeMap<String, Collection<Integer>>) decoder.readObject();
+            decoder.close();
             if(idMensajesConComprobEmisores == null)//se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                idMensajesConComprobEmisores = new HashMap<String,Collection<Integer>>();
+                idMensajesConComprobEmisores = new TreeMap<String,Collection<Integer>>();
         } catch (IOException e) {
-            idMensajesConComprobEmisores = new HashMap<String,Collection<Integer>>();
+            idMensajesConComprobEmisores = new TreeMap<String,Collection<Integer>>();
         }
     }
     
-
 
     /**
      * Pre: mensaje no estaba en mensajes,
@@ -123,18 +119,16 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
      */
     @Override
     public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
-        String json = "";
-        FileWriter file;
+        
         
         synchronized (mensajes){
             if(!mensajes.containsKey(mensaje.getId())){ //solo se guarda el mensaje 1 vez
                 mensajes.put(mensaje.getId(), mensaje);
-                json = this.gson.toJson(mensajes);
                 
                 synchronized (MENSAJES_FILE_PATH){
-                    file = new FileWriter(MENSAJES_FILE_PATH);
-                    file.write(json);
-                    file.close();
+                    XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_FILE_PATH)));
+                    encoder.writeObject(mensajes);
+                    encoder.close();
                 }
             }
         }
@@ -156,13 +150,11 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesNoRecibidos.add(mensaje.getId());
                 idMensajesEntregarRecep.put(usuarioReceptor, idMensajesNoRecibidos);
                 
-                json = gson.toJson(idMensajesEntregarRecep);
                 
                 synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
-                    
-                    file = new FileWriter(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH);
-                    file.write(json);
-                    file.close();
+                    XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)));
+                    encoder.writeObject(idMensajesEntregarRecep);
+                    encoder.close();
                 }
             }
             
@@ -182,11 +174,10 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesComprobadoAct.add(mensaje.getId());
                 idMensajesConComprobEmisores.put(nombreEmisor, idMensajesComprobadoAct);
                 
-                json = gson.toJson(idMensajesConComprobEmisores);
                 synchronized (MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH){
-                    file = new FileWriter(MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH);
-                    file.write(json);
-                    file.close();
+                    XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH)));
+                    encoder.writeObject(idMensajesConComprobEmisores);
+                    encoder.close();
                 }
                 
             }
@@ -209,11 +200,10 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             mensaje.addReceptorConfirmado(comprobante.getUsuarioReceptor());
             mensajes.put(mensaje.getId(),mensaje);
             
-            json = gson.toJson(mensajes);
             synchronized (MENSAJES_FILE_PATH){
-                file = new FileWriter(MENSAJES_FILE_PATH);
-                file.write(json);
-                file.close();
+                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_FILE_PATH)));
+                encoder.writeObject(mensajes);
+                encoder.close();
             }
         }
         
@@ -271,14 +261,13 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesRecibidos.remove(mensaje.getId());
                 idMensajesEntregarRecep.put(usuarioReceptor, idMensajesRecibidos);
                 
-                json = gson.toJson(idMensajesEntregarRecep);
             }
             
             synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
                 
-                file = new FileWriter(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH);
-                file.write(json);
-                file.close();
+                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)));
+                encoder.writeObject(idMensajesEntregarRecep);
+                encoder.close();
             }
         }
         
@@ -293,13 +282,12 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             idMensajesRecibidos.add(mensaje.getId());
             idMensajesEntregadosRecep.put(usuarioReceptor, idMensajesRecibidos);
             
-            json = gson.toJson(idMensajesEntregadosRecep);
             
             synchronized (MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH){
                 
-                file = new FileWriter(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH);
-                file.write(json);
-                file.close();
+                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH)));
+                encoder.writeObject(idMensajesEntregadosRecep);
+                encoder.close();
             }
         }
         
@@ -319,8 +307,4 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             return proximoIdMensaje;
         }
     }
-
-
-    
-
 }

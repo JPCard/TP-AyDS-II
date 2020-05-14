@@ -40,5 +40,15 @@ public class MensajeConComprobante extends Mensaje {
     public void addReceptorConfirmado(String usuarioReceptor){
         receptoresConfirmados.add(usuarioReceptor);
     }
-    
+
+
+    public void setReceptoresConfirmados(Collection<String> receptoresConfirmados) {
+        this.receptoresConfirmados = receptoresConfirmados;
+    }
+
+    public Collection<String> getReceptoresConfirmados() {
+        return receptoresConfirmados;
+    }
+
+
 }

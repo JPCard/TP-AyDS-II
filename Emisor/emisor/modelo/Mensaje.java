@@ -18,6 +18,10 @@ public class Mensaje implements Serializable{
     protected Emisor emisor;
     private int id;
     
+    public Mensaje(){ //para la serializacion
+        super();
+    }
+    
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
 
     public Iterator<String> getReceptores() {
@@ -105,6 +109,32 @@ public class Mensaje implements Serializable{
         return sb.toString();
     }
 
+
+    public void setDatetime(GregorianCalendar datetime) {
+        this.datetime = datetime;
+    }
+
+    public void setAsunto(String asunto) {
+        this.asunto = asunto;
+    }
+
+    public void setCuerpo(String cuerpo) {
+        this.cuerpo = cuerpo;
+    }
+
+    public void setEmisor(Emisor emisor) {
+        this.emisor = emisor;
+    }
+
+    public void setUsuariosReceptores(ArrayList<String> usuariosReceptores) {
+        this.usuariosReceptores = usuariosReceptores;
+    }
+
+    public ArrayList<String> getUsuariosReceptores() {
+        return usuariosReceptores;
+    }
+
+
     /**
      * <b>Pre:</b> datetime != null, emisor != null, asunto != null y asunto != "", cuerpo != null, cuerpo != "".
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
@@ -114,5 +144,8 @@ public class Mensaje implements Serializable{
         // el mensaje comun no hace nada
        //
     }
+    
+    
+    
     
 }
