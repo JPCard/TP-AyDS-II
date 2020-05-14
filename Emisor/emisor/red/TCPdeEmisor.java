@@ -66,7 +66,12 @@ public class TCPdeEmisor implements Runnable {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
             socket.connect(addr, 500);
-
+            
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            mensaje.setId((Integer)in.readObject());
+            System.out.println("me llego la id para setear al mensaje: esta es");
+            System.out.println(mensaje.getId());
+            
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(mensaje);
             out.close();
