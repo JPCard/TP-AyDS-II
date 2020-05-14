@@ -50,7 +50,6 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
 
             JSONObject obj2 = (JSONObject) parser.parse(text);
 
-            this.puertoDirectorioRegistro = Integer.parseInt(obj2.get("PuertoDirectorioRegistro").toString());
             this.puertoDirectorioConexion = Integer.parseInt(obj2.get("PuertoDirectorioConexion").toString());
             this.ipServidorMensajeria = obj2.get("IPServidorMensajeria").toString();
             this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
@@ -95,11 +94,19 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
     }
 
     @Override
-    public int cargarPuertoRegistro() throws FileNotFoundException {
+    public String cargarIPServidorMensajeria() {
         if (!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
-
-        return this.puertoDirectorioRegistro;
+        
+        
+        return this.ipServidorMensajeria;
     }
 
+    @Override
+    public int cargarPuertoServidorMensajeria() {
+        if (!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoServidorMensajeria;
+    }
 }

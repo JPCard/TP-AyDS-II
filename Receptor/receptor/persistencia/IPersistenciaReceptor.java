@@ -13,7 +13,9 @@ public interface IPersistenciaReceptor {
     public Receptor cargarReceptor() throws FileNotFoundException ;
     public String cargarIPDirectorio() throws FileNotFoundException;
     public int cargarPuertoConexion() throws FileNotFoundException;
-    public int cargarPuertoRegistro() throws FileNotFoundException;
-    
-   
+
+
+    public String cargarIPServidorMensajeria();
+
+    public int cargarPuertoServidorMensajeria();
 }

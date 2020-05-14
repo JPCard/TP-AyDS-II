@@ -15,7 +15,7 @@ import receptor.red.TCPdeReceptor;
 public class SistemaReceptor {
     private static SistemaReceptor instance = null;
     private Receptor receptor;
-    private TCPdeReceptor tcpdeReceptor = new TCPdeReceptor();
+    private TCPdeReceptor tcpdeReceptor;
     private IPersistenciaReceptor persistencia = new PersistenciaReceptor();
 
     public TCPdeReceptor getTcpdeReceptor() {
@@ -25,7 +25,7 @@ public class SistemaReceptor {
     private SistemaReceptor() throws FileNotFoundException {
         super();
         this.receptor = persistencia.cargarReceptor();
-
+        this.tcpdeReceptor = new TCPdeReceptor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
     }
 
     public Receptor getReceptor() {
@@ -41,8 +41,7 @@ public class SistemaReceptor {
             IPersistenciaReceptor auxPersistencia = instance.persistencia;
             Thread hiloHeartbeat =
                 new Thread(new TCPHeartbeat(auxPersistencia.cargarIPDirectorio(),
-                                            auxPersistencia.cargarPuertoConexion(),
-                                            auxPersistencia.cargarPuertoRegistro()));
+                                            auxPersistencia.cargarPuertoConexion()));
             hiloHeartbeat.start();
 
         }

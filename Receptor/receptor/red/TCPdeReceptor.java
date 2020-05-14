@@ -19,8 +19,12 @@ import receptor.modelo.SistemaReceptor;
 
 public class TCPdeReceptor  implements Runnable{
     
-    public TCPdeReceptor() {
-        super();
+    private String ipServidorMensajeria;
+    private int puertoServidorMensajeria;
+    
+    public TCPdeReceptor(String ipServidorMensajeria, int puertoServidorMensajeria) {
+        this.ipServidorMensajeria = ipServidorMensajeria;
+        this.puertoServidorMensajeria = puertoServidorMensajeria;
     }
 
     
@@ -54,7 +58,7 @@ public class TCPdeReceptor  implements Runnable{
     public void enviarComprobante(Comprobante comprobante,Emisor emisor){
         
         try {
-                Socket socket = new Socket(emisor.getIP(), emisor.getPuerto());
+                Socket socket = new Socket(this.ipServidorMensajeria, this.puertoServidorMensajeria);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(comprobante);
                 out.close();

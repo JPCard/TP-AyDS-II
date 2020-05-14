@@ -28,7 +28,7 @@ import servidormensajeria.red.MensajeListener;
 
 public class SistemaServidor {
     public final static int PUERTO_MENSAJES = 27446;
-    public final static int PUERTO_COMPROBANTES = 27447;
+    public final static int PUERTO_COMPROBANTES = 27447; //todo estos supongo tendrian q salir de algun archivo
     
     private static SistemaServidor instance;
     private IPersistenciaMensajesServidor persistenciaMensajes;
@@ -160,7 +160,7 @@ public class SistemaServidor {
     }
 
     public void guardarComp(Comprobante comprobante) throws Exception{ //TODO llamar a esto en ComprobanteListener
-        guardarComp(comprobante);
+        persistenciaMensajes.guardarComp(comprobante);
     }
 
     
@@ -168,4 +168,7 @@ public class SistemaServidor {
         persistenciaMensajes.marcarMensajeEnviado(mensaje, usuarioReceptor, primerIntento);
     }
 
+    public void arriboComprobante(Comprobante comprobante) {
+        new Thread(new ComprobanteHandler(comprobante)).start();
+    }
 }

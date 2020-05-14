@@ -15,7 +15,7 @@ public class Mensaje implements Serializable{
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
-    private Emisor emisor;
+    protected Emisor emisor;
     private int id;
     private static int nextId = 0;
     
