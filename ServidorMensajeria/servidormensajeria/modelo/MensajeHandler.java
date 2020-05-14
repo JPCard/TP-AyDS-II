@@ -22,24 +22,22 @@ public class MensajeHandler implements Runnable {
 
     @Override
     public void run() {
-        //SistemaServidor.getInstance()
-        //               .getPersistencia()
-        //               .guardarMsj(mensaje); //TODO esto hay que implementarlo jajaaaa
-        //todo guardar los usuarios de los receptores a los que fue entregado el mensaje
-        try {
-            Iterator<String> usuarios = mensaje.getReceptores();
-            while (usuarios.hasNext()) {
-                String usuarioActual = usuarios.next();
+
+        Iterator<String> usuarios = mensaje.getReceptores();
+        while (usuarios.hasNext()) {
+            String usuarioActual = usuarios.next();
+
+            Receptor receptorActual = SistemaServidor.getInstance().getReceptor(usuarioActual);
+            
+            boolean enviado;
+            if (receptorActual != null) {
+                System.out.println("le voy a mandar a este tipo");
+                System.out.println(receptorActual);
+                System.out.println(receptorActual.getIP());
+                System.out.println(receptorActual.getPuerto());
+
                 
-                Receptor receptorActual = SistemaServidor.getInstance().getReceptor(usuarioActual);
-                
-                if(receptorActual != null){
-                    System.out.println("le voy a mandar a este tipo");
-                    System.out.println(receptorActual);
-                    System.out.println(receptorActual.getIP());
-                    System.out.println(receptorActual.getPuerto());
-                
-                    
+                try {
                     Socket socket = new Socket();
                     InetSocketAddress addr = new InetSocketAddress(receptorActual.getIP(), receptorActual.getPuerto());
                     socket.connect(addr, 500);
@@ -49,11 +47,30 @@ public class MensajeHandler implements Runnable {
                     System.out.println("lo escribi!!!");
                     out.close();
                     socket.close();
+
+                    enviado = true;
+                } catch (Exception e) {
+                    //e.printStackTrace(); no se pudo conectar con el receptor
+                    enviado = false;
                 }
-                //else no hago nada porque el receptor estaba desconectado
+                try {
+                    System.out.println(mensaje);
+                    System.out.println(usuarioActual);
+                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado); 
+                } catch (Exception f) {
+                    f.printStackTrace();
+                }
+
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            else{ //receptor desconectado o el directorio no lo conoce
+                enviado = false;
+                try {
+                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);
+                } catch (Exception e) {
+                }
+            }
+
+
         }
     }
 }

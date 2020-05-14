@@ -12,4 +12,6 @@ public interface IPersistenciaParametrosServidor {
     public int cargarPuertoDirectorioTiempoUltModif() throws Exception;
     
     public String cargarMetodoPersistenciaMsjs() throws Exception;
+    
+    
 }

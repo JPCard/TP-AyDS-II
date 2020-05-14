@@ -7,6 +7,7 @@ import emisor.modelo.MensajeConComprobante;
 
 import java.io.IOException;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.json.simple.parser.ParseException;
@@ -16,14 +17,18 @@ import receptor.modelo.Receptor;
 
 public interface IPersistenciaMensajesServidor {
 
-
-    public void guardarMsj(Mensaje mensaje) throws Exception;
+    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
 
     public void guardarComp(Comprobante comprobante) throws Exception;
 
-    public Iterator<Mensaje> cargarMsjsPendientesReceptor(Receptor receptor) throws Exception;
+    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
 
-    public Iterator<MensajeConComprobante> cargarMsjsPendientesEmisor(Emisor emisor) throws Exception;
-
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception;
     
+    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
+
+    public void avanzaProximoIdMensaje(); //una vez que le mandamos el id al emisor
+
+    public int getProximoIdMensaje();
 }
+    

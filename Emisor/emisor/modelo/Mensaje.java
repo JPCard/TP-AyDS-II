@@ -37,7 +37,9 @@ public class Mensaje implements Serializable{
     public int getId() {
         return id;
     }
-    
+
+
+
     @Override
     public boolean equals(Object object) {
         if (this == object) {

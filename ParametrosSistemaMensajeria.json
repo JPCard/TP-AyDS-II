@@ -1,6 +1,6 @@
 {
-	"MetodoPersistencia":"XML"
 	"PuertoDirectorioDest":"27445",
 	"PuertoDirectorioTiempo":"1",
-	"IPDirectorio":"127.0.0.1"
+	"IPDirectorio":"127.0.0.1",
+	"MetodoPersistencia":"XML"
 }
