@@ -34,7 +34,7 @@ public class ComprobanteListener implements Runnable{
                         socket.close();
                         System.out.println("RECIBI UN comprobante");
                         System.out.println("dice que:");
-                        System.out.println(comprobante.getReceptor());
+                        System.out.println(comprobante.getUsuarioReceptor());
                         System.out.println(comprobante.getidMensaje());
                         
                     }

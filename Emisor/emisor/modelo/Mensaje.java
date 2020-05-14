@@ -17,7 +17,6 @@ public class Mensaje implements Serializable{
     private String cuerpo;
     protected Emisor emisor;
     private int id;
-    private static int nextId = 0;
     
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
 
@@ -31,7 +30,7 @@ public class Mensaje implements Serializable{
         this.cuerpo = cuerpo;
         this.emisor = emisor;
         this.usuariosReceptores = usuariosReceptores;
-        this.id = nextId++;
+        this.id=-1;
     }
 
     public int getId() {
@@ -39,6 +38,9 @@ public class Mensaje implements Serializable{
     }
 
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     @Override
     public boolean equals(Object object) {
