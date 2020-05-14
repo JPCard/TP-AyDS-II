@@ -35,12 +35,6 @@ public class Emisor implements Serializable{
             return false;
         }
         final Emisor other = (Emisor) object;
-        if (!(IP == null ? other.IP == null : IP.equals(other.IP))) {
-            return false;
-        }
-        if (puerto != other.puerto) {
-            return false;
-        }
         if (!(nombre == null ? other.nombre == null : nombre.equals(other.nombre))) {
             return false;
         }
@@ -51,8 +45,6 @@ public class Emisor implements Serializable{
     public int hashCode() {
         final int PRIME = 37;
         int result = 1;
-        result = PRIME * result + ((IP == null) ? 0 : IP.hashCode());
-        result = PRIME * result + puerto;
         result = PRIME * result + ((nombre == null) ? 0 : nombre.hashCode());
         return result;
     }
