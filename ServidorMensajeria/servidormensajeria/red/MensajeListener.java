@@ -31,9 +31,10 @@ public class MensajeListener implements Runnable{
                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                         
                         Integer nuevaid = SistemaServidor.getInstance().getPersistencia().getProximoIdMensaje();
-                        SistemaServidor.getInstance().getPersistencia().avanzaProximoIdMensaje();
+                        
                         
                         out.writeObject(nuevaid);//envio al emisor la id con la cual debe rotular su mensaje
+                        SistemaServidor.getInstance().getPersistencia().avanzaProximoIdMensaje(); //solo avanza cuando mando la id
                         System.out.println("soy el directoriole mande la nueva id: ");
                         System.out.println(nuevaid);
                         
