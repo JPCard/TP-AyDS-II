@@ -23,7 +23,7 @@ public class MensajeListener implements Runnable{
     @Override
     public void run(){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_MENSAJES);
+                    ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_RECEPCION_MENSAJES);
                     while (true) {
                         System.out.println("toy esperando");
                         Socket socket = s.accept();
@@ -40,6 +40,7 @@ public class MensajeListener implements Runnable{
                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                         Mensaje mensaje = (Mensaje) in.readObject();
                         SistemaServidor.getInstance().arriboMensaje(mensaje);
+                        out.close();
                         in.close();
                         socket.close();
                         System.out.println("RECIBI UN MENSAJE");

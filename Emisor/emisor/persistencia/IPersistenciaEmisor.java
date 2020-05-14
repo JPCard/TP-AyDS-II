@@ -2,6 +2,10 @@ package emisor.persistencia;
 
 import emisor.modelo.Emisor;
 
+import java.io.IOException;
+
+import org.json.simple.parser.ParseException;
+
 
 public interface IPersistenciaEmisor {
     
@@ -14,4 +18,6 @@ public interface IPersistenciaEmisor {
     public int cargarPuertoDirectorioTiempo()throws Exception;
 
     public int cargarPuertoDirectorioDest()throws Exception;
+
+    public int cargarPuertoServidorSolicitarMensajesEmisor()throws Exception;
 }

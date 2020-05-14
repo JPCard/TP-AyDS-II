@@ -23,11 +23,12 @@ public class TCPDestinatariosRegistrados implements Runnable {
     private String IPDirectorio;
     private int puertoDirectorioTiempo;
     private int puertoDirectorioDestinatarios;
-    public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000;// en MS
-    private Long tiempoUltModif = new Long(-999); 
+    public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000; // en MS
+    private Long tiempoUltModif = new Long(-999);
 
 
-    public TCPDestinatariosRegistrados(String IPDirectorio, int puertoDirectorioTiempo, int puertoDirectorioDestinatarios) {
+    public TCPDestinatariosRegistrados(String IPDirectorio, int puertoDirectorioTiempo,
+                                       int puertoDirectorioDestinatarios) {
         super();
         this.IPDirectorio = IPDirectorio;
         this.puertoDirectorioTiempo = puertoDirectorioTiempo;
@@ -54,26 +55,28 @@ public class TCPDestinatariosRegistrados implements Runnable {
                     socket.close();
                     if (this.getTiempoUltModif() < tiempoUltimaActualizacion) {
                         Socket socketDest = new Socket();
-                        InetSocketAddress addr2 = new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
+                        InetSocketAddress addr2 =
+                            new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
                         socketDest.connect(addr2, 500);
                         ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
-                        
+
                         Collection<Receptor> destinatariosRegistrados;
                         destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
-
+                        System.out.println("EL CONROLADOR EMISOR ES: "+ControladorEmisor.getInstance());
+                        System.out.println("LA AGENDA ES :"+destinatariosRegistrados);
                         ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
-                        
+
                         //for(Iterator<Receptor> it = destinatariosRegistrados.iterator(); it.hasNext(); ){
                         //    System.out.println(it.next().descripcionCompleta());
                         //}
-                        
+
                         this.tiempoUltModif = tiempoUltimaActualizacion;
                         inDest.close();
                         socketDest.close();
                     }
-                    
+
                     ControladorEmisor.getInstance().updateConectado(true);
-                    Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS);//no lo actualiza siempre xq es lindo
+                    Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS); //no lo actualiza siempre xq es lindo
                 }
 
 
