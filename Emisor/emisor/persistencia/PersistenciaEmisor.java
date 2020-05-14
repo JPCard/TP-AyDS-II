@@ -35,6 +35,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     private int puertoDirectorioTiempo;
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
+    private int puertoServidorSolicitarMensajesEmisor;
 
 
     public void cargarJSON(String ubicacion) throws IOException, ParseException {
@@ -47,6 +48,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             
             this.puertoDirectorioDest = Integer.parseInt(obj2.get("PuertoDirectorioDest").toString());            
             this.puertoDirectorioTiempo = Integer.parseInt(obj2.get("PuertoDirectorioTiempo").toString());
+            this.puertoServidorSolicitarMensajesEmisor = Integer.parseInt(obj2.get("PuertoServidorSolicitarMensajesEmisor").toString());
             
             this.ipDirectorio = obj2.get("IPDirectorio").toString();
             
@@ -108,5 +110,13 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
         return this.puertoDirectorioTiempo;
+    }
+
+    @Override
+    public int cargarPuertoServidorSolicitarMensajesEmisor() throws IOException, ParseException{
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoServidorSolicitarMensajesEmisor;
     }
 }

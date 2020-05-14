@@ -6,5 +6,6 @@
 	"PuertoDirectorioTiempo":"1",
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27446",
+	"PuertoServidorSolicitarMensajesEmisor":"27448",
 	"IPServidorMensajeria":"127.0.0.1"
 }

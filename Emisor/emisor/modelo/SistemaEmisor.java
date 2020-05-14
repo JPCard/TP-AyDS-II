@@ -52,7 +52,7 @@ public class SistemaEmisor {
         emisor = persistencia.cargarEmisor();
 
         this.tcpdeEmisor =
-            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria());
+            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(), persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
 
 
     }
@@ -70,6 +70,8 @@ public class SistemaEmisor {
                                                        instance.persistencia.cargarPuertoDirectorioDest()));
         hiloDestinatarios.start();
 
+        System.out.println("Hilos de red comenzados");
+        
     }
 
 
@@ -172,4 +174,13 @@ public class SistemaEmisor {
         this.getEmisor().setAgenda(agenda);
     }
 
+    public void inicializarMensajesConComprobante() {
+        Collection<MensajeConComprobante> mensajesC = instance.tcpdeEmisor.solicitarMensajesEnviados();
+        
+        for(MensajeConComprobante mensaje : mensajesC){
+            instance.guardarMensaje(mensaje);
+                instance.mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
+                ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
+        }
+    }
 }
