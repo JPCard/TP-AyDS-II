@@ -1,5 +1,11 @@
 package directorio.modelo;
 
+import directorio.persistencia.IPersistenciaDirectorio;
+
+import directorio.persistencia.PersistenciaDirectorio;
+
+import directorio.red.ReceptoresAsincronicos;
+
 import emisor.controlador.ControladorEmisor;
 
 import emisor.modelo.SistemaEmisor;
@@ -28,11 +34,60 @@ public class Directorio {
     private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
     private Long tiempoUltModif = new GregorianCalendar().getTimeInMillis(); //en estado inicial ya esta modificado
+    private IPersistenciaDirectorio persistenciaDirectorio;
 
-    public Directorio() {
-        super();
+    private int puertoRecibeHeartbeats;
+    private int puertoRecibeGetDestinatarios;
+    private int puertoRecibeGetUltimoCambio;
+    private String ipServidorMensajeria;
+    private int puertoPushReceptores;
+
+    public int getPuertoRecibeHeartbeats() {
+        return puertoRecibeHeartbeats;
     }
 
+    public int getPuertoRecibeGetDestinatarios() {
+        return puertoRecibeGetDestinatarios;
+    }
+
+    public int getPuertoRecibeGetUltimoCambio() {
+        return puertoRecibeGetUltimoCambio;
+    }
+
+    public IPersistenciaDirectorio getPersistenciaDirectorio() {
+        return persistenciaDirectorio;
+    }
+    private static Directorio instance = null;
+
+    public static Directorio getInstance() {
+        if (instance == null)
+            instance = new Directorio();
+        return instance;
+    }
+
+    private Directorio() {
+        super();
+        this.persistenciaDirectorio = new PersistenciaDirectorio();
+
+        try {
+            this.puertoRecibeGetDestinatarios = this.persistenciaDirectorio.cargarPuertoRecibeGetDestinatarios();
+            this.puertoRecibeGetUltimoCambio = this.persistenciaDirectorio.cargarPuertoRecibeGetUltimoCambio();
+            this.puertoRecibeHeartbeats = this.persistenciaDirectorio.cargarPuertoRecibeHeartbeats();
+            this.ipServidorMensajeria = this.persistenciaDirectorio.cargarIPServidorMensajeria();
+            this.puertoPushReceptores = this.persistenciaDirectorio.cargarpuertoPushReceptores();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getIpServidorMensajeria() {
+        return ipServidorMensajeria;
+    }
+
+    public int getPuertoPushReceptores() {
+        return puertoPushReceptores;
+    }
 
     /**
      *
@@ -53,62 +108,69 @@ public class Directorio {
      * @param receptor
      */
     public void heartbeatRecibido(Receptor receptor) {
-        
+
         synchronized (receptores) {
             synchronized (tiempos) {
                 this.tiempos.put(receptor.getUsuario(), GregorianCalendar.getInstance().getTimeInMillis());
             }
-            if (this.receptores.containsKey(receptor.getUsuario())) { 
+            if (this.receptores.containsKey(receptor.getUsuario())) {
                 Receptor receptorAnt = receptores.remove(receptor.getUsuario());
-                if ( !receptorAnt.isConectado() || !Receptor.equalsDatosNoIdentif(receptorAnt, receptor)){
-                    //detecta si alguien cambia de estado de conexion (de desconectado a conectado), IP, puerto o nombre 
+                if (!receptorAnt.isConectado() || !Receptor.equalsDatosNoIdentif(receptorAnt, receptor)) {
+                    if (!receptorAnt.isConectado())
+                        notificarNuevoReceptor(receptor); //volvio! avisemos
+                    //detecta si alguien cambia de estado de conexion (de desconectado a conectado), IP, puerto o nombre
                     receptor.setConectado(true); //acaba de llegar por lo que esta conectado
                     this.receptores.put(receptor.getUsuario(), receptor);
                     this.updateTiempoUltModif();
-                }
-                else
+                } else
                     this.receptores.put(receptorAnt.getUsuario(), receptorAnt); //como no habia cambiado lo devuelvo
             } else {
+                notificarNuevoReceptor(receptor); //nuevo, no vino antes
                 receptor.setConectado(true); //acaba de llegar por lo que esta conectado
                 this.receptores.put(receptor.getUsuario(), receptor);
                 this.updateTiempoUltModif();
             }
-            
+
         }
-        
-        
+
+
         // lo metes al treemap y pones el tiempo actual en tiempos
 
     }
 
+    private void notificarNuevoReceptor(Receptor receptor) {
+        System.out.println("apache");
+        ReceptoresAsincronicos.avisarReceptorSeConecto(receptor);
+    }
+
+
     public Collection<Receptor> listaDestinatariosRegistrados() {
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
         boolean alguienSeFue = false;
-        
+
         synchronized (tiempos) { //para que no puedan cambiar los tiempos mientras se evaluan los online de cada receptor
             synchronized (receptores) {
                 for (Object obj : receptores.values()) {
                     Receptor receptor = (Receptor) obj;
                     boolean online;
-                    
-                        online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
+
+                    online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
                     if (!alguienSeFue && receptor.isConectado() && !online) // se fue alguien
                     {
                         alguienSeFue = true;
                     }
-    
+
                     receptor.setConectado(online);
-    
+
                 }
             }
 
         }
-        
-        if(alguienSeFue)
-            this.updateTiempoUltModif(); 
-        
-        
-        
+
+        if (alguienSeFue)
+            this.updateTiempoUltModif();
+
+
         return this.getReceptores();
     }
 

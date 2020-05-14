@@ -25,10 +25,10 @@ public class HeartbeatThread extends Thread {
     private final int HEARTBEAT_PORT;
 
 
-    public HeartbeatThread(Directorio directorio, int HEARTBEAT_PORT) {
+    public HeartbeatThread(Directorio directorio) {
         super();
         this.directorio = directorio;
-        this.HEARTBEAT_PORT = HEARTBEAT_PORT;
+        this.HEARTBEAT_PORT = directorio.getPuertoRecibeHeartbeats();
     }
 
     @Override
