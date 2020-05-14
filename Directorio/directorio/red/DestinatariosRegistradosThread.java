@@ -20,10 +20,10 @@ public class DestinatariosRegistradosThread extends Thread {
     private int getDestinatariosPort;
 
 
-    public DestinatariosRegistradosThread(Directorio directorio, int getDestinatariosPort) {
+    public DestinatariosRegistradosThread(Directorio directorio) {
         super();
         this.directorio = directorio;
-        this.getDestinatariosPort = getDestinatariosPort;
+        this.getDestinatariosPort = directorio.getPuertoRecibeGetDestinatarios();
     }
 
     @Override

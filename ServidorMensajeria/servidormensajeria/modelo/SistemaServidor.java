@@ -32,7 +32,7 @@ public class SistemaServidor {
     public final static int PUERTO_RECEPCION_MENSAJES = 27446;
     public final static int PUERTO_COMPROBANTES = 27447;
     public static final int PUERTO_DEVOLVER_MENSAJES_A_EMISORES = 27448;
-    public static final int PUERTO_DEVOLVER_MENSAJES_A_RECEPTORES=41149; //todo estos supongo tendrian q salir de algun archivo
+    public static final int PUERTO_INFO_DIRECTORIO = 41149; //todo estos supongo tendrian q salir de algun archivo
     
     private static SistemaServidor instance;
     private IPersistenciaMensajesServidor persistenciaMensajes;
@@ -73,6 +73,7 @@ public class SistemaServidor {
         
         new Thread(new SolicitudMensajesEmisoresListener()).start();
         
+        new Thread(instance.tcpParaDirectorio).start();
         
     }
 

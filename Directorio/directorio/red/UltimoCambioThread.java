@@ -19,10 +19,10 @@ public class UltimoCambioThread extends Thread {
         this.escuchar();
     }
 
-    public UltimoCambioThread(Directorio directorio, int ULTIMOCAMBIO_PORT) {
+    public UltimoCambioThread(Directorio directorio) {
         super();
         this.directorio = directorio;
-        this.ULTIMOCAMBIO_PORT = ULTIMOCAMBIO_PORT;
+        this.ULTIMOCAMBIO_PORT = directorio.getPuertoRecibeGetUltimoCambio();
     }
     
     
