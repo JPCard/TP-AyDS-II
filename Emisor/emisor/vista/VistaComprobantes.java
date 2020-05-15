@@ -315,10 +315,15 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
     @Override
     public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
-        listModelMensajes.add(0, mensaje);
-        if(listModelMensajes.size() == 1){
-            this.jListMensajes.setSelectedIndex(0);
+        
+        //este IF se agrego para evitar que cuando se cargan los con comprobante 2 veces no se vean 2 veces
+        if(!listModelMensajes.contains(mensaje)){
+            listModelMensajes.add(0, mensaje);
+            if(listModelMensajes.size() == 1){
+                this.jListMensajes.setSelectedIndex(0);
+            }
         }
+        
     }
 
     @Override
