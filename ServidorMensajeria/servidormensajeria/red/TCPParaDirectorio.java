@@ -43,7 +43,7 @@ public class TCPParaDirectorio implements Runnable {
 
     /**
      * @param usuarioActual
-     * @return null si el receptor no esta conectado o no lo encontró, != null si el receptor esta conectado
+     * @return null si el receptor no esta conectado o no lo encontrÃ³, != null si el receptor esta conectado
      */
 
 
@@ -118,8 +118,8 @@ public class TCPParaDirectorio implements Runnable {
 
                     Collection<Mensaje> mensajes =
                         SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
-                    for (Mensaje m : mensajes) {
-                        new Thread(new MensajeHandler(m)).start();//todo banderita arrastrada
+                    for (Mensaje mensaje : mensajes) {
+                        new Thread(new MensajeHandler(mensaje,false)).start();//todo banderita arrastrada
                     }
 
 

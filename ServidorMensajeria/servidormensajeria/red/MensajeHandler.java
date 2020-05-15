@@ -17,9 +17,20 @@ import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeHandler implements Runnable {
     private Mensaje mensaje;
+    private boolean primerIntento = true;
+    
+    
 
-    public MensajeHandler(Mensaje mensaje) {
+    /**
+     * 
+     * @param mensaje          mensaje a enviar
+     * @param primerIntento    si el mensaje es sincronico o asincronico <br>
+     *                         primerIntento = true  -> mensaje sincronico <br>
+     *                         primerIntento = false -> mensaje asincronico <br>
+     */
+    public MensajeHandler(Mensaje mensaje, boolean primerIntento) {
         this.mensaje = mensaje;
+        this.primerIntento = primerIntento;
     }
 
     @Override
@@ -55,21 +66,20 @@ public class MensajeHandler implements Runnable {
                     //e.printStackTrace(); no se pudo conectar con el receptor
                     enviado = false;
                 }
-                try {
-                    System.out.println(mensaje);
-                    System.out.println(usuarioActual);
-                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado); 
-                } catch (Exception f) {
-                    f.printStackTrace();
-                }
-
             }
             else{ //receptor desconectado o el directorio no lo conoce
                 enviado = false;
-                try {
-                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);
-                } catch (Exception e) {
+            }
+            
+            try {
+                System.out.println(mensaje);
+                System.out.println(usuarioActual);
+                SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado); 
+                if( !primerIntento && enviado ){ //si se manda pero no es a la primera hay que marcar que se mando
+                    SistemaServidor.getInstance().marcarMensajeEnviado(mensaje, usuarioActual, false);
                 }
+            } catch (Exception f) {
+                f.printStackTrace();
             }
 
 
