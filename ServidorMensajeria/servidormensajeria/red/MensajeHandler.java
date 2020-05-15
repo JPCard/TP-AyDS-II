@@ -1,4 +1,4 @@
-package servidormensajeria.modelo;
+package servidormensajeria.red;
 
 import emisor.modelo.Mensaje;
 import emisor.modelo.SistemaEmisor;
@@ -12,6 +12,8 @@ import java.net.Socket;
 import java.util.Iterator;
 
 import receptor.modelo.Receptor;
+
+import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeHandler implements Runnable {
     private Mensaje mensaje;
