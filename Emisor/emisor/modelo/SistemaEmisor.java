@@ -52,7 +52,8 @@ public class SistemaEmisor {
         emisor = persistencia.cargarEmisor();
 
         this.tcpdeEmisor =
-            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(), persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
+            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
+                            persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
 
 
     }
@@ -69,9 +70,9 @@ public class SistemaEmisor {
                                                        instance.persistencia.cargarPuertoDirectorioTiempo(),
                                                        instance.persistencia.cargarPuertoDirectorioDest()));
         hiloDestinatarios.start();
-        
+
         System.out.println("Hilos de red comenzados");
-        
+
     }
 
 
@@ -90,18 +91,22 @@ public class SistemaEmisor {
 
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
-        Mensaje mensaje = MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
-        this.guardarMensaje(mensaje);
 
-        if (tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE) {
-            mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
-            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
-        }
+        Mensaje mensaje =
+            MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+
 
         return this.getTcpdeEmisor().enviarMensaje(mensaje);
     }
 
-    private void guardarMensaje(Mensaje mensaje) {
+    public void guardarMensaje(Mensaje mensaje) {
+
+        if (mensaje instanceof MensajeConComprobante) {
+            mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
+            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
+        }
+
+
         this.mensajesEnviados.put(mensaje.getId(), mensaje);
     }
 
@@ -117,9 +122,18 @@ public class SistemaEmisor {
     }
 
     public void agregarComprobante(Comprobante comprobante) {
+        System.out.println("me llamaron");
         int idMensaje = comprobante.getidMensaje();
+        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
+        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
         synchronized (mensajesConComprobante) {
+            //            System.out.println(mensajesConComprobante);
+            System.out.println("llegue al synch");
+            //            System.out.println("FIN MENsaJES CON COMPROBANTE");
             if (this.mensajesConComprobante.containsKey(idMensaje)) {
+                System.out.println("contengo");
+
+                //
                 synchronized (listasReceptoresConfirmados) {
                     if (!listasReceptoresConfirmados.containsKey(idMensaje))
                         listasReceptoresConfirmados.put(idMensaje,
@@ -153,15 +167,24 @@ public class SistemaEmisor {
         return this.getEmisor().getPuerto();
     }
 
-    public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
-        ArrayList<String> receptoresConfirmados = null;
-        synchronized (listasReceptoresConfirmados) {
-            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
-        }
-        if (receptoresConfirmados == null)
-            return false;
-        else
-            return receptoresConfirmados.contains(usuarioReceptor);
+    public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
+
+        int id = mensajeSeleccionado.getId();
+        System.out.println("la id a buscar es: " + id);
+        return mensajesConComprobante.get(id)
+                                     .getReceptoresConfirmados()
+                                     .contains(usuarioReceptor);
+
+        //        ArrayList<String> receptoresConfirmados = null;
+        //        synchronized (listasReceptoresConfirmados) {
+        //            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
+        //        }
+        //        if (receptoresConfirmados == null)
+        //            return false;
+        //        else
+        //            return receptoresConfirmados.contains(usuarioReceptor);
+        //
+
     }
 
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
@@ -176,11 +199,10 @@ public class SistemaEmisor {
 
     public void inicializarMensajesConComprobante() {
         Collection<MensajeConComprobante> mensajesC = instance.tcpdeEmisor.solicitarMensajesEnviados();
-        
-        for(MensajeConComprobante mensaje : mensajesC){
+        for (MensajeConComprobante mensaje : mensajesC) {
             instance.guardarMensaje(mensaje);
-                instance.mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
-                ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
+            instance.mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
+            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
     }
 }

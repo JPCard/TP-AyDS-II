@@ -134,7 +134,7 @@ public class ControladorEmisor {
             vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }
 
-    public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
+    public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
         return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor);
     }
 
