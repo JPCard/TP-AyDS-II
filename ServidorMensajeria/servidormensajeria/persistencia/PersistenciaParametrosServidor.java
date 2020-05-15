@@ -31,6 +31,10 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
     private int puertoDirectorioDest;
     private int puertoDirectorioTiempo;
     private String idMetodoPersistencia;
+    private int puertoRecepcionMensajes;
+    private int puertoComprobantes;
+    private int puertoDevolverMensajesEmisores;
+    private int puertoInfoDirectorio;
     
     
     public PersistenciaParametrosServidor() {
@@ -47,6 +51,10 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
         this.puertoDirectorioDest = Integer.parseInt(obj.get("PuertoDirectorioDest").toString());            
         this.puertoDirectorioTiempo = Integer.parseInt(obj.get("PuertoDirectorioTiempo").toString());
         this.idMetodoPersistencia = obj.get("MetodoPersistencia").toString();
+        this.puertoRecepcionMensajes = Integer.parseInt(obj.get("PuertoRecepcionMensajes").toString());
+        this.puertoComprobantes = Integer.parseInt(obj.get("PuertoComprobantes").toString());
+        this.puertoDevolverMensajesEmisores = Integer.parseInt(obj.get("PuertoDevolverMensajesEmisores").toString());
+        this.puertoInfoDirectorio = Integer.parseInt(obj.get("PuertoInfoDirectorio").toString());
         this.cargado = true;
     }
 
@@ -85,5 +93,35 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
     }
 
 
+    @Override
+    public int cargarPuertoRecepcionMensajes() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoRecepcionMensajes;
+    }
 
+    @Override
+    public int cargarPuertoComprobantes() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoComprobantes;
+    }
+
+    @Override
+    public int cargarPuertoDevolverMensajesEmisores() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoDevolverMensajesEmisores;
+    }
+
+    @Override
+    public int cargarPuertoInfoDirectorio() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        return this.puertoInfoDirectorio;
+    }
 }

@@ -106,7 +106,7 @@ public class TCPParaDirectorio implements Runnable {
     public void run() {
         while (true) {
             try {
-                ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_INFO_DIRECTORIO); // TODO
+                ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoInfoDirectorio());
 
                 while (true) {
                     System.out.println("Hilo notifica sistema de mensajes: esperando");

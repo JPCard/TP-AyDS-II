@@ -27,10 +27,6 @@ import servidormensajeria.red.MensajeListener;
 import servidormensajeria.red.SolicitudMensajesEmisoresListener;
 
 public class SistemaServidor {
-    public final static int PUERTO_RECEPCION_MENSAJES = 27446;
-    public final static int PUERTO_COMPROBANTES = 27447;
-    public static final int PUERTO_DEVOLVER_MENSAJES_A_EMISORES = 27448;
-    public static final int PUERTO_INFO_DIRECTORIO = 41149; //todo estos supongo tendrian q salir de algun archivo
     
     private static SistemaServidor instance;
     private IPersistenciaMensajesServidor persistenciaMensajes;
@@ -170,6 +166,22 @@ public class SistemaServidor {
     public void arriboComprobante(Comprobante comprobante) {
         new Thread(new ComprobanteHandler(comprobante)).start();
     }
-
+    
+    
+    public int cargarPuertoRecepcionMensajes()  throws Exception{
+        return persistenciaParametros.cargarPuertoRecepcionMensajes();
+    }
+    
+    public int cargarPuertoComprobantes()  throws Exception{
+        return persistenciaParametros.cargarPuertoComprobantes();
+    }
+    
+    public int cargarPuertoDevolverMensajesEmisores()  throws Exception{
+        return persistenciaParametros.cargarPuertoDevolverMensajesEmisores();
+    }
+    
+    public int cargarPuertoInfoDirectorio()  throws Exception{
+        return persistenciaParametros.cargarPuertoInfoDirectorio();
+    }
     
 }

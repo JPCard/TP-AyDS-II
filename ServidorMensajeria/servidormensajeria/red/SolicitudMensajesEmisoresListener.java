@@ -20,7 +20,7 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
     @Override
     public void run(){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_DEVOLVER_MENSAJES_A_EMISORES);
+                    ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoDevolverMensajesEmisores());
                     while (true) {
                         System.out.println("Servicio de recuperacion de mensajes para emisores: esperando...");
                         Socket socket = s.accept();

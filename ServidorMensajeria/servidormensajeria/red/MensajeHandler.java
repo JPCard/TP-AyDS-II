@@ -74,8 +74,10 @@ public class MensajeHandler implements Runnable {
             try {
                 System.out.println(mensaje);
                 System.out.println(usuarioActual);
-                SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado); 
-                if( !primerIntento && enviado ){ //si se manda pero no es a la primera hay que marcar que se mando
+                if(primerIntento){
+                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
+                }
+                else if(enviado){ //si se manda pero no es a la primera hay que marcar que se mando
                     SistemaServidor.getInstance().marcarMensajeEnviado(mensaje, usuarioActual, false);
                 }
             } catch (Exception f) {

@@ -23,7 +23,7 @@ public class ComprobanteListener implements Runnable{
     @Override
     public void run(){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_COMPROBANTES);
+                    ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoComprobantes());
                     while (true) {
                         System.out.println("Esperando comprobantes...");
                         Socket socket = s.accept();
