@@ -8,9 +8,6 @@ import emisor.modelo.MensajeConComprobante;
 import java.util.ArrayList;
 
 import java.util.Collection;
-import java.util.HashMap;
-
-import java.util.Iterator;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
@@ -19,8 +16,7 @@ import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
 
 import servidormensajeria.persistencia.IPersistenciaParametrosServidor;
 
-import servidormensajeria.persistencia.PersistenciaMensajesServidorJSON;
-import servidormensajeria.persistencia.PersistenciaMensajesServidorXML;
+import servidormensajeria.persistencia.PersistenciaMensajesFactory;
 import servidormensajeria.persistencia.PersistenciaParametrosServidor;
 
 import servidormensajeria.red.TCPParaDirectorio;
@@ -47,22 +43,15 @@ public class SistemaServidor {
     private int puertoDirectorioDest;
     private int puertoDirectorioTiempo;
     
-    //private HashMap<Integer,Mensaje> mensajes;
-    //private HashMap<Receptor,Collection<Integer>> idMensajesEntregadosRecep;
-    //private HashMap<Receptor,Collection<Integer>> idMensajesParaEntregarRecep;
-    //private HashMap<Emisor,Collection<Integer>> idMensajesParaEmisores;
 
     public static void main(String[] args) throws Exception {
         SistemaServidor sistema = getInstance();
-        //la linea anterior hay que cargar del archivo el metodo de persistencia
-        //String id_metodo = sistema.persistenciaParametros.cargarMetodoPersistenciaMsjs();
-        //metodoPersistenciaMsjsFactory.instance(id_metodo); TODO
-        
-        
-        sistema.persistenciaMensajes = new PersistenciaMensajesServidorXML();//TODO cambiar para que se cargue desp
-        
         
         IPersistenciaParametrosServidor persistencia = sistema.persistenciaParametros;
+        
+        String metodoPersistencia = persistencia.cargarMetodoPersistenciaMsjs();
+        sistema.persistenciaMensajes = PersistenciaMensajesFactory.getInstance().crearMetodoPersistenciaMensajes(metodoPersistencia);
+        
         sistema.ipDirectorio = persistencia.cargarIPDirectorio();
         sistema.puertoDirectorioDest = persistencia.cargarPuertoDirectorioDestinatarios();
         sistema.puertoDirectorioTiempo = persistencia.cargarPuertoDirectorioTiempoUltModif();
@@ -167,7 +156,7 @@ public class SistemaServidor {
         persistenciaMensajes.guardarMsj(mensaje, usuarioReceptor, entregado);
     }
 
-    public void guardarComp(Comprobante comprobante) throws Exception{ //TODO llamar a esto en ComprobanteListener
+    public void guardarComp(Comprobante comprobante) throws Exception{ 
         persistenciaMensajes.guardarComp(comprobante);
     }
 
@@ -179,4 +168,6 @@ public class SistemaServidor {
     public void arriboComprobante(Comprobante comprobante) {
         new Thread(new ComprobanteHandler(comprobante)).start();
     }
+
+    
 }
