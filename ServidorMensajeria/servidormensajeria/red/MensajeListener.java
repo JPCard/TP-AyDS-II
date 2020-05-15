@@ -23,7 +23,7 @@ public class MensajeListener implements Runnable{
     @Override
     public void run(){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_RECEPCION_MENSAJES);
+                    ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoRecepcionMensajes());
                     while (true) {
                         System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
                         Socket socket = s.accept();

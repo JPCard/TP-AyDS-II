@@ -11,5 +11,13 @@ public interface IPersistenciaParametrosServidor {
     
     public String cargarMetodoPersistenciaMsjs() throws Exception;
     
+    public int cargarPuertoRecepcionMensajes()  throws Exception;
+    
+    public int cargarPuertoComprobantes()  throws Exception;
+    
+    public int cargarPuertoDevolverMensajesEmisores()  throws Exception;
+    
+    public int cargarPuertoInfoDirectorio()  throws Exception;
+    
     
 }
