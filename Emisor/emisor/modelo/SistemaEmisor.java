@@ -153,15 +153,20 @@ public class SistemaEmisor {
         return this.getEmisor().getPuerto();
     }
 
-    public boolean isComprobado(Mensaje mensajeSeleccionado, String usuarioReceptor) {
-        ArrayList<String> receptoresConfirmados = null;
-        synchronized (listasReceptoresConfirmados) {
-            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
-        }
-        if (receptoresConfirmados == null)
-            return false;
-        else
-            return receptoresConfirmados.contains(usuarioReceptor);
+    public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
+        
+            return mensajeSeleccionado.getReceptoresConfirmados().contains(usuarioReceptor);
+        
+//        ArrayList<String> receptoresConfirmados = null;
+//        synchronized (listasReceptoresConfirmados) {
+//            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
+//        }
+//        if (receptoresConfirmados == null)
+//            return false;
+//        else
+//            return receptoresConfirmados.contains(usuarioReceptor);
+//    
+    
     }
 
     public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
@@ -176,7 +181,6 @@ public class SistemaEmisor {
 
     public void inicializarMensajesConComprobante() {
         Collection<MensajeConComprobante> mensajesC = instance.tcpdeEmisor.solicitarMensajesEnviados();
-        
         for(MensajeConComprobante mensaje : mensajesC){
             instance.guardarMensaje(mensaje);
                 instance.mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);

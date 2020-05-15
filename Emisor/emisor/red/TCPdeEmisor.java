@@ -50,11 +50,9 @@ public class TCPdeEmisor implements Runnable {
      * Precondicion: El objeto que llega en XML es siempre un comprobante
      */
     public void run() {
-//        System.out.println("borrame 12321321321321");
         try {
             SistemaEmisor.getInstance().inicializarMensajesConComprobante();
             ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
-            
             while (true) {
                 Socket socket = s.accept();
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -79,22 +77,23 @@ public class TCPdeEmisor implements Runnable {
             new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeriaSolicitarMensajes);
 
         Collection<MensajeConComprobante> mensajesConComprobantePropios = null;
-
-        while (mensajesConComprobantePropios == null)
+        System.out.println("hastaan tes del while");
+        
+        boolean leido = false;
+        
+        while (!leido)
             try {
                 socket.connect(addr, 500);
+                
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 out.writeObject(SistemaEmisor.getInstance()
                                 .getEmisor()); //envio al emisor la id con la cual debe rotular su mensaje
-
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 mensajesConComprobantePropios = (Collection<MensajeConComprobante>) in.readObject();
-
                 out.close();
                 in.close();
                 socket.close();
-                return mensajesConComprobantePropios; //todo
-
+                leido=true;
             } catch (IOException e) {
             } catch (ClassNotFoundException e) {
             }

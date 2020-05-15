@@ -27,10 +27,10 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                         
                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                         Emisor emisor = (Emisor) in.readObject();
-                        
+                        System.out.println(emisor.getNombre()+" acaba de solicitar sus mensajes con comprobante");
                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                         out.writeObject(SistemaServidor.getInstance().getPersistencia().obtenerMsjsComprobadosEmisor(emisor));//envio al emisor la id con la cual debe rotular su mensaje
-                        
+                        System.out.println("le fueron enviados");
                         out.close();
                         in.close();
                         socket.close();

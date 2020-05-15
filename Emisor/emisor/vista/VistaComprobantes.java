@@ -40,8 +40,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
             
             String usuarioReceptor = (String) value;
             VistaComprobantes v = (VistaComprobantes)ControladorEmisor.getInstance().getVistaComprobantes();
-            Mensaje mensajeSeleccionado = v.jListMensajes.getSelectedValue();
-            
+            MensajeConComprobante mensajeSeleccionado = v.jListMensajes.getSelectedValue();
             if (ControladorEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor)) {
                 c.setBackground(Color.green);
             } else {

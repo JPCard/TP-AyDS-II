@@ -44,6 +44,7 @@ public class ComprobanteHandler implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("timeout");
         }
     }
 }

@@ -32,7 +32,7 @@ public class ComprobanteListener implements Runnable{
                         SistemaServidor.getInstance().arriboComprobante(comprobante);
                         in.close();
                         socket.close();
-                        System.out.println("Comprobante de "+comprobante.getEmisorOriginal().getNombre()+" para "+comprobante.getUsuarioReceptor()+" recibido");
+                        System.out.println("Comprobante para "+comprobante.getEmisorOriginal().getNombre()+" de "+comprobante.getUsuarioReceptor()+" recibido");
                         
                     }
             }
