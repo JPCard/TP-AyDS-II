@@ -26,7 +26,6 @@ import java.util.TreeSet;
 
 import receptor.modelo.Receptor;
 
-import servidormensajeria.modelo.MensajeHandler;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPParaDirectorio implements Runnable {
@@ -118,8 +117,8 @@ public class TCPParaDirectorio implements Runnable {
 
                     Collection<Mensaje> mensajes =
                         SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
-                    for (Mensaje m : mensajes) {
-                        new Thread(new MensajeHandler(m)).start();//todo banderita arrastrada
+                    for (Mensaje mensaje : mensajes) {
+                        new Thread(new MensajeHandler(mensaje,false)).start();//todo banderita arrastrada
                     }
 
 
