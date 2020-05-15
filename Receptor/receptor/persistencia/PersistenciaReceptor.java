@@ -59,13 +59,14 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
                 new Receptor(obj2.get("IPPropia").toString(), Integer.parseInt(obj2.get("PuertoPropio").toString()),
                              obj2.get("Nombre").toString(), obj2.get("Usuario").toString());
             this.receptor = receptor;
+            System.out.println("Programa receptor: datos cargados");
             System.out.println(receptor.descripcionCompleta());
 
             this.cargado = true;
         } catch (IOException e) {
-            System.out.println("ERROR DE I/O En carga de emisor");
+            System.out.println("ERROR DE I/O En carga de receptor");
         } catch (ParseException e) {
-            System.out.println("ERROR dE PARSEO");
+            System.out.println("eRROR de parseo en carga de receptor");
         }
 
     }

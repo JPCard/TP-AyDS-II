@@ -25,17 +25,14 @@ public class ComprobanteListener implements Runnable{
             try {
                     ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_COMPROBANTES);
                     while (true) {
-                        System.out.println("toy esperando un comprobante");
+                        System.out.println("Esperando comprobantes...");
                         Socket socket = s.accept();
                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                         Comprobante comprobante = (Comprobante) in.readObject();
                         SistemaServidor.getInstance().arriboComprobante(comprobante);
                         in.close();
                         socket.close();
-                        System.out.println("RECIBI UN comprobante");
-                        System.out.println("dice que:");
-                        System.out.println(comprobante.getUsuarioReceptor());
-                        System.out.println(comprobante.getidMensaje());
+                        System.out.println("Comprobante de "+comprobante.getEmisorOriginal().getNombre()+" para "+comprobante.getUsuarioReceptor()+" recibido");
                         
                     }
             }

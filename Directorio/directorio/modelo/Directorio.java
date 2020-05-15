@@ -139,7 +139,7 @@ public class Directorio {
     }
 
     private void notificarNuevoReceptor(Receptor receptor) {
-        System.out.println("apache");
+//        System.out.println("apache");
         ReceptoresAsincronicos.avisarReceptorSeConecto(receptor);
     }
 

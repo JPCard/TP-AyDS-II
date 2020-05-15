@@ -29,12 +29,13 @@ public class ComprobanteHandler implements Runnable {
             Emisor emisor = comprobante.getEmisorOriginal();
 
             Socket socket = new Socket();
+//            System.out.println("BORRAME"+this.comprobante.getEmisorOriginal().getPuerto()+" asdsada "+this.comprobante.getEmisorOriginal().getIP());
             InetSocketAddress addr = new InetSocketAddress(emisor.getIP(),emisor.getPuerto());
             socket.connect(addr, 500);
-            System.out.println("toy por mandar el object!");
+//            System.out.println("toy por mandar el object!");
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(this.comprobante);
-            System.out.println("lo escribi!!!");
+//            System.out.println("lo escribi!!!");
             out.close();
             socket.close();
 

@@ -26,7 +26,7 @@ import java.util.TreeSet;
 
 import receptor.modelo.Receptor;
 
-import servidormensajeria.modelo.MensajeHandler;
+import servidormensajeria.red.MensajeHandler;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPParaDirectorio implements Runnable {
@@ -86,7 +86,7 @@ public class TCPParaDirectorio implements Runnable {
 
             int indice =
                 Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual));
-            System.out.println("INDICE INDICE INDICE " + indice);
+//            System.out.println("INDICE INDICE INDICE " + indice);
             if (indice == -1)
                 return null;
             else
@@ -109,7 +109,7 @@ public class TCPParaDirectorio implements Runnable {
                 ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_INFO_DIRECTORIO); // TODO
 
                 while (true) {
-                    System.out.println("Hilo recibe notificaciones de cuando llega un nuevo receptor para poder mandarle los mensajes q le corresponden: esperando");
+                    System.out.println("Hilo notifica sistema de mensajes: esperando");
                     Socket socket = s.accept();
                     System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
                     ObjectInputStream in = null;

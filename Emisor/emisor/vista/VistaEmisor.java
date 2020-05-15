@@ -716,7 +716,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.validate();
         this.repaint();
 
-        System.out.println("CARGARCONTACTOS");
+//        System.out.println("CARGARCONTACTOS");
     }
 
 
