@@ -26,6 +26,7 @@ public class ComprobanteHandler implements Runnable {
     @Override
     public void run() {
         try {
+            SistemaServidor.getInstance().guardarComp(comprobante);
             Emisor emisor = comprobante.getEmisorOriginal();
 
             Socket socket = new Socket();
@@ -39,7 +40,7 @@ public class ComprobanteHandler implements Runnable {
             out.close();
             socket.close();
 
-            SistemaServidor.getInstance().guardarComp(comprobante);
+            
             
 
         } catch (Exception e) {
