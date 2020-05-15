@@ -80,7 +80,7 @@ public class PanelEstadoConexion extends JPanel{
     public void updateConectado() {
         
         this.add(labelIncierto);
-        System.out.println("meti label incierto");
+//        System.out.println("meti label incierto");
         repaint();
     }
 

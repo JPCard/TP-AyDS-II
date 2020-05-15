@@ -50,10 +50,11 @@ public class TCPdeEmisor implements Runnable {
      * Precondicion: El objeto que llega en XML es siempre un comprobante
      */
     public void run() {
+//        System.out.println("borrame 12321321321321");
         try {
             SistemaEmisor.getInstance().inicializarMensajesConComprobante();
-            
             ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
+            
             while (true) {
                 Socket socket = s.accept();
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
@@ -64,8 +65,10 @@ public class TCPdeEmisor implements Runnable {
             }
 
         } catch (BindException e) { //IP y puerto ya estaban utilizados
+            System.out.println("error de emisor: el puerto de recepcion esta ocupado");
             System.exit(1);
         } catch (Exception e) {
+            System.out.println("algo mas general");
             e.printStackTrace();
         }
     }
@@ -107,8 +110,8 @@ public class TCPdeEmisor implements Runnable {
 
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             mensaje.setId((Integer) in.readObject());
-            System.out.println("me llego la id para setear al mensaje: esta es");
-            System.out.println(mensaje.getId());
+//            System.out.println("me llego la id para setear al mensaje: esta es");
+//            System.out.println(mensaje.getId());
 
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(mensaje);

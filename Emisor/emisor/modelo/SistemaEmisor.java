@@ -69,7 +69,7 @@ public class SistemaEmisor {
                                                        instance.persistencia.cargarPuertoDirectorioTiempo(),
                                                        instance.persistencia.cargarPuertoDirectorioDest()));
         hiloDestinatarios.start();
-
+        
         System.out.println("Hilos de red comenzados");
         
     }

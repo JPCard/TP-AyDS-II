@@ -62,8 +62,8 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
                         Collection<Receptor> destinatariosRegistrados;
                         destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
-                        System.out.println("EL CONROLADOR EMISOR ES: "+ControladorEmisor.getInstance());
-                        System.out.println("LA AGENDA ES :"+destinatariosRegistrados);
+//                        System.out.println("EL CONROLADOR EMISOR ES: "+ControladorEmisor.getInstance());
+//                        System.out.println("LA AGENDA ES :"+destinatariosRegistrados);
                         ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
 
                         //for(Iterator<Receptor> it = destinatariosRegistrados.iterator(); it.hasNext(); ){

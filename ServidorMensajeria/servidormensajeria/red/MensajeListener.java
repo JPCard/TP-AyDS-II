@@ -25,7 +25,7 @@ public class MensajeListener implements Runnable{
             try {
                     ServerSocket s = new ServerSocket(SistemaServidor.PUERTO_RECEPCION_MENSAJES);
                     while (true) {
-                        System.out.println("toy esperando");
+                        System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
                         Socket socket = s.accept();
                         
                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -35,22 +35,14 @@ public class MensajeListener implements Runnable{
                         
                         out.writeObject(nuevaid);//envio al emisor la id con la cual debe rotular su mensaje
                         SistemaServidor.getInstance().getPersistencia().avanzaProximoIdMensaje(); //solo avanza cuando mando la id
-                        System.out.println("soy el directoriole mande la nueva id: ");
-                        System.out.println(nuevaid);
-                        
+            
                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                         Mensaje mensaje = (Mensaje) in.readObject();
                         SistemaServidor.getInstance().arriboMensaje(mensaje);
                         out.close();
                         in.close();
                         socket.close();
-                        System.out.println("RECIBI UN MENSAJE");
-                        System.out.println("dice que:");
-                        System.out.println(mensaje.getAsunto());
-                        System.out.println(mensaje.getCuerpo());
-                        System.out.println(mensaje.getEmisor());
-                        System.out.println(mensaje.getId());
-                        System.out.println(mensaje.getReceptores().next());
+                        System.out.println("Sistema Servidor de mensajeria: Mensaje de "+mensaje.getEmisor().getNombre()+" recibido");
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
