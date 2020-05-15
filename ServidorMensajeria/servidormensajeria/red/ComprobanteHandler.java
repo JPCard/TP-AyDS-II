@@ -1,4 +1,4 @@
-package servidormensajeria.modelo;
+package servidormensajeria.red;
 
 import emisor.modelo.Emisor;
 
@@ -11,6 +11,8 @@ import java.util.Iterator;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
+
+import servidormensajeria.modelo.SistemaServidor;
 
 public class ComprobanteHandler implements Runnable {
     //todo completar este
@@ -35,7 +37,7 @@ public class ComprobanteHandler implements Runnable {
             System.out.println("lo escribi!!!");
             out.close();
             socket.close();
-            
+
             SistemaServidor.getInstance().guardarComp(comprobante);
             
 

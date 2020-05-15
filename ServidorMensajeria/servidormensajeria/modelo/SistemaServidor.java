@@ -19,6 +19,8 @@ import servidormensajeria.persistencia.IPersistenciaParametrosServidor;
 import servidormensajeria.persistencia.PersistenciaMensajesFactory;
 import servidormensajeria.persistencia.PersistenciaParametrosServidor;
 
+import servidormensajeria.red.ComprobanteHandler;
+import servidormensajeria.red.MensajeHandler;
 import servidormensajeria.red.TCPParaDirectorio;
 import servidormensajeria.red.ComprobanteListener;
 import servidormensajeria.red.MensajeListener;
@@ -129,7 +131,7 @@ public class SistemaServidor {
      * @param usuarioActual
      * @return null si el receptor no esta conectado o no hay conexion con el directorio, != null si el receptor esta conectado
      */
-    Receptor getReceptor(String usuarioActual) {
+    public Receptor getReceptor(String usuarioActual) {
         return getDirectorio().getReceptor(usuarioActual);
     }
 
