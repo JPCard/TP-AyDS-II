@@ -191,8 +191,6 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
 
     @Override
     public void guardarComp(Comprobante comprobante) throws Exception {
-        String json = "";
-        FileWriter file;
         
         MensajeConComprobante mensaje;
         synchronized(mensajes){
@@ -217,9 +215,11 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
         
         synchronized(idMensajesEntregarRecep){
             Collection<Integer> idMensajesEntregarRecepAct = idMensajesEntregarRecep.get(receptor.getUsuario());
-            synchronized(mensajes){
-                for(int id : idMensajesEntregarRecepAct){
-                    mensajesParaReceptor.add(mensajes.get(id));
+            if(idMensajesEntregarRecepAct != null){ //si tiene mensajes pendientes
+                synchronized(mensajes){
+                    for(int id : idMensajesEntregarRecepAct){
+                        mensajesParaReceptor.add(mensajes.get(id));
+                    }
                 }
             }
         }
@@ -233,9 +233,11 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
         String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesConComprobEmisores){
             Collection<Integer> idMensajesComprobadosAct = idMensajesConComprobEmisores.get(nombreEmisor);
-            synchronized(mensajes){
-                for(int id : idMensajesComprobadosAct){
-                    mensajesComprobados.add( (MensajeConComprobante) mensajes.get(id));
+            if(idMensajesComprobadosAct != null){ //si tiene mensajes con comprobante
+                synchronized(mensajes){
+                    for(int id : idMensajesComprobadosAct){
+                        mensajesComprobados.add( (MensajeConComprobante) mensajes.get(id));
+                    }
                 }
             }
         }
@@ -251,8 +253,6 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      */
     @Override
     public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
-        String json;
-        FileWriter file;
         
         if(!primerIntento){ //si estaba marcado para entregar hay que sacar
             synchronized (idMensajesEntregarRecep){
@@ -261,14 +261,15 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                 idMensajesRecibidos.remove(mensaje.getId());
                 idMensajesEntregarRecep.put(usuarioReceptor, idMensajesRecibidos);
                 
+                synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
+                    
+                    XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)));
+                    encoder.writeObject(idMensajesEntregarRecep);
+                    encoder.close();
+                }
             }
             
-            synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
-                
-                XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH)));
-                encoder.writeObject(idMensajesEntregarRecep);
-                encoder.close();
-            }
+            
         }
         
         synchronized (idMensajesEntregadosRecep){

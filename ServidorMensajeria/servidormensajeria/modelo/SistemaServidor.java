@@ -116,7 +116,7 @@ public class SistemaServidor {
     }
     
     public void arriboMensaje(Mensaje mensaje){
-            new Thread(new MensajeHandler(mensaje)).start();
+            new Thread(new MensajeHandler(mensaje,true)).start();
     }
 
     public IPersistenciaMensajesServidor getPersistencia() {

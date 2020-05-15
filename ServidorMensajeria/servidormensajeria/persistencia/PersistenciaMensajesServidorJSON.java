@@ -228,9 +228,11 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         
         synchronized(idMensajesEntregarRecep){
             Collection<Integer> idMensajesEntregarRecepAct = idMensajesEntregarRecep.get(receptor.getUsuario());
-            synchronized(mensajes){
-                for(int id : idMensajesEntregarRecepAct){
-                    mensajesParaReceptor.add(mensajes.get(id));
+            if(idMensajesEntregarRecepAct != null){ //si tiene mensajes pendientes
+                synchronized(mensajes){
+                    for(int id : idMensajesEntregarRecepAct){
+                        mensajesParaReceptor.add(mensajes.get(id));
+                    }
                 }
             }
         }
@@ -244,9 +246,11 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesConComprobEmisores){
             Collection<Integer> idMensajesComprobadosAct = idMensajesConComprobEmisores.get(nombreEmisor);
-            synchronized(mensajes){
-                for(int id : idMensajesComprobadosAct){
-                    mensajesComprobados.add( (MensajeConComprobante) mensajes.get(id));
+            if(idMensajesComprobadosAct != null){ //si tiene mensajes con comprobante
+                synchronized(mensajes){
+                    for(int id : idMensajesComprobadosAct){
+                        mensajesComprobados.add( (MensajeConComprobante) mensajes.get(id));
+                    }
                 }
             }
         }
@@ -273,14 +277,16 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesEntregarRecep.put(usuarioReceptor, idMensajesRecibidos);
                 
                 json = gson.toJson(idMensajesEntregarRecep);
+                
+                synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
+                    
+                    file = new FileWriter(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH);
+                    file.write(json);
+                    file.close();
+                }
             }
             
-            synchronized (MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH){
-                
-                file = new FileWriter(MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH);
-                file.write(json);
-                file.close();
-            }
+            
         }
         
         synchronized (idMensajesEntregadosRecep){
