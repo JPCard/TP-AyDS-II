@@ -1,7 +1,6 @@
-{
+
 	"PuertoPushReceptores":"41149",
 	"PuertoRecibeHeartbeats":"27444",
 	"PuertoRecibeGetDestinatarios":"27445",
 	"PuertoRecibeGetUltimoCambio":"1",
 	"IPServidorMensajeria":"127.0.0.1"
-}
