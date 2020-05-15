@@ -4,7 +4,7 @@ import directorio.modelo.DirectorioMain;
 
 import emisor.controlador.ControladorEmisor;
 
-import emisor.modelo.MensajeFactory.TipoMensaje;
+import emisor.modelo.AbstractMensajeFactory.TipoMensaje;
 
 import emisor.persistencia.IPersistenciaEmisor;
 import emisor.persistencia.PersistenciaEmisor;
@@ -90,7 +90,7 @@ public class SistemaEmisor {
 
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
-        Mensaje mensaje = MensajeFactory.crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+        Mensaje mensaje = MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
         this.guardarMensaje(mensaje);
 
         if (tipoMensaje == MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE) {

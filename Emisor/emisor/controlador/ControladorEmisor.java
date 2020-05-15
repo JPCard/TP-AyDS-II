@@ -1,5 +1,6 @@
 package emisor.controlador;
 
+import emisor.modelo.AbstractMensajeFactory;
 import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
@@ -10,7 +11,6 @@ import emisor.vista.IVistaComprobantes;
 import emisor.vista.IVistaContactos;
 import emisor.vista.IVistaEmisor;
 
-import java.io.FileNotFoundException;
 
 import java.io.IOException;
 
@@ -63,7 +63,19 @@ public class ControladorEmisor {
         return instance;
     }
     
-    public void enviarMensaje(String asunto, String cuerpo,MensajeFactory.TipoMensaje tipo, ArrayList<Receptor> receptores){
+    public void enviarMensajeConComprobante(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+        this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE);
+    }
+    
+    public void enviarMensajeNormal(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+        this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_NORMAL);
+    }
+    
+    public void enviarMensajeConAlerta(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+        this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_CON_ALERTA);
+    }
+    
+    public void enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, MensajeFactory.TipoMensaje tipo){
         ArrayList<String> usuariosReceptores = new ArrayList<String>();
         for(Receptor receptor : receptores){
             usuariosReceptores.add(receptor.getUsuario());
@@ -140,4 +152,5 @@ public class ControladorEmisor {
         return directorioConectado;
     }
 
+   
 }

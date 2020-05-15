@@ -3,6 +3,7 @@ package emisor.vista;
 
 import emisor.controlador.ControladorEmisor;
 
+import emisor.modelo.AbstractMensajeFactory;
 import emisor.modelo.MensajeFactory;
 
 import java.awt.Color;
@@ -52,8 +53,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         initComponents();
         this.jListDestinatarios.setModel(listModel);
         ControladorEmisor.getInstance(this);
-        
-        
+
+
         //this.cargarContactos();
         BoundedRangeModel modelVerticalScroll = this.jScrollPaneDestanatariosRegistrados
                                                     .getVerticalScrollBar()
@@ -450,21 +451,16 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jButtonVerComprobanteActionPerformed
 
     private void jButtonEnviarConComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarConComprobanteActionPerformed
-        ControladorEmisor.getInstance()
-            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE,
-                           this.getDestinatarios());
+        ControladorEmisor.getInstance().enviarMensajeConComprobante(getAsunto(), getCuerpo(), this.getDestinatarios());
        
     }//GEN-LAST:event_jButtonEnviarConComprobanteActionPerformed
 
     private void jButtonEnviarSimpleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarSimpleActionPerformed
-        ControladorEmisor.getInstance()
-            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_NORMAL, this.getDestinatarios());
+        ControladorEmisor.getInstance().enviarMensajeNormal(getAsunto(), getCuerpo(), this.getDestinatarios());
     }//GEN-LAST:event_jButtonEnviarSimpleActionPerformed
 
     private void jButtonEnviarAvisoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarAvisoActionPerformed
-        ControladorEmisor.getInstance()
-            .enviarMensaje(getAsunto(), getCuerpo(), MensajeFactory.TipoMensaje.MSJ_CON_ALERTA,
-                           this.getDestinatarios());
+        ControladorEmisor.getInstance().enviarMensajeConAlerta(getAsunto(), getCuerpo(), this.getDestinatarios());
     }//GEN-LAST:event_jButtonEnviarAvisoActionPerformed
 
     private void jEditorCuerpoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEditorCuerpoKeyTyped
@@ -748,7 +744,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jButtonEnviarConComprobante.setEnabled(mensajeOK);
     }
 
-    private boolean oldEstadoDirectorio=true;
+    private boolean oldEstadoDirectorio = true;
 
     @Override
     public void updateConectado(boolean estado) {
@@ -756,7 +752,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             if (estado) {
                 this.jLabelConexionDirectorio.setText("Conectado");
                 this.jPanelConexionDirectorio.setBackground(Color.green);
-                oldEstadoDirectorio= estado;
+                oldEstadoDirectorio = estado;
             } else {
                 this.jLabelConexionDirectorio.setText("Desconectado");
                 this.jPanelConexionDirectorio.setBackground(Color.gray);
@@ -776,12 +772,12 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void agregarTodosPanelesEstadoIncierto() {
         int i = 0;
-        while(i < this.listModel.getSize()){
+        while (i < this.listModel.getSize()) {
             jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion());
-            
+
             i++;
         }
-        
+
         this.cambiarAltoPanelEstadoConexion(i); //cambia el alto 1 sola vez
         this.jScrollPaneConexionDestinatarios.validate();
         this.jScrollPaneConexionDestinatarios.repaint();
@@ -795,7 +791,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanelContainerConexionDestinatarios.add(new PanelEstadoConexion(conectado));
     }
-  
+
 
     public void cambiarAltoPanelEstadoConexion(int cantDestRegistrados) { //cambia el alto del panel
         double anchoAct = jPanelContainerConexionDestinatarios.getPreferredSize().getWidth(); //no cambia
