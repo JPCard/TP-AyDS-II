@@ -640,7 +640,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                         clip.start();
                     } catch (Exception e) {
                         System.out.println("problemas de audio");
-                        e.printStackTrace();
+                        //e.printStackTrace();
 
                     }
                 }
@@ -658,7 +658,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                         clip.start();
                     } catch (Exception e) {
                         System.out.println("problemas de audio");
-                        e.printStackTrace();
+                        //e.printStackTrace();
 
                     }
                 }
@@ -675,7 +675,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                     clip.start();
                 } catch (Exception e) {
                     System.out.println("problemas de audio");
-                    e.printStackTrace();
+                   //e.printStackTrace();
 
                 }
             }

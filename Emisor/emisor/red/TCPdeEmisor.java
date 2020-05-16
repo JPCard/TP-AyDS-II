@@ -66,11 +66,11 @@ public class TCPdeEmisor implements Runnable {
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
-                System.out.println("error de emisor: el puerto de recepcion esta ocupado");
+                System.out.println("Emisor: puerto ocupado, cerrando.");
                 System.exit(1);
             } catch (Exception e) {
-                System.out.println("algo mas general");
-                e.printStackTrace();
+                //System.out.println("algo mas general");
+               // e.printStackTrace();
             }
         }
 
@@ -80,7 +80,6 @@ public class TCPdeEmisor implements Runnable {
         
 
         Collection<MensajeConComprobante> mensajesConComprobantePropios = null;
-        System.out.println("hastaan tes del while");
 
         boolean leido = false;
 

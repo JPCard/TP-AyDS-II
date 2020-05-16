@@ -76,7 +76,7 @@ public class Directorio {
             this.ipServidorMensajeria = this.persistenciaDirectorio.cargarIPServidorMensajeria();
             this.puertoPushReceptores = this.persistenciaDirectorio.cargarpuertoPushReceptores();
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
     }

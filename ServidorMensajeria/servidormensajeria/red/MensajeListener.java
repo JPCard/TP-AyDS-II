@@ -49,7 +49,7 @@ public class MensajeListener implements Runnable{
                 System.exit(1);
             }
             catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
         }
     
@@ -62,7 +62,7 @@ public class MensajeListener implements Runnable{
                 out.close();
                 socket.close();
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         
     }

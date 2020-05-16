@@ -48,10 +48,9 @@ public class TCPdeReceptor  implements Runnable{
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
-                System.exit(1);
+                System.out.println("Receptor: Puerto ocupado, cerrando.");
             }
             catch (Exception e) {
-                e.printStackTrace();
             }
         }
     
@@ -65,7 +64,7 @@ public class TCPdeReceptor  implements Runnable{
                 socket.close();
             
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         
     }
