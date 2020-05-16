@@ -119,7 +119,7 @@ public class TCPParaDirectorio implements Runnable {
                     Collection<Mensaje> mensajes =
                         SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
                     for (Mensaje mensaje : mensajes) {
-                        new Thread(new MensajeHandler(mensaje,false)).start();//todo banderita arrastrada
+                        new Thread(new MensajeHandler(mensaje,false)).start();
                     }
 
 
