@@ -72,7 +72,7 @@ public class Mensaje implements Serializable{
    
 
 
-    private GregorianCalendar getDatetime() {
+    public GregorianCalendar getDatetime() {
         return datetime;
     }
 

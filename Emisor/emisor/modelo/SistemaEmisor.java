@@ -106,7 +106,7 @@ public class SistemaEmisor {
             ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
 
-
+        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCenviados == "+mensajesEnviados+" mensaje == "+mensaje);
         this.mensajesEnviados.put(mensaje.getId(), mensaje);
     }
 
