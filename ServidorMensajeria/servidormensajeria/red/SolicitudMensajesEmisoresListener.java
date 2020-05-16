@@ -3,12 +3,16 @@ package servidormensajeria.red;
 import emisor.modelo.Emisor;
 import emisor.modelo.Mensaje;
 
+import emisor.modelo.MensajeConComprobante;
+
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import java.util.Collection;
 
 import servidormensajeria.modelo.SistemaServidor;
 
@@ -29,8 +33,10 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                         Emisor emisor = (Emisor) in.readObject();
                         System.out.println(emisor.getNombre()+" acaba de solicitar sus mensajes con comprobante");
                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                        out.writeObject(SistemaServidor.getInstance().getPersistencia().obtenerMsjsComprobadosEmisor(emisor));//envio al emisor la id con la cual debe rotular su mensaje
-                        System.out.println("le fueron enviados");
+                        Collection<MensajeConComprobante> enviable = SistemaServidor.getInstance().getPersistencia().obtenerMsjsComprobadosEmisor(emisor);
+                        out.writeObject(enviable);//envio al emisor la id con la cual debe rotular su mensaje
+                        System.out.println("le fueron enviados los siguientes:");
+                        System.out.println(enviable.toString());
                         out.close();
                         in.close();
                         socket.close();

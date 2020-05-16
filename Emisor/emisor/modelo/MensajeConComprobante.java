@@ -1,5 +1,7 @@
 package emisor.modelo;
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 
 import java.util.Collection;
@@ -10,13 +12,17 @@ import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
-public class MensajeConComprobante extends Mensaje {
+public class MensajeConComprobante extends Mensaje implements Serializable {
     private Collection<String> receptoresConfirmados;
     
     public MensajeConComprobante(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores) {
         super(emisor, asunto, cuerpo,receptores);
         receptoresConfirmados = new  ArrayList<String>(); //por el momento no hay nadie confirmado
     }
+    
+    public MensajeConComprobante(){
+        super();
+    } //para serializacion
 
     /**
      *Pre: el mensaje tiene id seteado
