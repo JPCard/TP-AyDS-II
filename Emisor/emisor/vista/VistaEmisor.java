@@ -756,7 +756,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             } else {
                 this.jLabelConexionDirectorio.setText("Desconectado");
                 this.jPanelConexionDirectorio.setBackground(Color.gray);
-                //todo PONER TODO AMARILLO
                 this.deleteAllPanelesEstadoConexion();
                 this.agregarTodosPanelesEstadoIncierto();
 

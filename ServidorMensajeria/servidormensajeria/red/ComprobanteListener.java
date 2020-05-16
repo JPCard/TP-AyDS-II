@@ -17,7 +17,6 @@ import servidormensajeria.modelo.SistemaServidor;
 public class ComprobanteListener implements Runnable{
     public ComprobanteListener() {
         super();
-        //TODO
     }
 
     @Override

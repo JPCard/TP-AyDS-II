@@ -15,7 +15,6 @@ import receptor.modelo.Receptor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class ComprobanteHandler implements Runnable {
-    //todo completar este
     private Comprobante comprobante;
 
 
