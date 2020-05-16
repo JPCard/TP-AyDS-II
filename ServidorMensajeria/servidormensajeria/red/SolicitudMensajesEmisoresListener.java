@@ -35,8 +35,6 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                         ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                         Collection<MensajeConComprobante> enviable = SistemaServidor.getInstance().getPersistencia().obtenerMsjsComprobadosEmisor(emisor);
                         out.writeObject(enviable);//envio al emisor la id con la cual debe rotular su mensaje
-                        System.out.println("le fueron enviados los siguientes:");
-                        System.out.println(enviable.toString());
                         out.close();
                         in.close();
                         socket.close();
@@ -46,7 +44,7 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                 System.exit(1);
             }
             catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
         }
 }

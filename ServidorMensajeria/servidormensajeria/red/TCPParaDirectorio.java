@@ -93,9 +93,9 @@ public class TCPParaDirectorio implements Runnable {
                 return receptoresArray.get(indice);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
         return null;
@@ -130,7 +130,7 @@ public class TCPParaDirectorio implements Runnable {
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
             } catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
 
         }

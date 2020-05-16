@@ -106,7 +106,7 @@ public class SistemaEmisor {
             ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
 
-        System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCenviados == "+mensajesEnviados+" mensaje == "+mensaje);
+        //System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCenviados == "+mensajesEnviados+" mensaje == "+mensaje);
         this.mensajesEnviados.put(mensaje.getId(), mensaje);
     }
 
@@ -122,18 +122,13 @@ public class SistemaEmisor {
     }
 
     public void agregarComprobante(Comprobante comprobante) {
-        System.out.println("me llamaron");
+        //System.out.println("me llamaron");
         int idMensaje = comprobante.getidMensaje();
         MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
         m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
         synchronized (mensajesConComprobante) {
-            //            System.out.println(mensajesConComprobante);
-            System.out.println("llegue al synch");
-            //            System.out.println("FIN MENsaJES CON COMPROBANTE");
             if (this.mensajesConComprobante.containsKey(idMensaje)) {
-                System.out.println("contengo");
 
-                //
                 synchronized (listasReceptoresConfirmados) {
                     if (!listasReceptoresConfirmados.containsKey(idMensaje))
                         listasReceptoresConfirmados.put(idMensaje,

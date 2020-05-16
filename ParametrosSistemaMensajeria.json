@@ -6,5 +6,5 @@
 	"PuertoDevolverMensajesEmisores":"27448",
 	"PuertoInfoDirectorio":"41149",
 	"IPDirectorio":"127.0.0.1",
-	"MetodoPersistencia":"JSON",
+	"MetodoPersistencia":"XML",
 }

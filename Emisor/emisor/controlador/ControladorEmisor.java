@@ -49,7 +49,7 @@ public class ControladorEmisor {
         }
         catch(Exception e){
             //error inesperado
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
     

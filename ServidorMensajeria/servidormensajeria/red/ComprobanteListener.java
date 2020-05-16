@@ -39,7 +39,7 @@ public class ComprobanteListener implements Runnable{
                 System.exit(1);
             }
             catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
         }
 }

@@ -174,7 +174,6 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         synchronized (mensajes) {
             if (!mensajes.containsKey(mensaje.getId())) { //solo se guarda el mensaje 1 vez
                 mensajes.put(mensaje.getId(), mensaje);
-                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"+mensaje.getClass());
                 json = this.gson.toJson(mensajes);
 
                 synchronized (MENSAJES_FILE_PATH) {
@@ -213,7 +212,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         }
 
         if (mensaje instanceof MensajeConComprobante) {
-            System.out.println("se esta guardando un mensaje CON comprobante");
+            //System.out.println("se esta guardando un mensaje CON comprobante");
             String nombreEmisor = mensaje.getEmisor().getNombre();
             synchronized (idMensajesConComprobEmisores) {
                 Collection<Integer> idMensajesComprobadoAct;
@@ -288,7 +287,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             if (idMensajesComprobadosAct != null) { //si tiene mensajes con comprobante
                 synchronized (mensajes) {
                     for (int id : idMensajesComprobadosAct) {
-                        System.out.println(mensajes.get(id));
+                        //System.out.println(mensajes.get(id));
                         mensajesComprobados.add((MensajeConComprobante) mensajes.get(id));
                     }
                 }

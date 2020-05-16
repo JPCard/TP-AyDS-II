@@ -172,23 +172,18 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      */
     @Override
     public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
-        System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
+        //System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
         try {
             synchronized (mensajes) {
                 if (!mensajes.containsKey(mensaje.getId())) { //solo se guarda el mensaje 1 vez
                     mensajes.put(mensaje.getId(), mensaje);
 
                     if (mensaje instanceof MensajeConAlerta) { //SDMOP
-                        System.out.println("1");
                         this.mensajesConAlerta.put(mensaje.getId(), (MensajeConAlerta) mensaje);
-                        System.out.println("2");
                         synchronized (MENSAJES_CONALERTA_FILE_PATH) {
-                            System.out.println("3");
                             XMLEncoder encoder =
                                 new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_CONALERTA_FILE_PATH)));
-                            System.out.println("4");
                             encoder.writeObject(mensajesConAlerta);
-                            System.out.println("5");
                             encoder.close();
                         }
                     } else if (mensaje instanceof MensajeConComprobante) { //SDMOP
@@ -217,8 +212,8 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                 }
             }
         } catch (Exception e) {
-            System.out.println("se la pego!");
-            e.printStackTrace();
+            System.out.println("Error de persistencia XML");
+            //e.printStackTrace();
         }
 
 
