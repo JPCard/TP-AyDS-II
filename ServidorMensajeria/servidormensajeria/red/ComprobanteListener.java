@@ -21,6 +21,7 @@ public class ComprobanteListener implements Runnable{
 
     @Override
     public void run(){
+        while(true){
             try {
                     ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoComprobantes());
                     while (true) {
@@ -36,10 +37,12 @@ public class ComprobanteListener implements Runnable{
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
+                System.out.println("Escucha de comprobantes: Puerto ocupado, cerrando.");
                 System.exit(1);
             }
             catch (Exception e) {
                // e.printStackTrace();
             }
         }
+    }
 }

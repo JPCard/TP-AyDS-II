@@ -30,7 +30,7 @@ public class TCPdeReceptor  implements Runnable{
     
     public void run(){
             
-        
+        while(true){
             try {
                     ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
     
@@ -49,10 +49,12 @@ public class TCPdeReceptor  implements Runnable{
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
                 System.out.println("Receptor: Puerto ocupado, cerrando.");
+                System.exit(1);
             }
             catch (Exception e) {
             }
         }
+    }
     
     public void enviarComprobante(Comprobante comprobante,Emisor emisor){
         
