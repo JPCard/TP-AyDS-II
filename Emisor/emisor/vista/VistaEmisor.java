@@ -814,7 +814,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     @Override
     public void mostrarErrorServidorNoDisponible() {
-        JOptionPane.showConfirmDialog(this,
+        JOptionPane.showMessageDialog(this,
                                       "El mensaje no fue enviado por que el servidor no esta disponible, por favor intente nuevamente",
                                       "Error", JOptionPane.ERROR_MESSAGE);
     }

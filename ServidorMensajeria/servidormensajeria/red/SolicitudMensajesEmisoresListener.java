@@ -44,7 +44,7 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
                 System.out.println("Servicio de recuperacion de mensajes para emisores: Puerto ocupado, cerrando.");
-                System.exit(1);
+                //System.exit(1);
             }
             catch (Exception e) {
                // e.printStackTrace();
