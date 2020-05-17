@@ -47,7 +47,6 @@ public class MensajeListener implements Runnable{
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
-                System.out.println("Escucha de mensajes: Puerto ocupado, cerrando.");
                 //System.exit(1);
             }
             catch (Exception e) {
