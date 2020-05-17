@@ -63,6 +63,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             .getVerticalScrollBar()
             .setModel(modelVerticalScroll);
         validacionBotonesEnviarMensaje();
+        
     }
 
     /** This method is called from within the constructor to
@@ -726,8 +727,12 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
      */
     public void cargarContacto(Receptor receptor) {
         this.listModel.addElement(receptor);
+        System.out.println(listModel.toString());
         //System.out.println("Se agrego "+ receptor);
         this.addPanelEstadoConexion(receptor.isConectado());
+
+        this.jScrollPaneDestanatariosRegistrados.validate(); //SDMOP
+        this.jScrollPaneDestanatariosRegistrados.repaint(); //SDMOP
     }
 
 

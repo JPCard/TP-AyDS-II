@@ -1,0 +1,11 @@
+{
+	"PuertoPropio":"26999",
+	"Nombre":"Don Gathy",
+	"Usuario":"receptor2"
+	"IPPropia":"127.0.0.1",
+	"PuertoDirectorioConexion":"27444",
+	"PuertoDirectorioRegistro":"1234",
+	"IPDirectorio":"127.0.0.1",
+	"PuertoServidorMensajeria":"27447",
+	"IPServidorMensajeria":"127.0.0.1"
+}
