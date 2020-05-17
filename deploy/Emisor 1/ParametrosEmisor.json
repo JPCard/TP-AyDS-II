@@ -1,0 +1,11 @@
+{
+	"PuertoPropio":"27234",
+	"Nombre":"emisor1",
+	"IPPropia":"127.0.0.1",
+	"PuertoDirectorioDest":"27445",
+	"PuertoDirectorioTiempo":"1",
+	"IPDirectorio":"127.0.0.1",
+	"PuertoServidorMensajeria":"27446",
+	"PuertoServidorSolicitarMensajesEmisor":"27448",
+	"IPServidorMensajeria":"127.0.0.1"
+}

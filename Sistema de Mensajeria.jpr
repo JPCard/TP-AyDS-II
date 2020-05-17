@@ -71,14 +71,270 @@
       <string v="oracle.toplink.workbench.addin/toplinkContentSet"/>
    </list>
    <value n="defaultPackage" v="sistemademensaj"/>
+   <hash n="oracle.ide.model.ResourcePaths">
+      <hash n="resourcesContentSet">
+         <list n="constituent-sets">
+            <hash>
+               <list n="url-path">
+                  <url path="lib/"/>
+               </list>
+            </hash>
+            <hash>
+               <list n="pattern-filters">
+                  <string v="+*"/>
+               </list>
+               <list n="url-path">
+                  <url path="."/>
+               </list>
+            </hash>
+            <hash>
+               <list n="url-path">
+                  <url path="META-INF/"/>
+               </list>
+            </hash>
+         </list>
+         <list n="url-path"/>
+      </hash>
+   </hash>
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
+         <string v="JAVASCRIPT"/>
          <string v="Java"/>
          <string v="XML"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.deploy.dt.DeploymentProfiles">
       <hash n="profileDefinitions">
+         <hash n="aeioubbEmisor">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="emisor.vista.VistaEmisorBootstrap"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <url n="location" path="lib/"/>
+                           <value n="type" v="1"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+                  <hash>
+                     <value n="displayName" v="Libraries"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="libraries"/>
+                     <value n="type" v="3"/>
+                     <list n="unselectedLibraries"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/aeioubbEmisor.jar"/>
+            <hash n="libraryDependencies">
+               <list n="unselectedLibraries"/>
+            </hash>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="aeioubbEmisor"/>
+         </hash>
+         <hash n="aeiouccDirectorio">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="directorio.modelo.DirectorioMain"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/aeiouccDirectorio.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="aeiouccDirectorio"/>
+         </hash>
+         <hash n="aeiouccEmisor">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="emisor.vista.VistaEmisorBootstrap"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/aeiouccEmisor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="aeiouccEmisor"/>
+         </hash>
+         <hash n="aeiouccReceptor">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="receptor.vista.VistaReceptor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/aeiouccReceptor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="aeiouccReceptor"/>
+         </hash>
+         <hash n="aeiouccsistemamensajeria">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="servidormensajeria.modelo.SistemaServidor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/aeiouccsistemamensajeria.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="aeiouccsistemamensajeria"/>
+         </hash>
          <hash n="Directorio">
             <hash n="archiveOptions">
                <value n="hasManifest" v="true"/>
@@ -421,16 +677,21 @@
          </hash>
       </hash>
       <list n="profileList">
+         <string v="Directorio"/>
+         <string v="dogathy"/>
+         <string v="Emisor"/>
+         <string v="napo"/>
+         <string v="napopan"/>
+         <string v="napupo"/>
          <string v="Receptor"/>
          <string v="Receptor1"/>
-         <string v="napo"/>
-         <string v="napupo"/>
-         <string v="napopan"/>
-         <string v="dogathy"/>
-         <string v="veintitresveintisiete"/>
-         <string v="Emisor"/>
          <string v="Receptor2"/>
-         <string v="Directorio"/>
+         <string v="veintitresveintisiete"/>
+         <string v="aeioubbEmisor"/>
+         <string v="aeiouccEmisor"/>
+         <string v="aeiouccReceptor"/>
+         <string v="aeiouccDirectorio"/>
+         <string v="aeiouccsistemamensajeria"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
@@ -487,11 +748,11 @@
    <hash n="oracle.jdevimpl.config.JProjectLibraries">
       <list n="exportedReferences">
          <hash>
-            <value n="id" v="Json-simple-1.1.1.jar"/>
+            <value n="id" v="Gson-2.8.6.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Gson-2.8.6.jar"/>
+            <value n="id" v="Json-simple-1.1.1.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
@@ -503,16 +764,7 @@
          <list n="libraryDefinitions">
             <hash>
                <list n="classPath">
-                  <url path="librerias/json-simple-1.1.1.jar" jar-entry=""/>
-               </list>
-               <value n="deployedByDefault" v="true"/>
-               <value n="description" v="Json-simple-1.1.1.jar"/>
-               <value n="id" v="Json-simple-1.1.1.jar"/>
-               <value n="locked" v="true"/>
-            </hash>
-            <hash>
-               <list n="classPath">
-                  <url path="librerias/gson-2.8.6.jar" jar-entry=""/>
+                  <url path="lib/gson-2.8.6.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="Gson-2.8.6.jar"/>
@@ -521,7 +773,16 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="librerias/RuntimeTypeAdapterFactory.jar" jar-entry=""/>
+                  <url path="lib/json-simple-1.1.1.jar" jar-entry=""/>
+               </list>
+               <value n="deployedByDefault" v="true"/>
+               <value n="description" v="Json-simple-1.1.1.jar"/>
+               <value n="id" v="Json-simple-1.1.1.jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="lib/RuntimeTypeAdapterFactory.jar" jar-entry=""/>
                </list>
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="RuntimeTypeAdapterFactory.jar"/>
@@ -532,11 +793,11 @@
       </hash>
       <list n="libraryReferences">
          <hash>
-            <value n="id" v="Json-simple-1.1.1.jar"/>
+            <value n="id" v="Gson-2.8.6.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="Gson-2.8.6.jar"/>
+            <value n="id" v="Json-simple-1.1.1.jar"/>
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
