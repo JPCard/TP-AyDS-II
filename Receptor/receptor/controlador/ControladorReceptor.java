@@ -25,10 +25,13 @@ public class ControladorReceptor {
         this.vistaReceptor = vista;
         
         try {
+            this.avisarIniciandoSistema();
             SistemaReceptor.inicializar();
+            this.avisarFinIniciandoSistema();
         } catch (FileNotFoundException e) {
             vistaReceptor.mostrarErrorNoReceptor();
         }
+        
         
         
     }
@@ -64,5 +67,13 @@ public class ControladorReceptor {
 
     public void updateConectado(boolean estado) {
         this.vistaReceptor.updateConectado(estado);
+    }
+
+    private void avisarIniciandoSistema() {
+        //TODO
+    }
+
+    private void avisarFinIniciandoSistema() {
+        //TODO
     }
 }

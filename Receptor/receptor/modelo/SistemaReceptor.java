@@ -6,6 +6,8 @@ import directorio.modelo.DirectorioMain;
 
 import java.io.FileNotFoundException;
 
+import java.security.PrivateKey;
+
 import receptor.persistencia.IPersistenciaReceptor;
 import receptor.persistencia.PersistenciaReceptor;
 
@@ -17,6 +19,7 @@ public class SistemaReceptor {
     private Receptor receptor;
     private TCPdeReceptor tcpdeReceptor;
     private IPersistenciaReceptor persistencia = new PersistenciaReceptor();
+    private PrivateKey llavePrivada;
 
     public TCPdeReceptor getTcpdeReceptor() {
         return tcpdeReceptor;
@@ -25,6 +28,7 @@ public class SistemaReceptor {
     private SistemaReceptor() throws FileNotFoundException {
         super();
         this.receptor = persistencia.cargarReceptor();
+        this.llavePrivada = persistencia.cargarLlavePrivada();
         this.tcpdeReceptor = new TCPdeReceptor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
     }
 

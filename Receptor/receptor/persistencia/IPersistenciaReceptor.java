@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 
 import java.io.FileOutputStream;
 
+import java.security.PrivateKey;
+
 import receptor.modelo.Receptor;
 
 public interface IPersistenciaReceptor {
@@ -18,4 +20,6 @@ public interface IPersistenciaReceptor {
     public String cargarIPServidorMensajeria();
 
     public int cargarPuertoServidorMensajeria();
+    
+    public PrivateKey cargarLlavePrivada();
 }

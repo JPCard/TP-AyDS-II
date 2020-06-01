@@ -5,6 +5,8 @@ import directorio.modelo.Directorio;
 
 import java.io.Serializable;
 
+import java.security.PublicKey;
+
 
 public class Receptor implements Serializable, Comparable<Receptor> {
     private String IP;
@@ -12,7 +14,15 @@ public class Receptor implements Serializable, Comparable<Receptor> {
     private String nombre;
     private boolean conectado = true; //administrado por el directorio
     private String usuario;
+    private PublicKey llavePublica;
 
+    public void setLlavePublica(PublicKey llavePublica) {
+        this.llavePublica = llavePublica;
+    }
+
+    public PublicKey getLlavePublica() {
+        return llavePublica;
+    }
 
     @Override
     public boolean equals(Object object) {
@@ -50,11 +60,12 @@ public class Receptor implements Serializable, Comparable<Receptor> {
         return conectado;
     }
 
-    public Receptor(String IP, int puerto, String nombre, String usuario) {
+    public Receptor(String IP, int puerto, String nombre, String usuario, PublicKey llavePublica) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
         this.usuario = usuario;
+        this.llavePublica = llavePublica;
     }
 
     public Receptor() {

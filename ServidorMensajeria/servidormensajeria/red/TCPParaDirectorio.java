@@ -85,7 +85,7 @@ public class TCPParaDirectorio implements Runnable {
             ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
 
             int indice =
-                Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual));
+                Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual, null)); //este receptor es de mentirita y solo para comparar
 //            System.out.println("INDICE INDICE INDICE " + indice);
             if (indice == -1)
                 return null;
