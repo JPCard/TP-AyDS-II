@@ -30,13 +30,17 @@ import receptor.modelo.Receptor;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.security.PublicKey;
+
+import java.util.Collections;
+
 import org.json.simple.*;
 import org.json.simple.parser.ParseException;
 
 public class SistemaEmisor {
     private Emisor emisor;
     private TCPdeEmisor tcpdeEmisor;
-
+    private IEncriptacion encriptacion;
     private static SistemaEmisor instance;
 
     private HashMap<Integer, Mensaje> mensajesEnviados = new HashMap<Integer, Mensaje>();
@@ -49,6 +53,7 @@ public class SistemaEmisor {
 
     private SistemaEmisor() throws Exception {
         super();
+        encriptacion = new EncriptacionRSA();
         emisor = persistencia.cargarEmisor();
 
         this.tcpdeEmisor =
@@ -92,11 +97,40 @@ public class SistemaEmisor {
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
 
-        Mensaje mensaje =
-            MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+        TreeSet<Receptor> contactos =  this.getEmisor().getAgenda().getContactos();
+        
+        ArrayList<Receptor> contactosArr = new ArrayList(contactos);
+        
+        ArrayList<Mensaje> mensajesCifrados = new ArrayList<Mensaje>();
+        for(String receptorActual : usuariosReceptores){
+            Mensaje mensaje =
+                MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores,receptorActual);
+            
+            this.getEmisor().getAgenda().getContactos();
+            
+            int indice =
+                Collections.binarySearch(contactosArr, new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual, null)); //este receptor es de mentirita y solo para comparar
+            
+            
+            PublicKey publicKey = contactosArr.get(indice).getLlavePublica();
+            
+            
+            mensajesCifrados.add(this.encriptacion.encriptar(mensaje, publicKey));
+        }
+        
+        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesCifrados);
+        
+        if(logroEnviar) {
+            //TODO
+            //algo con guardarMensaje(algo)
+        }
+        else{
+            //TODO
+            //algo con guardar para mandar despues
+            
+        }
 
-
-        return this.getTcpdeEmisor().enviarMensaje(mensaje);
+        return logroEnviar;
     }
 
     public void guardarMensaje(Mensaje mensaje) {

@@ -114,28 +114,32 @@ public class TCPdeEmisor implements Runnable {
     }
 
 
-    public boolean enviarMensaje(Mensaje mensaje) {
+    public boolean enviarMensaje(Collection<Mensaje> mensajes) {
         try {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
             socket.connect(addr, 500);
 
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            mensaje.setId((Integer) in.readObject());
-            //            System.out.println("me llego la id para setear al mensaje: esta es");
-            //            System.out.println(mensaje.getId());
-
-            SistemaEmisor.getInstance().guardarMensaje(mensaje);
-            //hacemos el guardado ahora por que es el primer momento en el cual el mensaje ya tiene una ID asignada
-            //(las ID las coordina el sistema de mensajeria)
-
+            
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(mensaje);
+            int cantMensajes = mensajes.size();
+            //OUT 1
+            out.writeObject(cantMensajes); //le digo cuantos son para que me mande esas ID
+            
+            //IN 1
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            for(Iterator<Mensaje> itMensajes = mensajes.iterator();itMensajes.hasNext();){ //SDMOP
+                itMensajes.next().setId((Integer) in.readObject());
+            }
+            
+            
+            //OUT 2
+            out.writeObject(mensajes);
             out.close();
             return true;
 
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return false;
         }
 

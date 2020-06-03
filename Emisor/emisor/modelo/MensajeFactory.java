@@ -16,16 +16,16 @@ public class MensajeFactory extends AbstractMensajeFactory{
         return instance;
     }
     
-    public Mensaje crearMensajeNormal(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores){
-        return new Mensaje(emisor, asunto, cuerpo,usuariosReceptores);
+    public Mensaje crearMensajeNormal(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
+        return new Mensaje(emisor, asunto, cuerpo,usuariosReceptores,  receptorObjetivo);
     }
     
-    public Mensaje crearMensajeConAlerta(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores){
-        return new MensajeConAlerta(emisor, asunto, cuerpo,usuariosReceptores);  
+    public Mensaje crearMensajeConAlerta(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
+        return new MensajeConAlerta(emisor, asunto, cuerpo,usuariosReceptores,  receptorObjetivo);  
     }
     
-    public Mensaje crearMensajeConComprobante(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores){
-        return new MensajeConComprobante(emisor, asunto, cuerpo,usuariosReceptores);
+    public Mensaje crearMensajeConComprobante(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
+        return new MensajeConComprobante(emisor, asunto, cuerpo,usuariosReceptores,receptorObjetivo);
     }
     
 }

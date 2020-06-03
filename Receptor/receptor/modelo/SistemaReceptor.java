@@ -21,6 +21,10 @@ public class SistemaReceptor {
     private IPersistenciaReceptor persistencia = new PersistenciaReceptor();
     private PrivateKey llavePrivada;
 
+    public PrivateKey getLlavePrivada() {
+        return llavePrivada;
+    }
+
     public TCPdeReceptor getTcpdeReceptor() {
         return tcpdeReceptor;
     }

@@ -366,7 +366,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
 
 
             synchronized (MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH) {
-
+                
                 XMLEncoder encoder =
                     new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH)));
                 encoder.writeObject(idMensajesEntregadosRecep);

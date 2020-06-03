@@ -10,6 +10,10 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import java.util.Collection;
+
+import java.util.Iterator;
+
 import receptor.modelo.Comprobante;
 import receptor.modelo.SistemaReceptor;
 
@@ -29,21 +33,34 @@ public class MensajeListener implements Runnable{
                         System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
                         Socket socket = s.accept();
                         
-                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                        
-                        Integer nuevaid = SistemaServidor.getInstance().getPersistencia().getProximoIdMensaje();
-                        
-                        
-                        out.writeObject(nuevaid);//envio al emisor la id con la cual debe rotular su mensaje
-                        SistemaServidor.getInstance().getPersistencia().avanzaProximoIdMensaje(); //solo avanza cuando mando la id
-            
+                        //IN 1
                         ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                        Mensaje mensaje = (Mensaje) in.readObject();
-                        SistemaServidor.getInstance().arriboMensaje(mensaje);
+                        int cantMensajes = (Integer) in.readObject();
+                        
+                        //OUT 1
+                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                        for(int i=0;i<cantMensajes;i++){
+                            Integer nuevaid = SistemaServidor.getInstance().getPersistencia().getProximoIdMensaje();
+                            out.writeObject(nuevaid);//envio al emisor la id con la cual debe rotular su mensaje
+                            SistemaServidor.getInstance().getPersistencia().avanzaProximoIdMensaje();
+                        }
+                        
+                       
+                        //IN 2
+                        Collection<Mensaje> mensajes = (Collection<Mensaje>) in.readObject();
+                        for(Iterator<Mensaje> it = mensajes.iterator();it.hasNext();){
+                            SistemaServidor.getInstance().arriboMensaje(it.next());
+                        }
+                        
+                        
                         out.close();
                         in.close();
                         socket.close();
-                        System.out.println("Sistema Servidor de mensajeria: Mensaje de "+mensaje.getEmisor().getNombre()+" recibido");
+                        Mensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
+                        System.out.println("Sistema Servidor de mensajeria: Mensaje de "+primerMensaje.getEmisor().getNombre()+" recibido");
+                        //TODO borrar
+                        System.out.println("Dice que asunto: "+ primerMensaje.getAsunto());
+                        System.out.println("Y ademas que cuerpo: "+primerMensaje.getCuerpo());
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados
