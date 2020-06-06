@@ -72,7 +72,7 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
     @Override
     public void guardarComp(Comprobante comprobante) {
         MensajeConComprobante mensajeC = mensajesConComprobante.get(comprobante.getidMensaje());
-        if (mensajeC!=null)
+        if (mensajeC!=null && !mensajeC.getReceptoresConfirmados().contains(comprobante.getUsuarioReceptor()))
             mensajeC.addReceptorConfirmado(comprobante.getUsuarioReceptor());
         
         persistirConComprobante();

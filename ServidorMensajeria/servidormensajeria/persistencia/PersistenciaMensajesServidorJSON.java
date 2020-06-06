@@ -367,5 +367,20 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
 
+    @Override
+    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception {
+        // TODO Implement this method
+    }
+
+    @Override
+    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor) {
+        // TODO Implement this method
+        return Collections.emptySet();
+    }
+
+    @Override
+    public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception {
+        // TODO Implement this method
+    }
 }
 

@@ -212,4 +212,12 @@ public class SistemaEmisor {
     }
 
 
+    public void cargarComprobantesAsincronicos() {
+
+        Collection<Comprobante> comprobantes = instance.tcpdeEmisor.solicitarComprobantesAsincronicos();
+        if(comprobantes!= null && !comprobantes.isEmpty())
+            for (Comprobante comprobante : comprobantes) {
+                this.persistenciaMensajes.guardarComp(comprobante);
+            }
+    }
 }
