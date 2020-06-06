@@ -200,10 +200,13 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                         this.mensajesComunes.put(mensaje.getId(), mensaje);
 
                         synchronized (MENSAJES_COMUNES_FILE_PATH) {
-
                             XMLEncoder encoder =
                                 new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_COMUNES_FILE_PATH)));
-                            encoder.writeObject(mensajesComunes);
+                            System.out.println("A");
+                            
+                            encoder.writeObject(mensajesComunes);//TODO tira carteles feos ... =(.
+                            
+                            System.out.println("B");
                             encoder.close();
                         }
                     }
@@ -366,7 +369,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
 
 
             synchronized (MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH) {
-
+                
                 XMLEncoder encoder =
                     new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH)));
                 encoder.writeObject(idMensajesEntregadosRecep);

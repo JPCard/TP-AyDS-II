@@ -36,12 +36,10 @@ public class MensajeHandler implements Runnable {
     @Override
     public void run() {
 
-        Iterator<String> usuarios = mensaje.getReceptores();
-        while (usuarios.hasNext()) {
-            String usuarioActual = usuarios.next();
+        //se termino xq los mensajes son 1 a 1while (usuarios.hasNext()) {
+            String usuarioActual = mensaje.getReceptorObjetivo();
 
             Receptor receptorActual = SistemaServidor.getInstance().getReceptor(usuarioActual);
-            
             boolean enviado;
             if (receptorActual != null) {
 //                System.out.println("le voy a mandar a este tipo");
@@ -63,6 +61,9 @@ public class MensajeHandler implements Runnable {
 
                     enviado = true;
                 } catch (Exception e) {
+                    
+                    
+                    
                     //e.printStackTrace(); no se pudo conectar con el receptor
                     enviado = false;
                 }
@@ -75,16 +76,29 @@ public class MensajeHandler implements Runnable {
                 //System.out.println(mensaje);
                 //System.out.println(usuarioActual);
                 if(primerIntento){
+                    System.err.println("1");
+                    
+                    try{
                     SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
+                    }
+                    catch(Exception e){
+                        System.out.println("es entre el 1 y el 2 en serio!!");
+                        e.printStackTrace();
+                    }
+                    
+                    System.err.println("2");
                 }
                 else if(enviado){ //si se manda pero no es a la primera hay que marcar que se mando
+                    System.err.println("3");
                     SistemaServidor.getInstance().marcarMensajeEnviado(mensaje, usuarioActual, false);
+                    System.err.println("4");
                 }
             } catch (Exception f) {
-               // f.printStackTrace();
+                System.out.println("es aca!!");
+               f.printStackTrace();
+               System.out.println("es aca11");
             }
 
 
-        }
     }
 }

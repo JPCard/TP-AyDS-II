@@ -60,17 +60,21 @@ public class TCPdeEmisor implements Runnable {
                     Socket socket = s.accept();
                     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                     Comprobante comprobante = (Comprobante) in.readObject();
+                    System.out.println("EL COMPROBANTE ES");
+                    System.out.println(comprobante);
                     ControladorEmisor.getInstance().agregarComprobante(comprobante);
                     in.close();
                     socket.close();
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
+//                System.out.println("bindexception");
+                e.printStackTrace();
                 System.out.println("Emisor: puerto ocupado, cerrando.");
                 System.exit(1);
             } catch (Exception e) {
-                //System.out.println("algo mas general");
-               // e.printStackTrace();
+//               System.out.println("algo mas general");
+               e.printStackTrace();
             }
         }
 
@@ -114,28 +118,49 @@ public class TCPdeEmisor implements Runnable {
     }
 
 
-    public boolean enviarMensaje(Mensaje mensaje) {
+    /**
+     * Pre: hay una relacion 1:1 entre mensajesPreCifrado y Post, solo llegan hasta aca para recibir una ID
+     * @param mensajesPreCifrado
+     * @param mensajesPostCifrado
+     * @return
+     */
+    public boolean enviarMensaje(Collection<Mensaje> mensajesPreCifrado,Collection<Mensaje> mensajesPostCifrado) {
         try {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
             socket.connect(addr, 500);
 
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            mensaje.setId((Integer) in.readObject());
-            //            System.out.println("me llego la id para setear al mensaje: esta es");
-            //            System.out.println(mensaje.getId());
-
-            SistemaEmisor.getInstance().guardarMensaje(mensaje);
-            //hacemos el guardado ahora por que es el primer momento en el cual el mensaje ya tiene una ID asignada
-            //(las ID las coordina el sistema de mensajeria)
-
+            
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            out.writeObject(mensaje);
+            int cantMensajes = mensajesPostCifrado.size();
+            //OUT 1
+            out.writeObject(cantMensajes); //le digo cuantos son para que me mande esas ID
+            
+            //IN 1
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            
+            Iterator<Mensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
+            Iterator<Mensaje> itMensajesPreCifrados = mensajesPreCifrado.iterator();
+            int nextId;
+            Mensaje mensajeActual;
+            while(itMensajesCifrados.hasNext()){
+                nextId = (Integer) in.readObject();
+                mensajeActual = itMensajesPreCifrados.next();
+                    
+                itMensajesCifrados.next().setId(nextId);
+                
+                mensajeActual.setId(nextId);
+                SistemaEmisor.getInstance().guardarMensaje(mensajeActual);
+            }
+            
+            
+            //OUT 2
+            out.writeObject(mensajesPostCifrado);
             out.close();
             return true;
 
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             return false;
         }
 

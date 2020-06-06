@@ -46,7 +46,8 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                 //System.exit(1);
             }
             catch (Exception e) {
-               // e.printStackTrace();
+                System.out.println("es em smelistener");
+                e.printStackTrace();
             }
         }
     }

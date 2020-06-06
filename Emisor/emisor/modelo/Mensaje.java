@@ -17,22 +17,30 @@ public class Mensaje implements Serializable{
     private String cuerpo;
     protected Emisor emisor;
     private int id;
-    
+    private ArrayList<String> usuariosReceptores = new ArrayList<String>();
+    private String receptorObjetivo;
+    private boolean enviado = false;
+
     public Mensaje(){ //para la serializacion
         super();
     }
-    
-    private ArrayList<String> usuariosReceptores = new ArrayList<String>();
+
+    public String getReceptorObjetivo() {
+        return receptorObjetivo;
+    }
+
 
     public Iterator<String> getReceptores() {
         return usuariosReceptores.iterator();
     }
 
-    public Mensaje(Emisor emisor, String asunto, String cuerpo,ArrayList<String> usuariosReceptores) {
+    public Mensaje(Emisor emisor, String asunto, String cuerpo,ArrayList<String> usuariosReceptores, String receptorObjetivo) {
         this.datetime = new GregorianCalendar(); //fecha y hora actual
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         this.emisor = emisor;
+        this.receptorObjetivo = receptorObjetivo;
+        
         this.usuariosReceptores = usuariosReceptores;
         this.id=-1;
     }
@@ -144,8 +152,12 @@ public class Mensaje implements Serializable{
         // el mensaje comun no hace nada
        //
     }
+
+    public boolean isEnviado() {
+        return this.enviado;
+    }
     
-    
-    
-    
+    public void setEnviado(boolean value) {
+        this.enviado=value;
+    }
 }

@@ -15,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
 import java.util.ArrayList;
 
 import java.util.Arrays;
@@ -84,8 +85,7 @@ public class TCPParaDirectorio implements Runnable {
 
             ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
 
-            int indice =
-                Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual));
+            int indice = Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual, null)); //este receptor es de mentirita y solo para comparar
 //            System.out.println("INDICE INDICE INDICE " + indice);
             if (indice == -1)
                 return null;
@@ -96,8 +96,8 @@ public class TCPParaDirectorio implements Runnable {
             //e.printStackTrace();
         } catch (ClassNotFoundException e) {
            // e.printStackTrace();
-        }
-
+        } 
+        System.err.println("estoy mandando nullafangos");
         return null;
 
     }
@@ -130,7 +130,8 @@ public class TCPParaDirectorio implements Runnable {
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
             } catch (Exception e) {
-               // e.printStackTrace();
+                e.printStackTrace();
+                System.out.println("es en tcpparadirectorio");
             }
 
         }

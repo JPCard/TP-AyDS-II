@@ -40,7 +40,8 @@ public class ComprobanteListener implements Runnable{
                 //System.exit(1);
             }
             catch (Exception e) {
-               // e.printStackTrace();
+                System.out.println("es en comprobantelistener");
+               e.printStackTrace();
             }
         }
     }

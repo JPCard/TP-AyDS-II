@@ -20,24 +20,24 @@ public abstract class AbstractMensajeFactory {
      * <b>Pre:</b> emisor != null, asunto != null y asunto != "", cuerpo != null, cuerpo != "".
      * <b>Post:</b> se crea el mensaje con el contenido y tipo especificados y es retornado.
      */
-    public Mensaje crearMensaje(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores){
+    public Mensaje crearMensaje(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
         
         switch (tipoMensaje) {
         case MSJ_NORMAL: 
-            return crearMensajeNormal(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+            return crearMensajeNormal(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores,  receptorObjetivo);
         case MSJ_CON_ALERTA: 
-            return crearMensajeConAlerta(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+            return crearMensajeConAlerta(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores,  receptorObjetivo);
         case MSJ_CON_COMPROBANTE: 
-            return crearMensajeConComprobante(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores);
+            return crearMensajeConComprobante(emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores,  receptorObjetivo);
         default:
             return null;
         }
     }
     
-    public abstract Mensaje crearMensajeNormal(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores);
+    public abstract Mensaje crearMensajeNormal(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
-    public abstract Mensaje crearMensajeConAlerta(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores);
+    public abstract Mensaje crearMensajeConAlerta(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
-    public abstract Mensaje crearMensajeConComprobante(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores);
+    public abstract Mensaje crearMensajeConComprobante(Emisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
 }
