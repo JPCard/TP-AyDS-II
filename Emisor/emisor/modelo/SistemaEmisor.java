@@ -47,9 +47,7 @@ public class SistemaEmisor {
     private HashMap<Integer, MensajeConComprobante> mensajesConComprobante =
         new HashMap<Integer, MensajeConComprobante>();
     private HashMap<Integer,Mensaje> mensajesNoEnviados;
-    
-    private HashMap<Integer, ArrayList<String>> listasReceptoresConfirmados = //ahora los identificamos con su usario
-        new HashMap<Integer, ArrayList<String>>();
+   
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
     
 
@@ -136,21 +134,11 @@ public class SistemaEmisor {
         boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado,mensajesCifrados);
 
 
-        for (Mensaje mensaje : mensajesPreCifrado){ //se guardan los pre cifrados siempre para poder volverlos a leer
-            mensaje.setEnviado(logroEnviar);
-        }
+        
 
-        if (logroEnviar) {
-            //TODO
-            //algo con guardarMensaje(algo)
-            for (Mensaje mensaje : mensajesPreCifrado){
-                mensaje.setEnviado(true);
-            }
-                
-        } else {
+        if (!logroEnviar) {
             
             for(Mensaje mensajeCifrado: mensajesCifrados){
-                mensajeCifrado.setEnviado(false);
                 
                 this.guardarMensajeNoEnviado(mensajeCifrado);
             }
@@ -171,13 +159,10 @@ public class SistemaEmisor {
     public void guardarMensaje(Mensaje mensaje) {
 
         if (mensaje instanceof MensajeConComprobante) {
-            System.err.println("este es pero renull");
             System.out.println(mensaje);
             mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
             ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
-        System.err.println("que hago aca");
-        //System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCenviados == "+mensajesEnviados+" mensaje == "+mensaje);
         this.mensajesEnviados.put(mensaje.getId(), mensaje);
         //todo algo de persistencia
     }
@@ -198,37 +183,10 @@ public class SistemaEmisor {
         int idMensaje = comprobante.getidMensaje();
         MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
         m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
-        synchronized (mensajesConComprobante) {
-            if (this.mensajesConComprobante.containsKey(idMensaje)) {
 
-                synchronized (listasReceptoresConfirmados) {
-                    if (!listasReceptoresConfirmados.containsKey(idMensaje))
-                        listasReceptoresConfirmados.put(idMensaje,
-                                                        new ArrayList<String>()); //si es el primer comprobante, crea el arraylist
-
-
-                    this.listasReceptoresConfirmados
-                        .get(idMensaje)
-                        .add(comprobante.getUsuarioReceptor());
-                }
-            }
-        }
-        //else
     }
 
-    public Iterator<String> getReceptoresConfirmados(Mensaje mensaje) {
-        synchronized (listasReceptoresConfirmados) {
-            return this.listasReceptoresConfirmados
-                       .get(mensaje.getId())
-                       .iterator();
-        }
-    }
 
-    public boolean hayReceptoresConfirmados(Mensaje mensaje) {
-        synchronized (listasReceptoresConfirmados) {
-            return this.listasReceptoresConfirmados.containsKey(mensaje.getId());
-        }
-    }
 
     public int getPuerto() {
         return this.getEmisor().getPuerto();

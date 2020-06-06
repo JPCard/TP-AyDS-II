@@ -19,7 +19,6 @@ public class Mensaje implements Serializable{
     private int id;
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
     private String receptorObjetivo;
-    private boolean enviado = false;
 
     public Mensaje(){ //para la serializacion
         super();
@@ -153,11 +152,4 @@ public class Mensaje implements Serializable{
        //
     }
 
-    public boolean isEnviado() {
-        return this.enviado;
-    }
-    
-    public void setEnviado(boolean value) {
-        this.enviado=value;
-    }
 }
