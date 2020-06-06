@@ -24,7 +24,6 @@ import servidormensajeria.red.MensajeHandler;
 import servidormensajeria.red.TCPParaDirectorio;
 import servidormensajeria.red.ComprobanteListener;
 import servidormensajeria.red.MensajeListener;
-import servidormensajeria.red.SolicitudMensajesEmisoresListener;
 
 public class SistemaServidor {
     
@@ -59,8 +58,6 @@ public class SistemaServidor {
         new Thread(new MensajeListener()).start();
 //        System.out.println("hola");
         new Thread(new ComprobanteListener()).start();
-        
-        new Thread(new SolicitudMensajesEmisoresListener()).start();
         
         new Thread(instance.tcpParaDirectorio).start();
         

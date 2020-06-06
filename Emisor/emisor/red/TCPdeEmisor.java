@@ -54,7 +54,6 @@ public class TCPdeEmisor implements Runnable {
     public void run() {
         while (true) {
             try {
-                SistemaEmisor.getInstance().inicializarMensajesConComprobante();
                 ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
                 while (true) {
                     Socket socket = s.accept();
@@ -80,42 +79,6 @@ public class TCPdeEmisor implements Runnable {
 
     }
 
-    public Collection<MensajeConComprobante> solicitarMensajesEnviados() {
-        
-
-        Collection<MensajeConComprobante> mensajesConComprobantePropios = null;
-
-        boolean leido = false;
-
-        while (!leido){
-            try {
-                Socket socket = new Socket();
-                InetSocketAddress addr =
-                    new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeriaSolicitarMensajes);
-                socket.connect(addr, 500);
-
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                out.writeObject(SistemaEmisor.getInstance()
-                                .getEmisor()); //envio al emisor la id con la cual debe rotular su mensaje
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                mensajesConComprobantePropios = (Collection<MensajeConComprobante>) in.readObject();
-                System.out.println("Hilo recuperador de mensajes con comprobante: Mensajes recuperados exitosamente");
-                out.close();
-                in.close();
-                socket.close();
-                leido = true;
-            } catch (IOException e) {
-                System.out.println("Hilo recuperador de mensajes con comprobante: Servidor de mensajeria no responde: reintentando");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException f) {
-                }
-            } catch (ClassNotFoundException e) {
-            }
-        }
-            
-        return mensajesConComprobantePropios;
-    }
 
 
     /**
