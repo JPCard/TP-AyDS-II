@@ -123,13 +123,9 @@ public class ControladorEmisor {
         this.vistaComprobantes = vistaComprobantes;
     }
 
-    public Iterator<String> getReceptoresConfirmados(Mensaje mensaje) throws Exception {
-        if(SistemaEmisor.getInstance().hayReceptoresConfirmados(mensaje))
-            return SistemaEmisor.getInstance().getReceptoresConfirmados(mensaje);
-        else throw new Exception("Todavia no hay receptores confirmados");
-    }
 
-    public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
+
+    public void mostrarMensajeConComprobante(MensajeConComprobante mensaje) {
         if(vistaComprobantes != null)
             vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }

@@ -129,7 +129,5 @@ public class TCPdeEmisor implements Runnable {
 
     }
 
-    public void onConfirmacion(Comprobante comprobante) {
-        ControladorEmisor.getInstance().agregarComprobante(comprobante);
-    }
+
 }
