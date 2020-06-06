@@ -13,6 +13,7 @@ import emisor.persistencia.PersistenciaEmisor;
 import emisor.persistencia.PersistenciaMensajesEmisorXML;
 
 import emisor.red.TCPDestinatariosRegistrados;
+import emisor.red.TCPMensajesPendientes;
 import emisor.red.TCPdeEmisor;
 
 import java.io.FileNotFoundException;
@@ -46,15 +47,16 @@ public class SistemaEmisor {
     private IEncriptacion encriptacion;
     private static SistemaEmisor instance;
 
-    
-    
-    private IPersistenciaMensajesEmisor persistenciaMensajes = new PersistenciaMensajesEmisorXML();
-   
+
+    private IPersistenciaMensajesEmisor persistenciaMensajes;
+
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
-    
+    private Thread TCPMensajesPendientes = null;
+
 
     private SistemaEmisor() throws Exception {
         super();
+        this.persistenciaMensajes = new PersistenciaMensajesEmisorXML();
         encriptacion = new EncriptacionRSA();
         emisor = persistencia.cargarEmisor();
 
@@ -62,7 +64,7 @@ public class SistemaEmisor {
             new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
                             persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
 
-
+        
     }
 
     public static void inicializar() throws Exception {
@@ -79,6 +81,9 @@ public class SistemaEmisor {
         hiloDestinatarios.start();
 
         System.out.println("Hilos de red comenzados");
+
+        if(instance.persistenciaMensajes.quedanMensajesPendientes())
+            instance.inciarHiloMensajesPendientes();
 
     }
 
@@ -129,42 +134,51 @@ public class SistemaEmisor {
             PublicKey publicKey = contactosArr.get(indice).getLlavePublica();
 
             mensajesPreCifrado.add(mensajePreCifrado);
-            
+
             mensajesCifrados.add(this.encriptacion.encriptar(mensajeCifrado, publicKey));
         }
-        
-        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado,mensajesCifrados);
+
+        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado, mensajesCifrados);
 
 
-        
+        if (!logroEnviar) { //aca setear id negativa
 
-        if (!logroEnviar) {
-            
-            for(Mensaje mensajeCifrado: mensajesCifrados){
-                
-                this.guardarMensajeNoEnviado(mensajeCifrado);
+            Iterator<Mensaje> itPre = mensajesPreCifrado.iterator();
+            Iterator<Mensaje> itPost = mensajesCifrados.iterator();
+
+
+            while (itPre.hasNext()) {
+                //
+                Mensaje mensajeCifrado = itPost.next();
+
+                itPre.next().setId(this.persistenciaMensajes.getNextIdNoEnviados());
+                mensajeCifrado.setId(this.persistenciaMensajes.getNextIdNoEnviados());
+
+                this.persistenciaMensajes.pasarASiguienteIdNoEnviados();
+
+                this.persistenciaMensajes.guardarMensajeEncriptado(mensajeCifrado);
             }
 
         }
 
+        //aca guardar
+        for (Mensaje mensaje : mensajesPreCifrado) {
+            guardarMensaje(mensaje);
+        }
+
+        if (!logroEnviar)
+            this.inciarHiloMensajesPendientes();
+
         return logroEnviar;
     }
-    
-    public void guardarMensajeNoEnviado(Mensaje mensajeCifrado){
-//        synchronized(mensajesNoEnviados){
-//            mensajesNoEnviados.put(mensajeCifrado.getId(),mensajeCifrado);
-//        }
-        this.persistenciaMensajes.guardarMensajeEncriptado(mensajeCifrado);
-        
-    }
-    
+
 
     public void guardarMensaje(Mensaje mensajeSinEncriptar) {
 
         if (mensajeSinEncriptar instanceof MensajeConComprobante) {
             System.out.println(mensajeSinEncriptar);
             //mensajesConComprobante.put(mensajeSinEncriptar.getId(), (MensajeConComprobante) mensaje);
-            this.persistenciaMensajes.guardarMensajeConComprobante((MensajeConComprobante)mensajeSinEncriptar);
+            this.persistenciaMensajes.guardarMensajeConComprobante((MensajeConComprobante) mensajeSinEncriptar);
             ControladorEmisor.getInstance().mostrarMensajeConComprobante((MensajeConComprobante) mensajeSinEncriptar);
         }
     }
@@ -175,17 +189,18 @@ public class SistemaEmisor {
 
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
 
-        return this.persistenciaMensajes.getMensajesConComprobanteIterator();
+        return this.persistenciaMensajes
+                   .obtenerMsjsComprobadosEmisor()
+                   .iterator();
     }
 
     public void agregarComprobante(Comprobante comprobante) {
         //System.out.println("me llamaron");
-//        int idMensaje = comprobante.getidMensaje();
-//        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
-//        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
-    this.persistenciaMensajes.guardarComp(comprobante);
+        //        int idMensaje = comprobante.getidMensaje();
+        //        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
+        //        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
+        this.persistenciaMensajes.guardarComp(comprobante);
     }
-
 
 
     public int getPuerto() {
@@ -195,8 +210,8 @@ public class SistemaEmisor {
     public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
 
         int id = mensajeSeleccionado.getId();
-//        System.out.println("la id a buscar es: " + id);
-        return this.persistenciaMensajes.isComprobado(mensajeSeleccionado,usuarioReceptor);
+        //        System.out.println("la id a buscar es: " + id);
+        return this.persistenciaMensajes.isComprobado(mensajeSeleccionado, usuarioReceptor);
 
 
     }
@@ -215,9 +230,39 @@ public class SistemaEmisor {
     public void cargarComprobantesAsincronicos() {
 
         Collection<Comprobante> comprobantes = instance.tcpdeEmisor.solicitarComprobantesAsincronicos();
-        if(comprobantes!= null && !comprobantes.isEmpty())
+        if (comprobantes != null && !comprobantes.isEmpty())
             for (Comprobante comprobante : comprobantes) {
                 this.persistenciaMensajes.guardarComp(comprobante);
             }
+    }
+
+    public Collection<Mensaje> getMensajesNoEnviados() {
+        return this.persistenciaMensajes.getMensajesNoEnviados();
+    }
+
+
+    /**
+     * Marca los mensajes que estaban esperando ser enviados. Los marca como enviados.
+     */
+    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes) {
+        this.persistenciaMensajes.marcarMensajesPendientesComoEnviados(mensajesPendientes);
+    }
+
+    public boolean quedanMensajesPendientes() {
+        return this.persistenciaMensajes.quedanMensajesPendientes();
+    }
+
+    public void actualizarIdMensaje(Integer viejaId, Integer nuevaId) {
+        this.persistenciaMensajes.actualizarIdMensaje(viejaId,nuevaId);
+    }
+
+    private void inciarHiloMensajesPendientes() {
+        if (this.TCPMensajesPendientes == null || !this.TCPMensajesPendientes.isAlive()) {
+            this.TCPMensajesPendientes =
+                new Thread(new TCPMensajesPendientes(this.tcpdeEmisor.getIpServidorMensajeria(),
+                                                     this.tcpdeEmisor.getPuertoServidorMensajeria()));
+            this.TCPMensajesPendientes.start();
+        }
+
     }
 }

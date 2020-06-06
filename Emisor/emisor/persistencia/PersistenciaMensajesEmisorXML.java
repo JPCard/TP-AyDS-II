@@ -28,127 +28,212 @@ import java.util.TreeMap;
 import receptor.modelo.Comprobante;
 
 public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmisor {
-    
-    
+
+
     public static final String MENSAJES_COMPROBANTE_FILE_PATH = "Mensajes_Con_Comprobante.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_NOENVIADOS_FILE_PATH = "Mensajes_No_Enviados.xml"; //<idMensaje,Mensaje>
-    
+
     private HashMap<Integer, MensajeConComprobante> mensajesConComprobante; //estos tambien son los no encriptados
     private ArrayList<Mensaje> mensajesNoEnviados; //estos, son los si encriptados , no en viados
     //los si encriptados, si enviados, no se guardan
     //al igual que los mensajes sin comprobante
+
+    private Integer nextIdNoEnviados =
+        -2; //solo IDs negativas para diferenciarlas de aquellas asignadas por el servidor.
+
+    @Override
+    public int getNextIdNoEnviados() {
+        synchronized (nextIdNoEnviados) {
+            return nextIdNoEnviados;
+        }
+
+    }
     
+    @Override
+    public void pasarASiguienteIdNoEnviados() {
+        synchronized (nextIdNoEnviados) {
+            nextIdNoEnviados--;
+        }
+    }
+
     public PersistenciaMensajesEmisorXML() {
         super();
         inicializarConComprobante();
         inicializarNoEnviados();
     }
-    
-    private void inicializarConComprobante(){
+
+    private void inicializarConComprobante() {
         try {
             XMLDecoder decoder =
                 new XMLDecoder(new BufferedInputStream(new FileInputStream(MENSAJES_COMPROBANTE_FILE_PATH)));
             this.mensajesConComprobante = (HashMap<Integer, MensajeConComprobante>) decoder.readObject();
             decoder.close();
+            if(this.mensajesConComprobante ==null )
+                mensajesConComprobante = new HashMap<Integer, MensajeConComprobante>();
+            
         } catch (IOException e) {
             //e.printStackTrace();
             mensajesConComprobante = new HashMap<Integer, MensajeConComprobante>();
         }
     }
-    
-    private void inicializarNoEnviados(){
+
+    private void inicializarNoEnviados() {
+        int ultimaIdUtilizada = -2;
+
         try {
             XMLDecoder decoder =
                 new XMLDecoder(new BufferedInputStream(new FileInputStream(MENSAJES_NOENVIADOS_FILE_PATH)));
             this.mensajesNoEnviados = (ArrayList<Mensaje>) decoder.readObject();
             decoder.close();
+            if (this.mensajesNoEnviados == null)
+                mensajesNoEnviados = new ArrayList<Mensaje>();
+
+            System.out.println("bien");
         } catch (IOException e) {
             //e.printStackTrace();
-            mensajesNoEnviados  = new ArrayList<Mensaje>();
+            System.out.println("catch");
+            mensajesNoEnviados = new ArrayList<Mensaje>();
         }
+
+        if (mensajesNoEnviados.size() > 0)
+            for(Mensaje mensaje: mensajesNoEnviados)
+                if(mensaje.getId()<ultimaIdUtilizada)
+                    ultimaIdUtilizada = mensaje.getId();
+            
+        this.nextIdNoEnviados=ultimaIdUtilizada--;
+
+        System.out.println("En la lista hay:" + mensajesNoEnviados);
     }
 
 
     @Override
     public void guardarComp(Comprobante comprobante) {
-        MensajeConComprobante mensajeC = mensajesConComprobante.get(comprobante.getidMensaje());
-        if (mensajeC!=null && !mensajeC.getReceptoresConfirmados().contains(comprobante.getUsuarioReceptor()))
-            mensajeC.addReceptorConfirmado(comprobante.getUsuarioReceptor());
-        
-        persistirConComprobante();
+        synchronized (mensajesConComprobante) {
+            MensajeConComprobante mensajeC = mensajesConComprobante.get(comprobante.getidMensaje());
+            if (mensajeC != null && !mensajeC.getReceptoresConfirmados().contains(comprobante.getUsuarioReceptor()))
+                mensajeC.addReceptorConfirmado(comprobante.getUsuarioReceptor());
+
+            persistirConComprobante();
+        }
+
     }
-    
-    private void persistirConComprobante(){
-        synchronized(mensajesConComprobante){
-            synchronized(MENSAJES_COMPROBANTE_FILE_PATH){
-                XMLEncoder encoder;
-                try {
-                    encoder =
-                        new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_COMPROBANTE_FILE_PATH)));
-                    encoder.writeObject(mensajesConComprobante);
-                    encoder.close();
-                } catch (FileNotFoundException e) {
-                    //e.printStackTrace();
-                }
+
+    private void persistirConComprobante() {
+        synchronized (MENSAJES_COMPROBANTE_FILE_PATH) {
+            XMLEncoder encoder;
+            try {
+                encoder =
+                    new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_COMPROBANTE_FILE_PATH)));
+                encoder.writeObject(mensajesConComprobante);
+                encoder.close();
+            } catch (FileNotFoundException e) {
+                //e.printStackTrace();
             }
         }
-        
+
     }
 
     @Override
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor()  {
-        
-        
-        
-        return mensajesConComprobante.values();
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor() {
+
+
+        synchronized (mensajesConComprobante) {
+            return mensajesConComprobante.values();
+        }
+
     }
 
     @Override
-    public void marcarMensajesEnviados(){
-        this.mensajesNoEnviados.clear();
-        
-        persistirNoEnviados();
+    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes) {
+        synchronized (mensajesNoEnviados) {
+
+            ArrayList<Mensaje> mensajes2 = new ArrayList<Mensaje>();
+            //todo quizas se salva
+            for (Mensaje m : mensajesPendientes) {
+                mensajes2.add(m.clone());
+
+            }
+
+            for (Mensaje m : mensajes2) {
+                mensajesNoEnviados.remove(m);
+            }
+
+
+            persistirNoEnviados();
+        }
+
+
     }
-    
-    private void persistirNoEnviados(){
-        synchronized(this.mensajesNoEnviados){
-            synchronized(MENSAJES_NOENVIADOS_FILE_PATH){
-                XMLEncoder encoder;
-                try {
-                    encoder =
-                        new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_NOENVIADOS_FILE_PATH)));
-                    encoder.writeObject(mensajesNoEnviados);
-                    encoder.close();
-                } catch (FileNotFoundException e) {
-                    //e.printStackTrace();
-                }
+
+    private void persistirNoEnviados() {
+
+        synchronized (MENSAJES_NOENVIADOS_FILE_PATH) {
+            XMLEncoder encoder;
+            try {
+                encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_NOENVIADOS_FILE_PATH)));
+                encoder.writeObject(mensajesNoEnviados);
+                encoder.close();
+            } catch (FileNotFoundException e) {
+                //e.printStackTrace();
             }
         }
     }
 
     @Override
     public void guardarMensajeEncriptado(Mensaje mensaje) {
-        this.mensajesNoEnviados.add(mensaje);
-        this.persistirNoEnviados();
+        synchronized (mensajesNoEnviados) {
+            
+            
+            
+            
+            
+            
+            
+            this.mensajesNoEnviados.add(mensaje);
+            this.persistirNoEnviados();
+        }
+
+
     }
 
     @Override
     public void guardarMensajeConComprobante(MensajeConComprobante mensaje) {
-        
-        this.mensajesConComprobante.put(mensaje.getId(),mensaje);
-        this.persistirConComprobante();
-    }
+        synchronized (this.mensajesConComprobante) {
+            this.mensajesConComprobante.put(mensaje.getId(), mensaje);
+            this.persistirConComprobante();
+        }
 
 
-    @Override
-    public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
-        
-        return this.mensajesConComprobante.values().iterator();
     }
+
 
     @Override
     public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
-        
+
         return mensajeSeleccionado.getReceptoresConfirmados().contains(usuarioReceptor);
+    }
+
+    @Override
+    public Collection<Mensaje> getMensajesNoEnviados() {
+        synchronized (mensajesNoEnviados) {
+            return this.mensajesNoEnviados;
+        }
+    }
+
+    @Override
+    public boolean quedanMensajesPendientes() {
+        synchronized (mensajesNoEnviados) {
+            return !this.mensajesNoEnviados.isEmpty();
+        }
+    }
+
+    @Override
+    public void actualizarIdMensaje(int viejaId, int nuevaId) {
+        synchronized(mensajesConComprobante){
+            MensajeConComprobante mensajeACambiar = this.mensajesConComprobante.remove(viejaId);
+            mensajeACambiar.setId(nuevaId);
+            this.mensajesConComprobante.put(nuevaId,mensajeACambiar);
+        }
+
     }
 }

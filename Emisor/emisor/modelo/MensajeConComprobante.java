@@ -30,11 +30,21 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     @Override
     public void onLlegada() {
         super.onLlegada();
-        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),emisor);
+        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),this.getEmisor());
 
         ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
     }
-
+    
+    @Override
+    public Mensaje clone() {
+        Mensaje m = MensajeFactory.getInstance()
+               .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
+                             AbstractMensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE, this.getUsuariosReceptores(),
+                             this.getReceptorObjetivo());
+        m.setId(this.getId());
+        return m;
+    }
+    
     @Override
     public String toString() {
         return "Mensaje con Comprobante\n"+super.toString();
