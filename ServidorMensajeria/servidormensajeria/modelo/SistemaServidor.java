@@ -54,6 +54,8 @@ public class SistemaServidor {
         sistema.puertoDirectorioDest = persistencia.cargarPuertoDirectorioDestinatarios();
         sistema.puertoDirectorioTiempo = persistencia.cargarPuertoDirectorioTiempoUltModif();
         sistema.tcpParaDirectorio = new TCPParaDirectorio(sistema.ipDirectorio,sistema.puertoDirectorioDest,sistema.puertoDirectorioTiempo);
+        
+        
         new Thread(new MensajeListener()).start();
 //        System.out.println("hola");
         new Thread(new ComprobanteListener()).start();

@@ -61,6 +61,9 @@ public class MensajeHandler implements Runnable {
 
                     enviado = true;
                 } catch (Exception e) {
+                    
+                    
+                    
                     //e.printStackTrace(); no se pudo conectar con el receptor
                     enviado = false;
                 }
@@ -74,7 +77,15 @@ public class MensajeHandler implements Runnable {
                 //System.out.println(usuarioActual);
                 if(primerIntento){
                     System.err.println("1");
+                    
+                    try{
                     SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
+                    }
+                    catch(Exception e){
+                        System.out.println("es entre el 1 y el 2 en serio!!");
+                        e.printStackTrace();
+                    }
+                    
                     System.err.println("2");
                 }
                 else if(enviado){ //si se manda pero no es a la primera hay que marcar que se mando
@@ -83,7 +94,9 @@ public class MensajeHandler implements Runnable {
                     System.err.println("4");
                 }
             } catch (Exception f) {
+                System.out.println("es aca!!");
                f.printStackTrace();
+               System.out.println("es aca11");
             }
 
 

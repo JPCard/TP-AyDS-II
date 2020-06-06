@@ -60,17 +60,21 @@ public class TCPdeEmisor implements Runnable {
                     Socket socket = s.accept();
                     ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                     Comprobante comprobante = (Comprobante) in.readObject();
+                    System.out.println("EL COMPROBANTE ES");
+                    System.out.println(comprobante);
                     ControladorEmisor.getInstance().agregarComprobante(comprobante);
                     in.close();
                     socket.close();
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
+//                System.out.println("bindexception");
+                e.printStackTrace();
                 System.out.println("Emisor: puerto ocupado, cerrando.");
                 System.exit(1);
             } catch (Exception e) {
-                //System.out.println("algo mas general");
-               // e.printStackTrace();
+//               System.out.println("algo mas general");
+               e.printStackTrace();
             }
         }
 
@@ -114,7 +118,13 @@ public class TCPdeEmisor implements Runnable {
     }
 
 
-    public boolean enviarMensaje(Collection<Mensaje> mensajes) {
+    /**
+     * Pre: hay una relacion 1:1 entre mensajesPreCifrado y Post, solo llegan hasta aca para recibir una ID
+     * @param mensajesPreCifrado
+     * @param mensajesPostCifrado
+     * @return
+     */
+    public boolean enviarMensaje(Collection<Mensaje> mensajesPreCifrado,Collection<Mensaje> mensajesPostCifrado) {
         try {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
@@ -122,19 +132,30 @@ public class TCPdeEmisor implements Runnable {
 
             
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            int cantMensajes = mensajes.size();
+            int cantMensajes = mensajesPostCifrado.size();
             //OUT 1
             out.writeObject(cantMensajes); //le digo cuantos son para que me mande esas ID
             
             //IN 1
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            for(Iterator<Mensaje> itMensajes = mensajes.iterator();itMensajes.hasNext();){ //SDMOP
-                itMensajes.next().setId((Integer) in.readObject());
+            
+            Iterator<Mensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
+            Iterator<Mensaje> itMensajesPreCifrados = mensajesPreCifrado.iterator();
+            int nextId;
+            Mensaje mensajeActual;
+            while(itMensajesCifrados.hasNext()){
+                nextId = (Integer) in.readObject();
+                mensajeActual = itMensajesPreCifrados.next();
+                    
+                itMensajesCifrados.next().setId(nextId);
+                
+                mensajeActual.setId(nextId);
+                SistemaEmisor.getInstance().guardarMensaje(mensajeActual);
             }
             
             
             //OUT 2
-            out.writeObject(mensajes);
+            out.writeObject(mensajesPostCifrado);
             out.close();
             return true;
 

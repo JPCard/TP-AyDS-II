@@ -46,10 +46,12 @@ public class SistemaEmisor {
     private HashMap<Integer, Mensaje> mensajesEnviados = new HashMap<Integer, Mensaje>();
     private HashMap<Integer, MensajeConComprobante> mensajesConComprobante =
         new HashMap<Integer, MensajeConComprobante>();
-
+    private HashMap<Integer,Mensaje> mensajesNoEnviados;
+    
     private HashMap<Integer, ArrayList<String>> listasReceptoresConfirmados = //ahora los identificamos con su usario
         new HashMap<Integer, ArrayList<String>>();
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
+    
 
     private SistemaEmisor() throws Exception {
         super();
@@ -97,51 +99,87 @@ public class SistemaEmisor {
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
 
-        TreeSet<Receptor> contactos =  this.getEmisor().getAgenda().getContactos();
-        
+        TreeSet<Receptor> contactos = this.getEmisor()
+                                          .getAgenda()
+                                          .getContactos();
+
         ArrayList<Receptor> contactosArr = new ArrayList(contactos);
-        
+
         ArrayList<Mensaje> mensajesCifrados = new ArrayList<Mensaje>();
-        for(String receptorActual : usuariosReceptores){
-            Mensaje mensaje =
-                MensajeFactory.getInstance().crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores,receptorActual);
-            
-            this.getEmisor().getAgenda().getContactos();
-            
+        ArrayList<Mensaje> mensajesPreCifrado = new ArrayList<Mensaje>();
+        for (String receptorActual : usuariosReceptores) {
+            Mensaje mensajeCifrado =
+                MensajeFactory.getInstance()
+                .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
+
+            Mensaje mensajePreCifrado =
+                MensajeFactory.getInstance()
+                .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
+
+            this.getEmisor()
+                .getAgenda()
+                .getContactos();
+
             int indice =
-                Collections.binarySearch(contactosArr, new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual, null)); //este receptor es de mentirita y solo para comparar
-            
-            
+                Collections.binarySearch(contactosArr,
+                                         new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual,
+                                                      null)); //este receptor es de mentirita y solo para comparar
+
+
             PublicKey publicKey = contactosArr.get(indice).getLlavePublica();
+
+            mensajesPreCifrado.add(mensajePreCifrado);
             
-            
-            mensajesCifrados.add(this.encriptacion.encriptar(mensaje, publicKey));
+            mensajesCifrados.add(this.encriptacion.encriptar(mensajeCifrado, publicKey));
         }
         
-        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesCifrados);
-        
-        if(logroEnviar) {
+        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado,mensajesCifrados);
+
+
+        for (Mensaje mensaje : mensajesPreCifrado){ //se guardan los pre cifrados siempre para poder volverlos a leer
+            mensaje.setEnviado(logroEnviar);
+        }
+
+        if (logroEnviar) {
             //TODO
             //algo con guardarMensaje(algo)
-        }
-        else{
-            //TODO
-            //algo con guardar para mandar despues
+            for (Mensaje mensaje : mensajesPreCifrado){
+                mensaje.setEnviado(true);
+            }
+                
+        } else {
             
+            for(Mensaje mensajeCifrado: mensajesCifrados){
+                mensajeCifrado.setEnviado(false);
+                
+                this.guardarMensajeNoEnviado(mensajeCifrado);
+            }
+
         }
 
         return logroEnviar;
     }
+    
+    public void guardarMensajeNoEnviado(Mensaje mensajeCifrado){
+        synchronized(mensajesNoEnviados){
+            mensajesNoEnviados.put(mensajeCifrado.getId(),mensajeCifrado);
+        }
+        //todo algo de persistencia
+    }
+    
 
     public void guardarMensaje(Mensaje mensaje) {
 
         if (mensaje instanceof MensajeConComprobante) {
+            System.err.println("este es pero renull");
+            System.out.println(mensaje);
             mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
             ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
         }
-
+        System.err.println("que hago aca");
         //System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCenviados == "+mensajesEnviados+" mensaje == "+mensaje);
         this.mensajesEnviados.put(mensaje.getId(), mensaje);
+        //todo algo de persistencia
     }
 
     public Iterator<Receptor> consultarAgenda() {

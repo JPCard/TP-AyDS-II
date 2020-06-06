@@ -67,6 +67,7 @@ public class MensajeListener implements Runnable{
                 //System.exit(1);
             }
             catch (Exception e) {
+                System.out.println("es en mensajelistener");
                // e.printStackTrace();
             }
         }
