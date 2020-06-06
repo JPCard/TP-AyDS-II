@@ -44,7 +44,14 @@ public class ComprobanteHandler implements Runnable {
 
         } catch (Exception e) {
             //e.printStackTrace();
-            System.out.println("Error en comprobantehandler");
+            System.out.println("Comprobante no se pudo enviar al emisor, guardando para ser enviado posteriormente");
+            try {
+                SistemaServidor.getInstance()
+                               .getPersistencia()
+                               .guardarComprobanteNoEnviado(comprobante);
+            } catch (Exception f) {
+                System.out.println("algo terrible ha ocurridoen comprobantehandler");
+            }
         }
     }
 }

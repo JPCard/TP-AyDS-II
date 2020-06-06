@@ -12,6 +12,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import java.util.HashMap;
 import java.util.TreeMap;
 
 import receptor.modelo.Comprobante;
@@ -30,6 +32,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,Mensaje>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.xml"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH =
@@ -49,6 +52,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     private TreeMap<String, Collection<Integer>> idMensajesConComprobEmisores;
 
     private Integer proximoIdMensaje;
+    private HashMap<Emisor,Collection<Comprobante>> comprobantesNoEnviados;//<Emisor,Comprobante>
 
     public PersistenciaMensajesServidorXML() {
         super();
@@ -56,6 +60,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
         cargaInicialIdMensajesEntregadosRecep();
         cargaInicialIdMensajesEntregarRecep();
         cargaInicialidMensajesConComprobEmisores();
+        cargaInicialComprobantesNoEnviados();
         proximoIdMensaje = cargarMaxIdMsjGuardado() + 1;
     }
 
@@ -158,6 +163,20 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                 idMensajesConComprobEmisores = new TreeMap<String, Collection<Integer>>();
         } catch (IOException e) {
             idMensajesConComprobEmisores = new TreeMap<String, Collection<Integer>>();
+        }
+    }
+    
+    private void cargaInicialComprobantesNoEnviados(){
+        try {
+            XMLDecoder decoder =
+                new XMLDecoder(new BufferedInputStream(new FileInputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
+            this.comprobantesNoEnviados = (HashMap<Emisor, Collection<Comprobante>>) decoder.readObject();
+            decoder.close();
+            if (comprobantesNoEnviados ==
+                null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
+                comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
+        } catch (IOException e) {
+            comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
         }
     }
 
@@ -391,6 +410,50 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     public int getProximoIdMensaje() {
         synchronized (this.proximoIdMensaje) {
             return proximoIdMensaje;
+        }
+    }
+
+    @Override
+    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws FileNotFoundException {
+        synchronized(comprobantesNoEnviados){
+            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal());
+            if(coleccion==null){
+                coleccion = new ArrayList<Comprobante>();
+                this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal(),coleccion);
+            }
+                    
+            
+            coleccion.add(comprobante);
+            
+            
+            synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
+                XMLEncoder encoder =
+                    new XMLEncoder(new BufferedOutputStream(new FileOutputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
+                encoder.writeObject(comprobantesNoEnviados);
+                encoder.close();
+            }
+        }
+    }
+    
+    
+    @Override
+    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor){
+        synchronized(comprobantesNoEnviados){
+            return this.comprobantesNoEnviados.get(emisor);
+        }
+    }
+    
+    @Override
+    public void eliminarComprobantesNoEnviados(Emisor emisor) throws FileNotFoundException{
+        synchronized(comprobantesNoEnviados){
+        this.comprobantesNoEnviados.get(emisor).clear();
+        }
+        
+        synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
+            XMLEncoder encoder =
+                new XMLEncoder(new BufferedOutputStream(new FileOutputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
+            encoder.writeObject(comprobantesNoEnviados);
+            encoder.close();
         }
     }
 }

@@ -30,5 +30,11 @@ public interface IPersistenciaMensajesServidor {
     public void avanzaProximoIdMensaje(); //una vez que le mandamos el id al emisor
 
     public int getProximoIdMensaje();
+    
+    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception;
+    
+    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor);
+    
+    public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception;
 }
     
