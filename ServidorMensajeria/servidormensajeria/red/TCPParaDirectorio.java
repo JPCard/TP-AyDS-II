@@ -84,7 +84,7 @@ public class TCPParaDirectorio implements Runnable {
 
 
             ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
-
+            System.out.println("Sobre el crash de nullpointer el usuarioactual es: "+usuarioActual);
             int indice = Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual, null)); //este receptor es de mentirita y solo para comparar
 //            System.out.println("INDICE INDICE INDICE " + indice);
             if (indice == -1)

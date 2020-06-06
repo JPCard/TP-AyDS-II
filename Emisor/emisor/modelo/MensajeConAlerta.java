@@ -10,11 +10,12 @@ import receptor.modelo.Receptor;
 
 public class MensajeConAlerta extends Mensaje implements Serializable {
 
-    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores, String receptorObjetivo) {
-        super(emisor, asunto, cuerpo,receptores,receptorObjetivo);
+    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo, ArrayList<String> receptores,
+                            String receptorObjetivo) {
+        super(emisor, asunto, cuerpo, receptores, receptorObjetivo);
     }
-    
-    public MensajeConAlerta(){
+
+    public MensajeConAlerta() {
         super();
     } //para serializacion
 
@@ -24,9 +25,18 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
         ControladorReceptor.getInstance().activarAlerta();
     }
 
+    @Override
+    public Mensaje clone() {
+        Mensaje m = MensajeFactory.getInstance()
+               .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
+                             AbstractMensajeFactory.TipoMensaje.MSJ_CON_ALERTA, this.getUsuariosReceptores(),
+                             this.getReceptorObjetivo());
+        m.setId(this.getId());
+        return m;
+    }
 
     @Override
     public String toString() {
-        return "Mensaje con Alerta\n"+super.toString();
+        return "Mensaje con Alerta\n" + super.toString();
     }
 }

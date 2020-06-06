@@ -16,13 +16,21 @@ public interface IPersistenciaMensajesEmisor {
     
     public void guardarMensajeConComprobante(MensajeConComprobante mensaje);
 
-    public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator();
-
     public void guardarComp(Comprobante comprobante) ;
 
     public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor();
     
-    public void marcarMensajesEnviados();
+    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes);
 
     public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor);
+
+    public Collection<Mensaje> getMensajesNoEnviados();
+
+    public boolean quedanMensajesPendientes();
+    
+    public int getNextIdNoEnviados();
+    
+    public void pasarASiguienteIdNoEnviados();
+
+    public void actualizarIdMensaje(int viejaId, int nuevaId);
 }

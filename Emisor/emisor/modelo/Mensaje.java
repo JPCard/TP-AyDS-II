@@ -11,17 +11,30 @@ import java.util.Iterator;
 import receptor.modelo.Receptor;
 
 
-public class Mensaje implements Serializable{
+public class Mensaje implements Serializable, Cloneable {
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
-    protected Emisor emisor;
+    private Emisor emisor;
     private int id;
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
     private String receptorObjetivo;
 
-    public Mensaje(){ //para la serializacion
+   
+
+    public Mensaje() { //para la serializacion
         super();
+    }
+
+
+    @Override
+    public Mensaje clone() {
+        Mensaje m = MensajeFactory.getInstance()
+               .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
+                             AbstractMensajeFactory.TipoMensaje.MSJ_NORMAL, this.getUsuariosReceptores(),
+                             this.getReceptorObjetivo());
+        m.setId(this.getId());
+        return m;
     }
 
     public String getReceptorObjetivo() {
@@ -33,17 +46,23 @@ public class Mensaje implements Serializable{
         return usuariosReceptores.iterator();
     }
 
-    public Mensaje(Emisor emisor, String asunto, String cuerpo,ArrayList<String> usuariosReceptores, String receptorObjetivo) {
+    public Mensaje(Emisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
+                   String receptorObjetivo) {
         this.datetime = new GregorianCalendar(); //fecha y hora actual
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         this.emisor = emisor;
         this.receptorObjetivo = receptorObjetivo;
-        
+
         this.usuariosReceptores = usuariosReceptores;
-        this.id=-1;
+        this.id = -1;
     }
 
+
+    public void setReceptorObjetivo(String receptorObjetivo) {
+        this.receptorObjetivo = receptorObjetivo;
+    }
+    
     public int getId() {
         return id;
     }
@@ -76,8 +95,6 @@ public class Mensaje implements Serializable{
         return result;
     }
 
-   
-
 
     public GregorianCalendar getDatetime() {
         return datetime;
@@ -104,10 +121,10 @@ public class Mensaje implements Serializable{
         sb.append("\nFecha: ");
         sb.append(this.datetime.getTime());
         sb.append("\n Receptores: ");
-        while(itReceptores.hasNext())
-            sb.append(itReceptores.next()+",");
-        
-        sb.deleteCharAt(sb.length()-1);
+        while (itReceptores.hasNext())
+            sb.append(itReceptores.next() + ",");
+
+        sb.deleteCharAt(sb.length() - 1);
         sb.append("\n===========================================");
         sb.append("\nAsunto: ");
         sb.append(this.getAsunto());
@@ -147,9 +164,9 @@ public class Mensaje implements Serializable{
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
      * <b>Invariante:</b> datetime, asunto, cuerpo y emisor del mensaje no varían
      */
-    public void onLlegada(){
+    public void onLlegada() {
         // el mensaje comun no hace nada
-       //
+        //
     }
 
 }

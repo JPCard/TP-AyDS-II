@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import receptor.modelo.Receptor;
 
-public class Emisor implements Serializable{
+public class Emisor implements Serializable,Cloneable{
     private String IP; //{id}
     private int puerto;
     private String nombre;
@@ -25,6 +25,11 @@ public class Emisor implements Serializable{
         this.nombre = nombre;
     }
 
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+       return new Emisor(this.getPuerto(),this.getIP(),this.getNombre());
+    }
 
     @Override
     public boolean equals(Object object) {

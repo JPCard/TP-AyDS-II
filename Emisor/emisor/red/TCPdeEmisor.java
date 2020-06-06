@@ -35,6 +35,8 @@ public class TCPdeEmisor implements Runnable {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private int puertoServidorMensajeriaSolicitarMensajes;
+    
+    private Thread TCPMensajesPendientes;
 
     public TCPdeEmisor() {
         super();
@@ -114,7 +116,6 @@ public class TCPdeEmisor implements Runnable {
                 itMensajesCifrados.next().setId(nextId);
                 
                 mensajeActual.setId(nextId);
-                SistemaEmisor.getInstance().guardarMensaje(mensajeActual);
             }
             
             
@@ -124,10 +125,22 @@ public class TCPdeEmisor implements Runnable {
             return true;
 
         } catch (Exception e) {
-            e.printStackTrace();
+           
+                
+                
+            
+           // e.printStackTrace();
             return false;
         }
 
+    }
+
+    public String getIpServidorMensajeria() {
+        return ipServidorMensajeria;
+    }
+
+    public int getPuertoServidorMensajeria() {
+        return puertoServidorMensajeria;
     }
 
 
