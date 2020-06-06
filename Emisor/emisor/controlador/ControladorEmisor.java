@@ -125,7 +125,7 @@ public class ControladorEmisor {
 
 
 
-    public void agregarMensajeConComprobante(MensajeConComprobante mensaje) {
+    public void mostrarMensajeConComprobante(MensajeConComprobante mensaje) {
         if(vistaComprobantes != null)
             vistaComprobantes.agregarMensajeConComprobante(mensaje);
     }

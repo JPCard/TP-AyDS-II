@@ -6,21 +6,23 @@ import emisor.modelo.MensajeConComprobante;
 
 import java.util.Collection;
 
+import java.util.Iterator;
+
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public interface IPersistenciaMensajesEmisor {
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
-
-    public void guardarComp(Comprobante comprobante) throws Exception;
-
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
-
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception;
+    public void guardarMensajeEncriptado(Mensaje mensaje);//si se guarda encriptado es por que no se mando
     
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
+    public void guardarMensajeConComprobante(MensajeConComprobante mensaje);
 
-    public void avanzaProximoIdMensaje(); //una vez que le mandamos el id al emisor
+    public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator();
 
-    public int getProximoIdMensaje();
+    public void guardarComp(Comprobante comprobante) ;
+
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor();
+    
+    public void marcarMensajesEnviados();
+
+    public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor);
 }

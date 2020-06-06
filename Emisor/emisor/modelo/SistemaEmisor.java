@@ -7,7 +7,10 @@ import emisor.controlador.ControladorEmisor;
 import emisor.modelo.AbstractMensajeFactory.TipoMensaje;
 
 import emisor.persistencia.IPersistenciaEmisor;
+import emisor.persistencia.IPersistenciaMensajesEmisor;
 import emisor.persistencia.PersistenciaEmisor;
+
+import emisor.persistencia.PersistenciaMensajesEmisorXML;
 
 import emisor.red.TCPDestinatariosRegistrados;
 import emisor.red.TCPdeEmisor;
@@ -43,10 +46,9 @@ public class SistemaEmisor {
     private IEncriptacion encriptacion;
     private static SistemaEmisor instance;
 
-    private HashMap<Integer, Mensaje> mensajesEnviados = new HashMap<Integer, Mensaje>();
-    private HashMap<Integer, MensajeConComprobante> mensajesConComprobante =
-        new HashMap<Integer, MensajeConComprobante>();
-    private HashMap<Integer,Mensaje> mensajesNoEnviados;
+    
+    
+    private IPersistenciaMensajesEmisor persistenciaMensajes = new PersistenciaMensajesEmisorXML();
    
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
     
@@ -149,22 +151,22 @@ public class SistemaEmisor {
     }
     
     public void guardarMensajeNoEnviado(Mensaje mensajeCifrado){
-        synchronized(mensajesNoEnviados){
-            mensajesNoEnviados.put(mensajeCifrado.getId(),mensajeCifrado);
-        }
-        //todo algo de persistencia
+//        synchronized(mensajesNoEnviados){
+//            mensajesNoEnviados.put(mensajeCifrado.getId(),mensajeCifrado);
+//        }
+        this.persistenciaMensajes.guardarMensajeEncriptado(mensajeCifrado);
+        
     }
     
 
-    public void guardarMensaje(Mensaje mensaje) {
+    public void guardarMensaje(Mensaje mensajeSinEncriptar) {
 
-        if (mensaje instanceof MensajeConComprobante) {
-            System.out.println(mensaje);
-            mensajesConComprobante.put(mensaje.getId(), (MensajeConComprobante) mensaje);
-            ControladorEmisor.getInstance().agregarMensajeConComprobante((MensajeConComprobante) mensaje);
+        if (mensajeSinEncriptar instanceof MensajeConComprobante) {
+            System.out.println(mensajeSinEncriptar);
+            //mensajesConComprobante.put(mensajeSinEncriptar.getId(), (MensajeConComprobante) mensaje);
+            this.persistenciaMensajes.guardarMensajeConComprobante((MensajeConComprobante)mensajeSinEncriptar);
+            ControladorEmisor.getInstance().mostrarMensajeConComprobante((MensajeConComprobante) mensajeSinEncriptar);
         }
-        this.mensajesEnviados.put(mensaje.getId(), mensaje);
-        //todo algo de persistencia
     }
 
     public Iterator<Receptor> consultarAgenda() {
@@ -173,17 +175,15 @@ public class SistemaEmisor {
 
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
 
-        return this.mensajesConComprobante
-                   .values()
-                   .iterator();
+        return this.persistenciaMensajes.getMensajesConComprobanteIterator();
     }
 
     public void agregarComprobante(Comprobante comprobante) {
         //System.out.println("me llamaron");
-        int idMensaje = comprobante.getidMensaje();
-        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
-        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
-
+//        int idMensaje = comprobante.getidMensaje();
+//        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
+//        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
+    this.persistenciaMensajes.guardarComp(comprobante);
     }
 
 
@@ -195,20 +195,9 @@ public class SistemaEmisor {
     public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
 
         int id = mensajeSeleccionado.getId();
-        System.out.println("la id a buscar es: " + id);
-        return mensajesConComprobante.get(id)
-                                     .getReceptoresConfirmados()
-                                     .contains(usuarioReceptor);
+//        System.out.println("la id a buscar es: " + id);
+        return this.persistenciaMensajes.isComprobado(mensajeSeleccionado,usuarioReceptor);
 
-        //        ArrayList<String> receptoresConfirmados = null;
-        //        synchronized (listasReceptoresConfirmados) {
-        //            receptoresConfirmados = this.listasReceptoresConfirmados.get(mensajeSeleccionado.getId());
-        //        }
-        //        if (receptoresConfirmados == null)
-        //            return false;
-        //        else
-        //            return receptoresConfirmados.contains(usuarioReceptor);
-        //
 
     }
 
