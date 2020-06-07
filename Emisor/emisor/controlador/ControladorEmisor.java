@@ -12,26 +12,32 @@ import emisor.vista.IVistaContactos;
 import emisor.vista.IVistaEmisor;
 
 
+import emisor.vista.VentanaEnviando;
+
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import java.util.Observable;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import org.json.simple.parser.ParseException;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
-public class ControladorEmisor {
+public class ControladorEmisor extends Observable {
     private IVistaEmisor vistaPrincipal;
     private IVistaContactos vistaContactos;
     private IVistaComprobantes vistaComprobantes;
     private static ControladorEmisor instance = null;
     private boolean directorioConectado =false;
-    
-    
-    
+
+
     private ControladorEmisor(IVistaEmisor vista) {
         super();
         this.vistaPrincipal = vista;
@@ -81,12 +87,30 @@ public class ControladorEmisor {
             usuariosReceptores.add(receptor.getUsuario());
         }
         
-        if(!SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,usuariosReceptores,tipo)) {
-            this.vistaPrincipal.mostrarErrorServidorNoDisponible();   
-        }
-        else{
-            this.vistaPrincipal.envioExitoso();
-        }
+        new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+                if(!SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,usuariosReceptores,tipo)) {
+                    ControladorEmisor.getInstance().cerrarEnviando();
+                    ControladorEmisor.getInstance().vistaPrincipal.mostrarErrorServidorNoDisponible();   
+                }
+                else{
+                    ControladorEmisor.getInstance().cerrarEnviando();
+                    ControladorEmisor.getInstance().vistaPrincipal.envioExitoso();
+                }
+                System.out.println("hilo chiquito llega  a su fin =====================================================================================");
+            }
+            
+        }).start();
+        
+        
+        ControladorEmisor.getInstance().mostrarEnviando();
+        
+       
+        
+        
+        
         
         
     }
@@ -148,5 +172,14 @@ public class ControladorEmisor {
         return directorioConectado;
     }
 
-   
+
+
+    private void mostrarEnviando() {
+        new VentanaEnviando();
+    }
+
+    private void cerrarEnviando() {
+        this.setChanged();
+        this.notifyObservers();
+    }
 }
