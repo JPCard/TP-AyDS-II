@@ -43,7 +43,8 @@ import receptor.modelo.Receptor;
  */
 public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public static final int ICONO_CONECTADO_HEIGHT = 31;
-
+    public static final int MAX_CHAR_ASUNTO = 122;
+    public static final int MAX_CHAR_CUERPO = 122;
     DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
 
 
@@ -63,7 +64,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             .getVerticalScrollBar()
             .setModel(modelVerticalScroll);
         validacionBotonesEnviarMensaje();
-        
+
+        jLabelCantCaracteresAsunto.setText(String.valueOf(MAX_CHAR_ASUNTO));
     }
 
     /** This method is called from within the constructor to
@@ -74,12 +76,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     @SuppressWarnings("unchecked")
     private void initComponents() {//GEN-BEGIN:initComponents
 
-        jPanelBotonesArriba = new javax.swing.JPanel();
-        jPanelListaContactos = new javax.swing.JPanel();
-        jButtonListaContactos = new javax.swing.JButton();
-        jPanelVerComprobante = new javax.swing.JPanel();
-        jButtonVerComprobante = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jPanelRellenoArriba = new javax.swing.JPanel();
         jPanelPrincipal = new javax.swing.JPanel();
         jPanelDestinatarios = new javax.swing.JPanel();
         jScrollPaneDestanatariosRegistrados = new javax.swing.JScrollPane();
@@ -88,11 +85,31 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelContainerPrincipalEstadosDestinatarios = new javax.swing.JPanel();
         jPanelContainerConexionDestinatarios = new javax.swing.JPanel();
         jPanelLlenadorEspacioEstadoDestinatarios = new javax.swing.JPanel();
-        jPanelMensaje = new javax.swing.JPanel();
+        jPanelDerecha = new javax.swing.JPanel();
+        jPanelBotonesArriba = new javax.swing.JPanel();
+        jPanelListaContactos1 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jButtonListaContactos = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jPanelListaContactos = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jButtonVerComprobante = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanelMensajes = new javax.swing.JPanel();
         jPanelAsunto = new javax.swing.JPanel();
         jTextFieldAsunto = new javax.swing.JTextField();
+        jPanelCantCaracteresAsunto = new javax.swing.JPanel();
+        jLabelCantCaracteresAsunto = new javax.swing.JLabel();
         jPanelCuerpo = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jPanelCantCaracteresCuerpo = new javax.swing.JPanel();
+        jLabelCantCaracteresCuerpo = new javax.swing.JLabel();
+        jScrollPaneCuerpo = new javax.swing.JScrollPane();
         jEditorCuerpo = new javax.swing.JEditorPane();
         jPanelBotonesAbajo = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -107,85 +124,32 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Envio de Mensajes");
-        setMinimumSize(new java.awt.Dimension(960, 700));
+        setMinimumSize(new java.awt.Dimension(900, 700));
+        setPreferredSize(new java.awt.Dimension(900, 700));
 
-        jPanelBotonesArriba.setLayout(new java.awt.GridLayout(1, 3));
+        jPanelRellenoArriba.setMinimumSize(new java.awt.Dimension(0, 50));
+        jPanelRellenoArriba.setPreferredSize(new java.awt.Dimension(1656, 50));
 
-        jButtonListaContactos.setText("Ver Lista De Contactos Completa");
-        jButtonListaContactos.setMaximumSize(new java.awt.Dimension(171, 40));
-        jButtonListaContactos.setMinimumSize(new java.awt.Dimension(171, 40));
-        jButtonListaContactos.setPreferredSize(new java.awt.Dimension(171, 40));
-        jButtonListaContactos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonListaContactosActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelListaContactosLayout = new javax.swing.GroupLayout(jPanelListaContactos);
-        jPanelListaContactos.setLayout(jPanelListaContactosLayout);
-        jPanelListaContactosLayout.setHorizontalGroup(
-            jPanelListaContactosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelListaContactosLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(jButtonListaContactos, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanelRellenoArribaLayout = new javax.swing.GroupLayout(jPanelRellenoArriba);
+        jPanelRellenoArriba.setLayout(jPanelRellenoArribaLayout);
+        jPanelRellenoArribaLayout.setHorizontalGroup(
+            jPanelRellenoArribaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1656, Short.MAX_VALUE)
         );
-        jPanelListaContactosLayout.setVerticalGroup(
-            jPanelListaContactosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelListaContactosLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jButtonListaContactos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
+        jPanelRellenoArribaLayout.setVerticalGroup(
+            jPanelRellenoArribaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
         );
 
-        jPanelBotonesArriba.add(jPanelListaContactos);
+        getContentPane().add(jPanelRellenoArriba, java.awt.BorderLayout.PAGE_START);
 
-        jButtonVerComprobante.setText("Ver Mensajes con Comprobante");
-        jButtonVerComprobante.setPreferredSize(new java.awt.Dimension(166, 40));
-        jButtonVerComprobante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVerComprobanteActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanelVerComprobanteLayout = new javax.swing.GroupLayout(jPanelVerComprobante);
-        jPanelVerComprobante.setLayout(jPanelVerComprobanteLayout);
-        jPanelVerComprobanteLayout.setHorizontalGroup(
-            jPanelVerComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelVerComprobanteLayout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jButtonVerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
-        );
-        jPanelVerComprobanteLayout.setVerticalGroup(
-            jPanelVerComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelVerComprobanteLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jButtonVerComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(55, Short.MAX_VALUE))
-        );
-
-        jPanelBotonesArriba.add(jPanelVerComprobante);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 352, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 138, Short.MAX_VALUE)
-        );
-
-        jPanelBotonesArriba.add(jPanel3);
-
-        getContentPane().add(jPanelBotonesArriba, java.awt.BorderLayout.NORTH);
-
+        jPanelPrincipal.setMinimumSize(new java.awt.Dimension(664, 150));
+        jPanelPrincipal.setPreferredSize(new java.awt.Dimension(878, 150));
         jPanelPrincipal.setLayout(new java.awt.BorderLayout(20, 0));
 
-        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Destinatarios"));
-        jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(600, 300));
+        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Destinatarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(600, 200));
+        jPanelDestinatarios.setPreferredSize(new java.awt.Dimension(300, 200));
         jPanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
         jScrollPaneDestanatariosRegistrados.setMinimumSize(new java.awt.Dimension(200, 50));
@@ -239,25 +203,228 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanelPrincipal.add(jPanelDestinatarios, java.awt.BorderLayout.WEST);
 
-        jPanelMensaje.setBorder(javax.swing.BorderFactory.createTitledBorder("Mensaje"));
-        jPanelMensaje.setLayout(new java.awt.BorderLayout(20, 20));
+        jPanelDerecha.setMinimumSize(new java.awt.Dimension(100, 600));
+        jPanelDerecha.setPreferredSize(new java.awt.Dimension(100, 600));
+        jPanelDerecha.setLayout(new java.awt.BorderLayout(20, 20));
+
+        jPanelBotonesArriba.setMinimumSize(new java.awt.Dimension(100, 150));
+        jPanelBotonesArriba.setPreferredSize(new java.awt.Dimension(100, 150));
+        jPanelBotonesArriba.setLayout(new java.awt.GridLayout(0, 2));
+
+        jPanelListaContactos1.setMinimumSize(new java.awt.Dimension(513, 150));
+        jPanelListaContactos1.setPreferredSize(new java.awt.Dimension(292, 150));
+        jPanelListaContactos1.setLayout(new java.awt.GridLayout(3, 3));
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 668, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanelListaContactos1.add(jPanel7);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jPanel10.setPreferredSize(new java.awt.Dimension(20, 0));
+
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel9.add(jPanel10, java.awt.BorderLayout.WEST);
+
+        jButtonListaContactos.setText("Ver Lista De Contactos Completa");
+        jButtonListaContactos.setMaximumSize(new java.awt.Dimension(200, 50));
+        jButtonListaContactos.setMinimumSize(new java.awt.Dimension(200, 50));
+        jButtonListaContactos.setPreferredSize(new java.awt.Dimension(300, 50));
+        jButtonListaContactos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonListaContactosActionPerformed(evt);
+            }
+        });
+        jPanel9.add(jButtonListaContactos, java.awt.BorderLayout.CENTER);
+
+        jPanel11.setPreferredSize(new java.awt.Dimension(20, 66));
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanel9.add(jPanel11, java.awt.BorderLayout.EAST);
+
+        jPanelListaContactos1.add(jPanel9);
+
+        jPanel12.setPreferredSize(new java.awt.Dimension(663, 30));
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 668, Short.MAX_VALUE)
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanelListaContactos1.add(jPanel12);
+
+        jPanelBotonesArriba.add(jPanelListaContactos1);
+
+        jPanelListaContactos.setMinimumSize(new java.awt.Dimension(513, 100));
+        jPanelListaContactos.setPreferredSize(new java.awt.Dimension(292, 100));
+        jPanelListaContactos.setLayout(new java.awt.GridLayout(3, 3));
+
+        jPanel13.setPreferredSize(new java.awt.Dimension(663, 30));
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 668, Short.MAX_VALUE)
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanelListaContactos.add(jPanel13);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jPanel5.setPreferredSize(new java.awt.Dimension(20, 0));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel4.add(jPanel5, java.awt.BorderLayout.WEST);
+
+        jButtonVerComprobante.setText("Ver Mensajes con Comprobante");
+        jButtonVerComprobante.setPreferredSize(new java.awt.Dimension(100, 40));
+        jButtonVerComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVerComprobanteActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jButtonVerComprobante, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setPreferredSize(new java.awt.Dimension(20, 66));
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel4.add(jPanel6, java.awt.BorderLayout.EAST);
+
+        jPanelListaContactos.add(jPanel4);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 668, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 50, Short.MAX_VALUE)
+        );
+
+        jPanelListaContactos.add(jPanel2);
+
+        jPanelBotonesArriba.add(jPanelListaContactos);
+
+        jPanelDerecha.add(jPanelBotonesArriba, java.awt.BorderLayout.NORTH);
+
+        jPanelMensajes.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mensajes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanelMensajes.setMinimumSize(new java.awt.Dimension(100, 159));
+        jPanelMensajes.setPreferredSize(new java.awt.Dimension(100, 300));
+        jPanelMensajes.setLayout(new java.awt.BorderLayout());
 
         jPanelAsunto.setBorder(javax.swing.BorderFactory.createTitledBorder("Asunto"));
+        jPanelAsunto.setMinimumSize(new java.awt.Dimension(28, 100));
+        jPanelAsunto.setPreferredSize(new java.awt.Dimension(678, 100));
         jPanelAsunto.setLayout(new java.awt.BorderLayout());
 
+        jTextFieldAsunto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextFieldAsunto.setToolTipText("Escriba aqui el asunto");
+        jTextFieldAsunto.setMinimumSize(new java.awt.Dimension(4, 30));
+        jTextFieldAsunto.setPreferredSize(new java.awt.Dimension(4, 30));
         jTextFieldAsunto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jTextFieldAsuntoKeyReleased(evt);
             }
         });
-        jPanelAsunto.add(jTextFieldAsunto, java.awt.BorderLayout.NORTH);
+        jPanelAsunto.add(jTextFieldAsunto, java.awt.BorderLayout.CENTER);
 
-        jPanelMensaje.add(jPanelAsunto, java.awt.BorderLayout.NORTH);
+        jPanelCantCaracteresAsunto.setMinimumSize(new java.awt.Dimension(0, 15));
+        jPanelCantCaracteresAsunto.setPreferredSize(new java.awt.Dimension(658, 15));
+        jPanelCantCaracteresAsunto.setLayout(new java.awt.BorderLayout());
+
+        jLabelCantCaracteresAsunto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelCantCaracteresAsunto.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelCantCaracteresAsunto.setText("122");
+        jLabelCantCaracteresAsunto.setMinimumSize(new java.awt.Dimension(18, 15));
+        jLabelCantCaracteresAsunto.setPreferredSize(new java.awt.Dimension(18, 15));
+        jPanelCantCaracteresAsunto.add(jLabelCantCaracteresAsunto, java.awt.BorderLayout.NORTH);
+
+        jPanelAsunto.add(jPanelCantCaracteresAsunto, java.awt.BorderLayout.NORTH);
+
+        jPanelMensajes.add(jPanelAsunto, java.awt.BorderLayout.NORTH);
 
         jPanelCuerpo.setBorder(javax.swing.BorderFactory.createTitledBorder("Cuerpo"));
+        jPanelCuerpo.setMinimumSize(new java.awt.Dimension(100, 300));
+        jPanelCuerpo.setPreferredSize(new java.awt.Dimension(668, 200));
         jPanelCuerpo.setLayout(new java.awt.BorderLayout());
 
+        jPanelCantCaracteresCuerpo.setLayout(new java.awt.BorderLayout());
+
+        jLabelCantCaracteresCuerpo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelCantCaracteresCuerpo.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabelCantCaracteresCuerpo.setText("122");
+        jLabelCantCaracteresCuerpo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jLabelCantCaracteresCuerpoKeyReleased(evt);
+            }
+        });
+        jPanelCantCaracteresCuerpo.add(jLabelCantCaracteresCuerpo, java.awt.BorderLayout.PAGE_END);
+
+        jPanelCuerpo.add(jPanelCantCaracteresCuerpo, java.awt.BorderLayout.NORTH);
+
+        jEditorCuerpo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jEditorCuerpo.setToolTipText("Escriba aqui el cuerpo");
         jEditorCuerpo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -267,17 +434,20 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 jEditorCuerpoKeyReleased(evt);
             }
         });
-        jScrollPane2.setViewportView(jEditorCuerpo);
+        jScrollPaneCuerpo.setViewportView(jEditorCuerpo);
 
-        jPanelCuerpo.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanelCuerpo.add(jScrollPaneCuerpo, java.awt.BorderLayout.CENTER);
 
-        jPanelMensaje.add(jPanelCuerpo, java.awt.BorderLayout.CENTER);
+        jPanelMensajes.add(jPanelCuerpo, java.awt.BorderLayout.CENTER);
 
-        jPanelPrincipal.add(jPanelMensaje, java.awt.BorderLayout.CENTER);
+        jPanelDerecha.add(jPanelMensajes, java.awt.BorderLayout.CENTER);
+
+        jPanelPrincipal.add(jPanelDerecha, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanelPrincipal, java.awt.BorderLayout.CENTER);
 
-        jPanelBotonesAbajo.setPreferredSize(new java.awt.Dimension(500, 100));
+        jPanelBotonesAbajo.setMinimumSize(new java.awt.Dimension(100, 0));
+        jPanelBotonesAbajo.setPreferredSize(new java.awt.Dimension(100, 100));
         jPanelBotonesAbajo.setLayout(new java.awt.GridLayout(1, 4, 20, 20));
 
         jPanel8.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -306,12 +476,12 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 .addComponent(jLabelConexionDirectorio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelConexionDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(159, Short.MAX_VALUE))
+                .addContainerGap(309, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(66, Short.MAX_VALUE)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanelConexionDirectorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelConexionDirectorio))
@@ -338,7 +508,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             jPanelBotonSimpleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotonSimpleLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonEnviarSimple, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addComponent(jButtonEnviarSimple, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelBotonSimpleLayout.setVerticalGroup(
@@ -369,7 +539,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
             jPanelBotonAvisoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBotonAvisoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButtonEnviarAviso, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
+                .addComponent(jButtonEnviarAviso, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelBotonAvisoLayout.setVerticalGroup(
@@ -399,7 +569,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelBotonComprobanteLayout.setHorizontalGroup(
             jPanelBotonComprobanteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBotonComprobanteLayout.createSequentialGroup()
-                .addComponent(jButtonEnviarConComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jButtonEnviarConComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelBotonComprobanteLayout.setVerticalGroup(
@@ -416,23 +586,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         pack();
     }//GEN-END:initComponents
-
-    private void jButtonListaContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListaContactosActionPerformed
-        jButtonListaContactos.setEnabled(false);
-        JFrame vistaContactos = new VistaContactos();
-        vistaContactos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        vistaContactos.setVisible(true);
-
-        vistaContactos.addWindowListener(new WindowAdapter() {
-
-
-            @Override
-            public void windowClosing(WindowEvent windowEvent) {
-                jButtonListaContactos.setEnabled(true);
-            }
-        });
-        
-    }//GEN-LAST:event_jButtonListaContactosActionPerformed
 
     private void jButtonVerComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVerComprobanteActionPerformed
         jButtonVerComprobante.setEnabled(false);
@@ -469,16 +622,57 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jEditorCuerpoKeyTyped
 
     private void jEditorCuerpoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jEditorCuerpoKeyReleased
+        String texto = this.jEditorCuerpo.getText();
+
+        if (texto.length() > MAX_CHAR_CUERPO) {
+            texto = texto.substring(0, MAX_CHAR_CUERPO);
+            jEditorCuerpo.setText(texto);
+        }
+
+        jLabelCantCaracteresCuerpo.setText(String.valueOf(MAX_CHAR_CUERPO - texto.length()));
+
+        validacionBotonesEnviarMensaje();
+
         validacionBotonesEnviarMensaje();
     }//GEN-LAST:event_jEditorCuerpoKeyReleased
 
     private void jTextFieldAsuntoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldAsuntoKeyReleased
+        String texto = this.jTextFieldAsunto.getText();
+
+        if (texto.length() > MAX_CHAR_ASUNTO) {
+            texto = texto.substring(0, MAX_CHAR_ASUNTO);
+            jTextFieldAsunto.setText(texto);
+        }
+
+        jLabelCantCaracteresAsunto.setText(String.valueOf(MAX_CHAR_ASUNTO - texto.length()));
+
         validacionBotonesEnviarMensaje();
+        
     }//GEN-LAST:event_jTextFieldAsuntoKeyReleased
 
     private void jListDestinatariosValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListDestinatariosValueChanged
         validacionBotonesEnviarMensaje();
     }//GEN-LAST:event_jListDestinatariosValueChanged
+
+    private void jLabelCantCaracteresCuerpoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLabelCantCaracteresCuerpoKeyReleased
+        
+    }//GEN-LAST:event_jLabelCantCaracteresCuerpoKeyReleased
+
+    private void jButtonListaContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListaContactosActionPerformed
+        jButtonListaContactos.setEnabled(false);
+        JFrame vistaContactos = new VistaContactos();
+        vistaContactos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        vistaContactos.setVisible(true);
+
+        vistaContactos.addWindowListener(new WindowAdapter() {
+
+
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                jButtonListaContactos.setEnabled(true);
+            }
+        });
+    }//GEN-LAST:event_jButtonListaContactosActionPerformed
 
 
     /**
@@ -557,28 +751,43 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JButton jButtonListaContactos;
     private javax.swing.JButton jButtonVerComprobante;
     private javax.swing.JEditorPane jEditorCuerpo;
+    private javax.swing.JLabel jLabelCantCaracteresAsunto;
+    private javax.swing.JLabel jLabelCantCaracteresCuerpo;
     private javax.swing.JLabel jLabelConexionDirectorio;
     private javax.swing.JList<Receptor> jListDestinatarios;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanelAsunto;
     private javax.swing.JPanel jPanelBotonAviso;
     private javax.swing.JPanel jPanelBotonComprobante;
     private javax.swing.JPanel jPanelBotonSimple;
     private javax.swing.JPanel jPanelBotonesAbajo;
     private javax.swing.JPanel jPanelBotonesArriba;
+    private javax.swing.JPanel jPanelCantCaracteresAsunto;
+    private javax.swing.JPanel jPanelCantCaracteresCuerpo;
     private javax.swing.JPanel jPanelConexionDirectorio;
     private javax.swing.JPanel jPanelContainerConexionDestinatarios;
     private javax.swing.JPanel jPanelContainerPrincipalEstadosDestinatarios;
     private javax.swing.JPanel jPanelCuerpo;
+    private javax.swing.JPanel jPanelDerecha;
     private javax.swing.JPanel jPanelDestinatarios;
     private javax.swing.JPanel jPanelListaContactos;
+    private javax.swing.JPanel jPanelListaContactos1;
     private javax.swing.JPanel jPanelLlenadorEspacioEstadoDestinatarios;
-    private javax.swing.JPanel jPanelMensaje;
+    private javax.swing.JPanel jPanelMensajes;
     private javax.swing.JPanel jPanelPrincipal;
-    private javax.swing.JPanel jPanelVerComprobante;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel jPanelRellenoArriba;
     private javax.swing.JScrollPane jScrollPaneConexionDestinatarios;
+    private javax.swing.JScrollPane jScrollPaneCuerpo;
     private javax.swing.JScrollPane jScrollPaneDestanatariosRegistrados;
     private javax.swing.JTextField jTextFieldAsunto;
     // End of variables declaration//GEN-END:variables
@@ -676,7 +885,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                     clip.start();
                 } catch (Exception e) {
                     System.out.println("problemas de audio");
-                   //e.printStackTrace();
+                    //e.printStackTrace();
 
                 }
             }
@@ -717,7 +926,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.validate();
         this.repaint();
 
-//        System.out.println("CARGARCONTACTOS");
+        //        System.out.println("CARGARCONTACTOS");
     }
 
 
