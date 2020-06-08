@@ -1,0 +1,11 @@
+{
+	"PuertoPropio":"27003",
+	"Nombre":"Nomas Tapolitano",
+	"Usuario":"receptortres"
+	"IPPropia":"127.0.0.1",
+	"PuertoDirectorioConexion":"27544",
+	"PuertoDirectorioRegistro":"1234",
+	"IPDirectorio":"127.0.0.1",
+	"PuertoServidorMensajeria":"27447",
+	"IPServidorMensajeria":"127.0.0.1"
+}

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_251" class="java.beans.XMLDecoder">
+ <object class="java.util.TreeMap">
+  <void method="put">
+   <int>5</int>
+   <object class="emisor.modelo.MensajeConAlerta" id="MensajeConAlerta0">
+    <void property="asunto">
+     <string>31e0823df768ae01cfd94a3a0d3aea8530de1446754df4e9d342e0189e5bf9400503a58226dc2d9070def85fac432b27b128f511e85f76c79b87384ecdbe9e4035c825abcd49ffa5df7616e87060be0cc6f7e4b4c1a65608a9778f9c3c8eaa5ca9dfd440d086dcc93d9c31f903414eaaa1c3c57d16ef5e201ab9cc27372f406353252b2f46fe709d3b0ea326b00d107c37538c3fd74c0eddb604513265e37a5e14d926dc1ced2977ee0a3f0ab2151e4575f7b836472c7752dad6a8f76575d18c9f126828dac33b414852988a8371257b03c1256734ed0605adb254c4258a7da9e57defe16fee4cc77bfa42991d912de22924a6ad05c721c06816e38959a65371</string>
+    </void>
+    <void property="cuerpo">
+     <string>57635b4f38811059ea7ae91796ee7f0cb87b47a8207f4ec75f915ddb5a1086c15871d3f0ed070d2deae86c1bbdfbe3e80e37ef15cdef5f5217d33c260106c4558fbc52a99e426192a437eecf8a85e0eed8c6731f5bd352a4c1230453113b97b0cb110c4ddb842b193022fff6c3a2eba1d435cb75ffa2f6c851c196481a621c1424ce8747c7e54b73cfbc569e205d77314a6e00db5377b9c649c8b52000c56713457d12da42507c5cc0ad15ca45e0e791ee72a183e11b01de91660574ecca19ebf2f83d667d1d01a1dc10f493d84e03688a91242c5a86fbd723b7770a8f52e3a901d76abf2b327f2873956dd4445301c738da3d009a480b6b52c9631234311700</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1591589469832</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.Emisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="agenda">
+       <object class="emisor.modelo.Agenda" id="Agenda0">
+        <void property="contactos">
+         <void method="add">
+          <object class="receptor.modelo.Receptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas 434politano</string>
+           </void>
+           <void property="puerto">
+            <int>27041</int>
+           </void>
+           <void property="usuario">
+            <string>napopan343123</string>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="receptor.modelo.Receptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas Tapolitano</string>
+           </void>
+           <void property="puerto">
+            <int>27002</int>
+           </void>
+           <void property="usuario">
+            <string>receptor2</string>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="receptor.modelo.Receptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas Tapolitano</string>
+           </void>
+           <void property="puerto">
+            <int>27003</int>
+           </void>
+           <void property="usuario">
+            <string>receptortres</string>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="nombre">
+       <string>elmore</string>
+      </void>
+      <void property="puerto">
+       <int>27235</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>5</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

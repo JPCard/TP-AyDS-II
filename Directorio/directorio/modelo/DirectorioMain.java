@@ -2,6 +2,7 @@ package directorio.modelo;
 
 import directorio.red.DestinatariosRegistradosThread;
 import directorio.red.HeartbeatThread;
+import directorio.red.SincronizacionInicialDirectorios;
 import directorio.red.UltimoCambioThread;
 
 public class DirectorioMain {
@@ -13,6 +14,7 @@ public class DirectorioMain {
         Directorio.getInstance();
         System.out.println("Directorio creado");
         
+        new SincronizacionInicialDirectorios(Directorio.getInstance()).cargarListaDestinatariosRegistrados();
         
         //este estaba segundo pero lo puse primero
         DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(Directorio.getInstance());

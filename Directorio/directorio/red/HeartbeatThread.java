@@ -53,37 +53,28 @@ public class HeartbeatThread extends Thread {
                     //aca llega un heartbeat
                         in = new ObjectInputStream(socket.getInputStream());
                         heartbeat = (Heartbeat) in.readObject();
-                        directorio.heartbeatRecibido(heartbeat.getReceptor());
-                        in.close();
-                    
-                    
-                    
-
+                    in.close();
                     socket.close();
+                    System.err.println(heartbeat.toString());
                     
                     if(!heartbeat.isRetransmitido()){ //avisar a los otros directorios
                         heartbeat.setRetransmitido(true);
-                        directorio.getIpOtroDirectorio();
-                        
-                        Socket socketRetransmitir = new Socket();
-                        InetSocketAddress addr = new InetSocketAddress(directorio.getIpOtroDirectorio(),directorio.getOtroDirectorioPuertoHeartbeats());
-                        socketRetransmitir.connect(addr, 500);
-
-                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                        out.writeObject(heartbeat);
-                        out.close();
-                        
-                        socketRetransmitir.close();
+                        new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
                                   
                     }
                     
+                    new Thread(new HeartbeatHandler(heartbeat)).start();
+                        
+                        
                     
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
+                e.printStackTrace();
             } catch (Exception e) {
                 //e.printStackTrace();
+                e.printStackTrace();
             }
 
         }

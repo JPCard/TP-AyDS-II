@@ -44,7 +44,6 @@ public class DestinatariosRegistradosThread extends Thread {
 
 
     private void escucharEmisores() {
-        this.cargarListaDestinatariosRegistrados();
         while (true) {
             try {
 
@@ -54,6 +53,7 @@ public class DestinatariosRegistradosThread extends Thread {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
                     Socket socket = s.accept();
                     System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
+                    System.out.println(directorio.listaDestinatariosRegistrados().toString());
                     ObjectOutputStream out = null;
                     if (socket.isConnected()) {
                         out = new ObjectOutputStream(socket.getOutputStream());
@@ -73,61 +73,7 @@ public class DestinatariosRegistradosThread extends Thread {
         }
     }
 
-    /**Se utiliza la primera vez que se abre el directorio, para ponerlo al dia sobre quien esta conectado
-     * Intenta contactar al otro directorio para obtener los destinatarios que hay hasta ahora, si no lo encuentra comienza de cero
-     */
-    public void cargarListaDestinatariosRegistrados() {
-        Collection<Receptor> destinatariosRegistrados;
-        Long tiempoUltModif;
-        try {
-            Socket socket = new Socket();
-            InetSocketAddress addr =
-                new InetSocketAddress(directorio.getIpOtroDirectorio(),
-                                      this.directorio.getOtroDirectorioPuertoUltimoCambio());
-            socket.connect(addr, 500);
-            ObjectInputStream inTiempo = new ObjectInputStream(socket.getInputStream());
-            tiempoUltModif = (Long) inTiempo.readObject();
-            inTiempo.close();
-            socket.close();
-            
-            Socket socketDest = new Socket();
-            InetSocketAddress addr2 =
-                new InetSocketAddress(directorio.getIpOtroDirectorio(),
-                                      directorio.getOtroDirectorioPuertoDestinatarios());
-            socketDest.connect(addr2, 500);
-            ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-            destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
-
-
-            
-            inDest.close();
-            socketDest.close();
-            
-            
-
-        } catch (IOException e) {
-            tiempoUltModif = new GregorianCalendar().getTimeInMillis();
-            destinatariosRegistrados = new ArrayList<Receptor>();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            tiempoUltModif = new GregorianCalendar().getTimeInMillis();
-            destinatariosRegistrados = new ArrayList<Receptor>();
-        }
-        
-        directorio.setTiempoUltModif(tiempoUltModif);
-        
-        TreeMap<String,Receptor> receptores = new TreeMap<String,Receptor>();
-        
-        for(Receptor r: destinatariosRegistrados){
-            receptores.put(r.getUsuario(),r);
-        }
-        
-        
-        directorio.setReceptores(receptores);
-        
-        
-    }
 
 }
 

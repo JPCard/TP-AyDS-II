@@ -53,7 +53,11 @@ public class TCPDestinatariosRegistrados implements Runnable {
                     Long tiempoUltimaActualizacion = (Long) inTiempo.readObject();
                     inTiempo.close();
                     socket.close();
+                    
+                    System.out.println("mi tiempo de ultmodif es:"+this.getTiempoUltModif());
+                    System.out.println("el del server es:" +tiempoUltimaActualizacion);
                     if (this.getTiempoUltModif() < tiempoUltimaActualizacion) {
+                        System.out.println("ENTRE");
                         Socket socketDest = new Socket();
                         InetSocketAddress addr2 =
                             new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
@@ -74,6 +78,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                         inDest.close();
                         socketDest.close();
                     }
+                    else System.out.println("no entre");
 
                     ControladorEmisor.getInstance().updateConectado(true);
                     Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS); //no lo actualiza siempre xq es lindo

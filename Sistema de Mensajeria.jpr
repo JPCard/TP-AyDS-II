@@ -335,6 +335,142 @@
             <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
             <value n="profileName" v="aeiouccsistemamensajeria"/>
          </hash>
+         <hash n="DDDDdirectorio">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="directorio.modelo.DirectorioMain"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/DDDDdirectorio.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="DDDDdirectorio"/>
+         </hash>
+         <hash n="DDDDemisor">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="emisor.vista.VistaEmisorBootstrap"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/DDDDemisor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="DDDDemisor"/>
+         </hash>
+         <hash n="DDDDsistemamensajeria">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="servidormensajeria.modelo.SistemaServidor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/DDDDsistemamensajeria.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="DDDDsistemamensajeria"/>
+         </hash>
+         <hash n="DDDDVistaReceptor">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="receptor.vista.VistaReceptor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/DDDDVistaReceptor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="DDDDVistaReceptor"/>
+         </hash>
          <hash n="Directorio">
             <hash n="archiveOptions">
                <value n="hasManifest" v="true"/>
@@ -403,6 +539,40 @@
             <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
             <value n="profileName" v="dogathy"/>
          </hash>
+         <hash n="EEEEEEEEEEDirectorio">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="directorio.modelo.DirectorioMain"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/EEEEEEEEEEDirectorio.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="EEEEEEEEEEDirectorio"/>
+         </hash>
          <hash n="Emisor">
             <hash n="archiveOptions">
                <value n="hasManifest" v="true"/>
@@ -436,6 +606,178 @@
             <url n="jarURL" path="deploy/Emisor.jar"/>
             <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
             <value n="profileName" v="Emisor"/>
+         </hash>
+         <hash n="fffffffffffffDirectorio">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="directorio.modelo.DirectorioMain"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/fffffffffffffDirectorio.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="fffffffffffffDirectorio"/>
+         </hash>
+         <hash n="fffffffffffffffEmisor">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="emisor.vista.VistaEmisorBootstrap"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/fffffffffffffffEmisor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="fffffffffffffffEmisor"/>
+         </hash>
+         <hash n="fffffffffreceptor">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="receptor.vista.VistaReceptor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/fffffffffreceptor.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="fffffffffreceptor"/>
+         </hash>
+         <hash n="ffffffffsistemamensajeria">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="servidormensajeria.modelo.SistemaServidor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/ffffffffsistemamensajeria.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="ffffffffsistemamensajeria"/>
          </hash>
          <hash n="napo">
             <hash n="archiveOptions">
@@ -692,6 +1034,15 @@
          <string v="aeiouccReceptor"/>
          <string v="aeiouccDirectorio"/>
          <string v="aeiouccsistemamensajeria"/>
+         <string v="DDDDdirectorio"/>
+         <string v="DDDDemisor"/>
+         <string v="DDDDVistaReceptor"/>
+         <string v="DDDDsistemamensajeria"/>
+         <string v="EEEEEEEEEEDirectorio"/>
+         <string v="fffffffffffffDirectorio"/>
+         <string v="fffffffffffffffEmisor"/>
+         <string v="fffffffffreceptor"/>
+         <string v="ffffffffsistemamensajeria"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
