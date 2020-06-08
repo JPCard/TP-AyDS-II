@@ -69,6 +69,8 @@ public class SincronizacionInicialDirectorios{
         }
         
         directorio.setTiempoUltModif(tiempoUltModif);
+//        directorio.setTiempoUltModif(new GregorianCalendar().getTimeInMillis());
+
         
         TreeMap<String,Receptor> receptores = new TreeMap<String,Receptor>();
         
