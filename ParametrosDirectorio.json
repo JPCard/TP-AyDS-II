@@ -3,5 +3,11 @@
 	"PuertoRecibeHeartbeats":"27444",
 	"PuertoRecibeGetDestinatarios":"27445",
 	"PuertoRecibeGetUltimoCambio":"1",
-	"IPServidorMensajeria":"127.0.0.1"
+	"IPServidorMensajeria":"127.0.0.1",
+	
+	"IPOtroDirectorio":"127.0.0.1",
+	"OtroDirec_RecibeGetDestinatarios":"27555",
+	"OtroDirec_RecibeHeartbeats":"27554",
+	"OtroDirec_UltimoCambio":"101"
+	
 }
