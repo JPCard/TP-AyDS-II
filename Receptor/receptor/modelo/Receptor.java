@@ -15,7 +15,20 @@ public class Receptor implements Serializable, Comparable<Receptor> {
     private boolean conectado = true; //administrado por el directorio
     private String usuario;
     private PublicKey llavePublica;
+    
+    
+    public Receptor(String IP, int puerto, String nombre, String usuario, PublicKey llavePublica) {
+        this.IP = IP;
+        this.puerto = puerto;
+        this.nombre = nombre;
+        this.usuario = usuario;
+        this.llavePublica = llavePublica;
+    }
 
+    public Receptor() {
+        super();
+    }
+    
     public void setLlavePublica(PublicKey llavePublica) {
         this.llavePublica = llavePublica;
     }
@@ -60,17 +73,7 @@ public class Receptor implements Serializable, Comparable<Receptor> {
         return conectado;
     }
 
-    public Receptor(String IP, int puerto, String nombre, String usuario, PublicKey llavePublica) {
-        this.IP = IP;
-        this.puerto = puerto;
-        this.nombre = nombre;
-        this.usuario = usuario;
-        this.llavePublica = llavePublica;
-    }
-
-    public Receptor() {
-        super();
-    }
+    
 
 
     public String getUsuario() {

@@ -10,6 +10,11 @@ public class Comprobante implements Serializable {
     private String usuarioReceptor;
     private Emisor emisorOriginal;
 
+    //para serializacion xml
+    public Comprobante(){
+        
+    }
+
     public Comprobante(int idMensaje, String usuarioReceptor, Emisor emisorOriginal) {
         this.idMensaje = idMensaje;
         this.usuarioReceptor = usuarioReceptor;
@@ -29,5 +34,18 @@ public class Comprobante implements Serializable {
 
     public Emisor getEmisorOriginal() {
         return emisorOriginal;
+    }
+
+    //para serializacion xml
+    public void setIdMensaje(int idMensaje) {
+        this.idMensaje = idMensaje;
+    }
+
+    public void setUsuarioReceptor(String usuarioReceptor) {
+        this.usuarioReceptor = usuarioReceptor;
+    }
+
+    public void setEmisorOriginal(Emisor emisorOriginal) {
+        this.emisorOriginal = emisorOriginal;
     }
 }

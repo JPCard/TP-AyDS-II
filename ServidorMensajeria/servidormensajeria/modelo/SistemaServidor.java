@@ -24,7 +24,7 @@ import servidormensajeria.red.MensajeHandler;
 import servidormensajeria.red.TCPParaDirectorio;
 import servidormensajeria.red.ComprobanteListener;
 import servidormensajeria.red.MensajeListener;
-import servidormensajeria.red.SolicitudMensajesEmisoresListener;
+import servidormensajeria.red.SolicitudComprobantesEmisoresListener;
 
 public class SistemaServidor {
     
@@ -59,7 +59,7 @@ public class SistemaServidor {
         new Thread(new MensajeListener()).start();
 //        System.out.println("hola");
         new Thread(new ComprobanteListener()).start();
-        new Thread(new SolicitudMensajesEmisoresListener()).start();
+        new Thread(new SolicitudComprobantesEmisoresListener()).start();
         new Thread(instance.tcpParaDirectorio).start();
         
     }
@@ -183,5 +183,11 @@ public class SistemaServidor {
     public int cargarPuertoInfoDirectorio()  throws Exception{
         return persistenciaParametros.cargarPuertoInfoDirectorio();
     }
-    
+
+    public void eliminarComprobantesNoEnviados(Emisor emisor) {
+        try {
+            persistenciaMensajes.eliminarComprobantesNoEnviados(emisor);
+        } catch (Exception e) {
+        }
+    }
 }

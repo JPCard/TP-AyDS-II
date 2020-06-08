@@ -121,10 +121,6 @@ public class SistemaEmisor {
                 MensajeFactory.getInstance()
                 .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
 
-            this.getEmisor()
-                .getAgenda()
-                .getContactos();
-
             int indice =
                 Collections.binarySearch(contactosArr,
                                          new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual,

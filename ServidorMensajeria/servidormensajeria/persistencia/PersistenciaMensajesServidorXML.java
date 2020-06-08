@@ -32,7 +32,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,Mensaje>
     public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,Mensaje>
-    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<idMensaje,Mensaje>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<Emisor,Collection<Comprobante>>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.xml"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH =
@@ -52,7 +52,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     private TreeMap<String, Collection<Integer>> idMensajesConComprobEmisores;
 
     private Integer proximoIdMensaje;
-    private HashMap<Emisor,Collection<Comprobante>> comprobantesNoEnviados;//<Emisor,Comprobante>
+    private HashMap<Emisor,Collection<Comprobante>> comprobantesNoEnviados;//<Emisor,Collection<Comprobante>>
 
     public PersistenciaMensajesServidorXML() {
         super();
@@ -446,14 +446,16 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     @Override
     public void eliminarComprobantesNoEnviados(Emisor emisor) throws FileNotFoundException{
         synchronized(comprobantesNoEnviados){
-        this.comprobantesNoEnviados.get(emisor).clear();
+            this.comprobantesNoEnviados.get(emisor).clear();
+            
+            synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
+                XMLEncoder encoder =
+                    new XMLEncoder(new BufferedOutputStream(new FileOutputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
+                encoder.writeObject(comprobantesNoEnviados);
+                encoder.close();
+            }
         }
         
-        synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
-            XMLEncoder encoder =
-                new XMLEncoder(new BufferedOutputStream(new FileOutputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
-            encoder.writeObject(comprobantesNoEnviados);
-            encoder.close();
-        }
+        
     }
 }
