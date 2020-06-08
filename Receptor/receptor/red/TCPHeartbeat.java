@@ -14,6 +14,7 @@ import java.net.Socket;
 
 import receptor.controlador.ControladorReceptor;
 
+import receptor.modelo.Heartbeat;
 import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
@@ -39,12 +40,14 @@ public class TCPHeartbeat implements Runnable {
 
                 while (true) {
                     Receptor receptor = SistemaReceptor.getInstance().getReceptor();
+                    Heartbeat heartbeat = new Heartbeat(receptor);
+                    
                     Socket socket = new Socket();
                     InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.puertoHeartbeat);
                     socket.connect(addr, 500);
 
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                    out.writeObject(receptor);
+                    out.writeObject(heartbeat);
                     out.close();
                     
                     socket.close();

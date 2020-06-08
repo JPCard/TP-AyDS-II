@@ -41,6 +41,13 @@ public class Directorio {
     private int puertoRecibeGetUltimoCambio;
     private String ipServidorMensajeria;
     private int puertoPushReceptores;
+    
+    
+    
+    private String ipOtroDirectorio;
+    private int otroDirectorioPuertoDestinatarios;
+    private int otroDirectorioPuertoHeartbeats;
+    private int otroDirectorioPuertoUltimoCambio;
 
     public int getPuertoRecibeHeartbeats() {
         return puertoRecibeHeartbeats;
@@ -75,10 +82,24 @@ public class Directorio {
             this.puertoRecibeHeartbeats = this.persistenciaDirectorio.cargarPuertoRecibeHeartbeats();
             this.ipServidorMensajeria = this.persistenciaDirectorio.cargarIPServidorMensajeria();
             this.puertoPushReceptores = this.persistenciaDirectorio.cargarpuertoPushReceptores();
+            
+            this.ipOtroDirectorio = this.persistenciaDirectorio.cargarIPOtroDirectorio();
+            this.otroDirectorioPuertoDestinatarios = this.persistenciaDirectorio.cargarPuertoGetDestinatariosOtroDirectorio();
+            this.otroDirectorioPuertoHeartbeats = this.persistenciaDirectorio.cargarPuertoHeartbeatsOtroDirectorio();
+            this.otroDirectorioPuertoUltimoCambio = this.persistenciaDirectorio.cargarPuertoUltimoCambioOtroDirectorio();
+            
         } catch (Exception e) {
             //e.printStackTrace();
         }
 
+    }
+
+    public int getOtroDirectorioPuertoUltimoCambio() {
+        return otroDirectorioPuertoUltimoCambio;
+    }
+
+    public void setTiempoUltModif(Long tiempoUltModif) {
+        this.tiempoUltModif = tiempoUltModif;
     }
 
     public String getIpServidorMensajeria() {
@@ -186,4 +207,25 @@ public class Directorio {
             this.tiempoUltModif = new GregorianCalendar().getTimeInMillis();
         }
     }
+
+
+    public String getIpOtroDirectorio() {
+        return ipOtroDirectorio;
+    }
+
+    public int getOtroDirectorioPuertoDestinatarios() {
+        return otroDirectorioPuertoDestinatarios;
+    }
+
+    public int getOtroDirectorioPuertoHeartbeats() {
+        return otroDirectorioPuertoHeartbeats;
+    }
+
+    public void setReceptores(TreeMap<String, Receptor> receptores) {
+        synchronized(receptores){
+            this.receptores = receptores;
+        }
+        
+    }
+
 }

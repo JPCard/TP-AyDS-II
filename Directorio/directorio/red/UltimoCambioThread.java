@@ -40,7 +40,10 @@ public class UltimoCambioThread extends Thread {
                     if (socket.isConnected()) {
                         out = new ObjectOutputStream(socket.getOutputStream());
                         
-                        directorio.listaDestinatariosRegistrados();// este va antes para q el tiempo de ultima modificacion este actualizado
+                        System.out.println(directorio.listaDestinatariosRegistrados());// este va antes para q el tiempo de ultima modificacion este actualizado
+                        //el sop es optativo
+                        
+                        
                         //nuevo mandatiempos 7000
                         out.writeObject(directorio.getTiempoUltModif()); //siempre en millis
                         

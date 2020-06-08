@@ -18,6 +18,7 @@ import java.security.AccessControlContext;
 
 import java.util.GregorianCalendar;
 
+import receptor.modelo.Heartbeat;
 import receptor.modelo.Receptor;
 
 public class HeartbeatThread extends Thread {
@@ -45,26 +46,35 @@ public class HeartbeatThread extends Thread {
 
                 while (true) {
                     System.out.println("Hilo Heartbeats: Esperando un heartbeat...");
+                    Heartbeat heartbeat;
                     Socket socket = s.accept();
                     System.out.println("Hilo Heartbeats: heartbeat recibido");
                     ObjectInputStream in = null;
                     //aca llega un heartbeat
-                    if (socket.isConnected()) {
                         in = new ObjectInputStream(socket.getInputStream());
-                        Receptor receptor = (Receptor) in.readObject();
-                        directorio.heartbeatRecibido(receptor);
-                        in.close();
+                        heartbeat = (Heartbeat) in.readObject();
+                    in.close();
+                    socket.close();
+                    System.err.println(heartbeat.toString());
+                    
+                    if(!heartbeat.isRetransmitido()){ //avisar a los otros directorios
+                        heartbeat.setRetransmitido(true);
+                        new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
+                                  
                     }
                     
-
-
-                    socket.close();
+                    new Thread(new HeartbeatHandler(heartbeat)).start();
+                        
+                        
+                    
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
+                e.printStackTrace();
             } catch (Exception e) {
                 //e.printStackTrace();
+                e.printStackTrace();
             }
 
         }

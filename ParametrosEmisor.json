@@ -1,9 +1,9 @@
 {
 	"PuertoPropio":"27234",
-	"Nombre":"elmore",
+	"Nombre":"bine",
 	"IPPropia":"127.0.0.1",
-	"PuertoDirectorioDest":"27445",
-	"PuertoDirectorioTiempo":"1",
+	"PuertoDirectorioDest":"27545",
+	"PuertoDirectorioTiempo":"101",
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27446",
 	"PuertoServidorSolicitarMensajesEmisor":"27448",

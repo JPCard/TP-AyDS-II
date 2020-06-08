@@ -2,16 +2,26 @@ package directorio.red;
 
 import directorio.modelo.Directorio;
 
+import emisor.controlador.ControladorEmisor;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.net.BindException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.security.AccessControlContext;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import receptor.modelo.Receptor;
 
@@ -43,6 +53,7 @@ public class DestinatariosRegistradosThread extends Thread {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
                     Socket socket = s.accept();
                     System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
+                    System.out.println(directorio.listaDestinatariosRegistrados().toString());
                     ObjectOutputStream out = null;
                     if (socket.isConnected()) {
                         out = new ObjectOutputStream(socket.getOutputStream());
@@ -57,8 +68,13 @@ public class DestinatariosRegistradosThread extends Thread {
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
             } catch (Exception e) {
-               // e.printStackTrace();
+                // e.printStackTrace();
             }
         }
     }
+
+
+
 }
+
+

@@ -9,4 +9,11 @@ public interface IPersistenciaDirectorio {
     public int cargarPuertoRecibeGetUltimoCambio() throws Exception;
 
     public int cargarpuertoPushReceptores() throws Exception;
+    
+    
+    public String cargarIPOtroDirectorio()throws Exception;
+    public int cargarPuertoHeartbeatsOtroDirectorio()throws Exception;
+    public int cargarPuertoGetDestinatariosOtroDirectorio() throws Exception;
+
+    public int cargarPuertoUltimoCambioOtroDirectorio()throws Exception;
 }

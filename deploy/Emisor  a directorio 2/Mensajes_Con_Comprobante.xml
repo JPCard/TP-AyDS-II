@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_251" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <int>1</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante0">
+    <void property="asunto">
+     <string>weqeqweqw</string>
+    </void>
+    <void property="cuerpo">
+     <string>wqeqeqw</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1591587644888</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.Emisor" id="Emisor0">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="agenda">
+       <object class="emisor.modelo.Agenda" id="Agenda0">
+        <void property="contactos">
+         <void method="add">
+          <object class="receptor.modelo.Receptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas 434politano</string>
+           </void>
+           <void property="puerto">
+            <int>27041</int>
+           </void>
+           <void property="usuario">
+            <string>napopan343123</string>
+           </void>
+          </object>
+         </void>
+         <void method="add">
+          <object class="receptor.modelo.Receptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas Tapolitano</string>
+           </void>
+           <void property="puerto">
+            <int>27002</int>
+           </void>
+           <void property="usuario">
+            <string>receptor2</string>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="nombre">
+       <string>elmore</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>1</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>3</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante1">
+    <void property="asunto">
+     <string>doble tuti</string>
+    </void>
+    <void property="cuerpo">
+     <string>doblesungui</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1591587718829</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object idref="Emisor0"/>
+    </void>
+    <void property="id">
+     <int>3</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void id="ArrayList0" property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+     <void method="add">
+      <string>receptor2</string>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>4</int>
+   <object class="emisor.modelo.MensajeConComprobante">
+    <void property="asunto">
+     <string>doble tuti</string>
+    </void>
+    <void property="cuerpo">
+     <string>doblesungui</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1591587718831</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object idref="Emisor0"/>
+    </void>
+    <void property="id">
+     <int>4</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>receptor2</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>receptor2</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <object idref="ArrayList0"/>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>
