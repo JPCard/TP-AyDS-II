@@ -18,9 +18,37 @@ public class PersistenciaDirectorio implements IPersistenciaDirectorio {
     private int puertoRecibeGetDestinatarios;
     private int puertoRecibeHeartbeats;
     private int puertoRecibeGetUltimoCambio;
+    
+    //Parametros para doble directorio
+    private String ipOtroDirectorio;
+    private int otroDirectorioRecibeHeartbeats;
+    private int otroDirectorioRecibeGetDestinatarios;
+    private int otroDirectorioUltimoCambio;
 
     public PersistenciaDirectorio() {
         super();
+    }
+
+    @Override
+    public String cargarIPOtroDirectorio()throws Exception{
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return ipOtroDirectorio;
+    }
+    
+    @Override
+    public int cargarPuertoHeartbeatsOtroDirectorio()throws Exception{
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.otroDirectorioRecibeHeartbeats;
+    }
+    
+    @Override
+    public int cargarPuertoGetDestinatariosOtroDirectorio() throws Exception{ //estos nombres del mal podrian cambiar
+    if(!this.cargado)
+        this.cargarJSON(PARAMETROS_FILE_PATH);
+    
+    return this.otroDirectorioRecibeGetDestinatarios;
     }
 
     @Override
@@ -54,6 +82,11 @@ public class PersistenciaDirectorio implements IPersistenciaDirectorio {
            this.puertoRecibeHeartbeats = Integer.parseInt(obj2.get("PuertoRecibeHeartbeats").toString());
            this.puertoRecibeGetDestinatarios = Integer.parseInt(obj2.get("PuertoRecibeGetDestinatarios").toString());
            this.puertoRecibeGetUltimoCambio = Integer.parseInt(obj2.get("PuertoRecibeGetUltimoCambio").toString());
+           
+        this.ipOtroDirectorio = obj2.get("IPOtroDirectorio").toString();
+        this.otroDirectorioRecibeHeartbeats = Integer.parseInt(obj2.get("OtroDirec_RecibeHeartbeats").toString());
+        this.otroDirectorioRecibeGetDestinatarios = Integer.parseInt(obj2.get("OtroDirec_RecibeGetDestinatarios").toString());
+        this.otroDirectorioUltimoCambio = Integer.parseInt(obj2.get("OtroDirec_UltimoCambio").toString());
 
         cargado = true;
     }
@@ -92,5 +125,14 @@ public class PersistenciaDirectorio implements IPersistenciaDirectorio {
 
 
         return this.puertoPushReceptores;
+    }
+
+    @Override
+    public int cargarPuertoUltimoCambioOtroDirectorio() throws Exception{
+        if (!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        
+        
+        return this.otroDirectorioUltimoCambio;
     }
 }
