@@ -66,6 +66,9 @@ public class TCPMensajesPendientes implements Runnable{
                     //actualiza la id real para que pueda recibir comprobantes
                     cambiadorDeIds.put(viejaId,nextId);
                     
+                    System.out.println("vieja id = " + viejaId);
+                    System.out.println("nueva id = " + nextId);
+                    
                     mensaje.setId(nextId);
                 }
                 

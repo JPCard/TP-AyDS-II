@@ -230,9 +230,13 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
     @Override
     public void actualizarIdMensaje(int viejaId, int nuevaId) {
         synchronized(mensajesConComprobante){
+            
             MensajeConComprobante mensajeACambiar = this.mensajesConComprobante.remove(viejaId);
-            mensajeACambiar.setId(nuevaId);
-            this.mensajesConComprobante.put(nuevaId,mensajeACambiar);
+            if(mensajeACambiar != null){ //si es mensaje con comprobante
+                mensajeACambiar.setId(nuevaId);
+                this.mensajesConComprobante.put(nuevaId,mensajeACambiar);
+                this.persistirConComprobante();
+            }
         }
 
     }
