@@ -13,7 +13,7 @@ public class Emisor implements Serializable,Cloneable{
     private String IP; //{id}
     private int puerto;
     private String nombre;
-    private Agenda agenda;
+    private transient Agenda agenda;
 
     public Emisor() {
         super();
