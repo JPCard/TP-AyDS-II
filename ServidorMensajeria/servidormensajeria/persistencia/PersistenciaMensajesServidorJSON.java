@@ -52,7 +52,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         "IdMensajesPendientesReceptores.json"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH =
         "IdMensajesConComprobanteEmisores.json"; //<nombreEmisor, <Collection<idMensaje> >
-    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<Emisor,Collection<Comprobante>>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<nombreEmisor,Collection<Comprobante>>
 
 
     RuntimeTypeAdapterFactory<Mensaje> factory =
@@ -76,7 +76,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     private HashMap<String, Collection<Integer>> idMensajesEntregadosRecep;
     private HashMap<String, Collection<Integer>> idMensajesEntregarRecep;
     private HashMap<String, Collection<Integer>> idMensajesConComprobEmisores;
-    private HashMap<Emisor,Collection<Comprobante>> comprobantesNoEnviados;//<Emisor,Collection<Comprobante>>
+    private HashMap<String,Collection<Comprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<Comprobante>>
 
 
     private Integer proximoIdMensaje;
@@ -170,14 +170,14 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             String json =
                 new String(Files.readAllBytes(Paths.get(COMPROBANTES_SIN_ENVIAR_FILE_PATH)),
                            StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<Emisor, Collection<Comprobante>>>() {
+            Type mapType = new TypeToken<HashMap<String, Collection<Comprobante>>>() {
             }.getType();
             comprobantesNoEnviados = this.gson.fromJson(json, mapType);
             if (comprobantesNoEnviados ==
                 null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
+                comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
         } catch (IOException e) {
-            comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
+            comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
         }
     }
 
@@ -398,10 +398,10 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         
         synchronized(comprobantesNoEnviados){  
             
-            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal());
+            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
             if(coleccion==null){
                 coleccion = new ArrayList<Comprobante>();
-                this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal(),coleccion);
+                this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal().getNombre(),coleccion);
             }
                     
             
@@ -420,7 +420,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     @Override
     public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor) {
         synchronized(comprobantesNoEnviados){
-            return this.comprobantesNoEnviados.get(emisor);
+            return this.comprobantesNoEnviados.get(emisor.getNombre());
         }
     }
 
@@ -429,7 +429,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         String json;
         FileWriter file;
         synchronized(comprobantesNoEnviados){
-            this.comprobantesNoEnviados.get(emisor).clear();
+            this.comprobantesNoEnviados.get(emisor.getNombre()).clear();
             
             json = gson.toJson(comprobantesNoEnviados);
             
