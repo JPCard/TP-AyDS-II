@@ -18,8 +18,8 @@ import receptor.modelo.Comprobante;
 
 import servidormensajeria.modelo.SistemaServidor;
 
-public class SolicitudMensajesEmisoresListener implements Runnable{
-    public SolicitudMensajesEmisoresListener() {
+public class SolicitudComprobantesEmisoresListener implements Runnable{
+    public SolicitudComprobantesEmisoresListener() {
         super();
     }
 
@@ -42,6 +42,7 @@ public class SolicitudMensajesEmisoresListener implements Runnable{
                         out.close();
                         in.close();
                         socket.close();
+                        SistemaServidor.getInstance().eliminarComprobantesNoEnviados(emisor);
                     }
             }
             catch (BindException e) { //IP y puerto ya estaban utilizados

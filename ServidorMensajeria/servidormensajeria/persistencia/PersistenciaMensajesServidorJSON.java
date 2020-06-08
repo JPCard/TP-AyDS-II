@@ -17,6 +17,11 @@ import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConAlerta;
 import emisor.modelo.MensajeConComprobante;
 
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -47,6 +52,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         "IdMensajesPendientesReceptores.json"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH =
         "IdMensajesConComprobanteEmisores.json"; //<nombreEmisor, <Collection<idMensaje> >
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<Emisor,Collection<Comprobante>>
 
 
     RuntimeTypeAdapterFactory<Mensaje> factory =
@@ -70,6 +76,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     private HashMap<String, Collection<Integer>> idMensajesEntregadosRecep;
     private HashMap<String, Collection<Integer>> idMensajesEntregarRecep;
     private HashMap<String, Collection<Integer>> idMensajesConComprobEmisores;
+    private HashMap<Emisor,Collection<Comprobante>> comprobantesNoEnviados;//<Emisor,Collection<Comprobante>>
 
 
     private Integer proximoIdMensaje;
@@ -81,6 +88,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         cargaInicialIdMensajesEntregadosRecep();
         cargaInicialIdMensajesEntregarRecep();
         cargaInicialidMensajesConComprobEmisores();
+        cargaInicialComprobantesNoEnviados();
         proximoIdMensaje = cargarMaxIdMsjGuardado() + 1;
     }
 
@@ -154,6 +162,22 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                 idMensajesConComprobEmisores = new HashMap<String, Collection<Integer>>();
         } catch (IOException e) {
             idMensajesConComprobEmisores = new HashMap<String, Collection<Integer>>();
+        }
+    }
+    
+    private void cargaInicialComprobantesNoEnviados(){
+        try {
+            String json =
+                new String(Files.readAllBytes(Paths.get(COMPROBANTES_SIN_ENVIAR_FILE_PATH)),
+                           StandardCharsets.UTF_8);
+            Type mapType = new TypeToken<HashMap<Emisor, Collection<Comprobante>>>() {
+            }.getType();
+            comprobantesNoEnviados = this.gson.fromJson(json, mapType);
+            if (comprobantesNoEnviados ==
+                null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
+                comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
+        } catch (IOException e) {
+            comprobantesNoEnviados = new HashMap<Emisor, Collection<Comprobante>>();
         }
     }
 
@@ -369,18 +393,54 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
 
     @Override
     public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception {
-        // TODO Implement this method
+        String json;
+        FileWriter file;
+        
+        synchronized(comprobantesNoEnviados){  
+            
+            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal());
+            if(coleccion==null){
+                coleccion = new ArrayList<Comprobante>();
+                this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal(),coleccion);
+            }
+                    
+            
+            coleccion.add(comprobante);
+            
+            json = gson.toJson(comprobantesNoEnviados);
+            
+            synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
+                file = new FileWriter(COMPROBANTES_SIN_ENVIAR_FILE_PATH);
+                file.write(json);
+                file.close();
+            }
+        }
     }
 
     @Override
     public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor) {
-        // TODO Implement this method
-        return Collections.emptySet();
+        synchronized(comprobantesNoEnviados){
+            return this.comprobantesNoEnviados.get(emisor);
+        }
     }
 
     @Override
     public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception {
-        // TODO Implement this method
+        String json;
+        FileWriter file;
+        synchronized(comprobantesNoEnviados){
+            this.comprobantesNoEnviados.get(emisor).clear();
+            
+            json = gson.toJson(comprobantesNoEnviados);
+            
+            synchronized (COMPROBANTES_SIN_ENVIAR_FILE_PATH) {
+                file = new FileWriter(COMPROBANTES_SIN_ENVIAR_FILE_PATH);
+                file.write(json);
+                file.close();
+            }
+        }
+        
+        
     }
 }
 

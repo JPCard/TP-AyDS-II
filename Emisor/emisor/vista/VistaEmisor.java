@@ -124,8 +124,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Envio de Mensajes");
-        setMinimumSize(new java.awt.Dimension(900, 700));
-        setPreferredSize(new java.awt.Dimension(900, 700));
+        setMinimumSize(new java.awt.Dimension(960, 700));
+        setPreferredSize(new java.awt.Dimension(960, 700));
 
         jPanelRellenoArriba.setMinimumSize(new java.awt.Dimension(0, 50));
         jPanelRellenoArriba.setPreferredSize(new java.awt.Dimension(1656, 50));
