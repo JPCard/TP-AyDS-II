@@ -40,6 +40,23 @@ public class TCPParaDirectorio implements Runnable {
         this.ipDirectorio = ipDirectorio;
         this.puertoDirectorioTiempo = puertoDirectorioTiempo;
         this.puertoDirectorioDestinatarios = puertoDirectorioDestinatarios;
+        envioInicialMensajesAsincronicos();
+    }
+
+
+    /**
+     * Le pide un receptor al directorio para que se traiga la lista de receptores completa
+     * y le envia mensajes asincronicos pendientes a cada receptor conectado
+     */
+    public void envioInicialMensajesAsincronicos(){
+        this.getReceptor("");
+        for(Receptor receptor : SistemaServidor.getInstance().getReceptores()){
+            try {
+                if(receptor.isConectado())
+                    this.envioMensajesAsincronicos(receptor);
+            } catch (Exception e) {
+            }
+        }
     }
 
     /**
@@ -116,15 +133,10 @@ public class TCPParaDirectorio implements Runnable {
                     in = new ObjectInputStream(socket.getInputStream());
                     Receptor receptor = (Receptor) in.readObject();
 
-                    Collection<Mensaje> mensajes =
-                        SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
-                    for (Mensaje mensaje : mensajes) {
-                        new Thread(new MensajeHandler(mensaje,false)).start();
-                    }
-
-
                     in.close();
                     socket.close();
+                    
+                    envioMensajesAsincronicos(receptor);
                 }
 
             } catch (BindException e) { //IP y puerto ya estaban utilizados
@@ -136,4 +148,13 @@ public class TCPParaDirectorio implements Runnable {
 
         }
     }
+    
+    public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
+        Collection<Mensaje> mensajes =
+            SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
+        for (Mensaje mensaje : mensajes) {
+            new Thread(new MensajeHandler(mensaje,false)).start();
+        }
+    }
+
 }
