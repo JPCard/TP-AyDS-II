@@ -5,9 +5,13 @@ import emisor.modelo.Emisor;
 import emisor.modelo.Mensaje;
 
 
+import emisor.vista.VentanaModalCarga;
+
 import java.io.FileNotFoundException;
 
 import java.security.PrivateKey;
+
+import java.util.Observable;
 
 import receptor.modelo.Comprobante;
 
@@ -20,7 +24,9 @@ import receptor.modelo.SistemaReceptor;
 
 import receptor.vista.IVistaReceptor;
 
-public class ControladorReceptor {
+public class ControladorReceptor extends Observable{
+    public static final String RUTA_ICONO_INICIANDO = "iniciando.gif";
+    
     private IVistaReceptor vistaReceptor;
     private static ControladorReceptor instance;
     private IDesencriptar desencriptador;
@@ -29,13 +35,24 @@ public class ControladorReceptor {
         super();
         this.vistaReceptor = vista;
         this.desencriptador = new DesencriptarRSA();
-        try {
-            this.avisarIniciandoSistema();
-            SistemaReceptor.inicializar();
-            this.avisarFinIniciandoSistema();
-        } catch (FileNotFoundException e) {
-            vistaReceptor.mostrarErrorNoReceptor();
-        }
+        new Thread(){
+
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    SistemaReceptor.inicializar();
+                    avisarFinIniciandoSistema();
+                } catch (FileNotFoundException e) {
+                    vistaReceptor.mostrarErrorNoReceptor();
+                }
+                
+            }
+        }.start();
+        
+        
+        this.avisarIniciandoSistema();
+        
         
         
         
@@ -78,10 +95,11 @@ public class ControladorReceptor {
     }
 
     private void avisarIniciandoSistema() {
-        //TODO
+        new VentanaModalCarga(this, "Iniciando sistema...", RUTA_ICONO_INICIANDO);
     }
 
     private void avisarFinIniciandoSistema() {
-        //TODO
+        setChanged();
+        notifyObservers();
     }
 }

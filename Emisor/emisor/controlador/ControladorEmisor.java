@@ -12,7 +12,7 @@ import emisor.vista.IVistaContactos;
 import emisor.vista.IVistaEmisor;
 
 
-import emisor.vista.VentanaEnviando;
+import emisor.vista.VentanaModalCarga;
 
 import java.io.IOException;
 
@@ -31,6 +31,8 @@ import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public class ControladorEmisor extends Observable {
+    public static final String RUTA_ICONO_CARGA = "enviando.gif";
+    
     private IVistaEmisor vistaPrincipal;
     private IVistaContactos vistaContactos;
     private IVistaComprobantes vistaComprobantes;
@@ -175,7 +177,7 @@ public class ControladorEmisor extends Observable {
 
 
     private void mostrarEnviando() {
-        new VentanaEnviando();
+        new VentanaModalCarga(this, "Enviando...", RUTA_ICONO_CARGA);
     }
 
     private void cerrarEnviando() {
