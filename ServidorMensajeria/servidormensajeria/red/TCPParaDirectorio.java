@@ -35,6 +35,10 @@ public class TCPParaDirectorio implements Runnable {
     private String ipDirectorio;
     private int puertoDirectorioTiempo;
     private int puertoDirectorioDestinatarios;
+    
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectInputStream in;
 
     public TCPParaDirectorio(String ipDirectorio, int puertoDirectorioDestinatarios, int puertoDirectorioTiempo) {
         this.ipDirectorio = ipDirectorio;
@@ -123,13 +127,13 @@ public class TCPParaDirectorio implements Runnable {
     public void run() {
         while (true) {
             try {
-                ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoInfoDirectorio());
+                 s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoInfoDirectorio());
 
                 while (true) {
                     System.out.println("Hilo notifica sistema de mensajes: esperando");
-                    Socket socket = s.accept();
+                     socket = s.accept();
                     System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
-                    ObjectInputStream in = null;
+                     in = null;
                     in = new ObjectInputStream(socket.getInputStream());
                     Receptor receptor = (Receptor) in.readObject();
 
@@ -144,6 +148,17 @@ public class TCPParaDirectorio implements Runnable {
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("es en tcpparadirectorio");
+                System.err.println("Capturada EOFException");
+                try {
+                    if (in != null)
+                        in.close();
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+                } catch (IOException f) {f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
 
         }

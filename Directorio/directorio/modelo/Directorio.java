@@ -30,7 +30,7 @@ import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public class Directorio {
-    private static int TIEMPO_TIMEOUT = 700;
+    private static int TIEMPO_TIMEOUT = 2000;
     private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
     private Long tiempoUltModif = new GregorianCalendar().getTimeInMillis(); //en estado inicial ya esta modificado
@@ -166,11 +166,16 @@ public class Directorio {
 
 
     public Collection<Receptor> listaDestinatariosRegistrados() {
+        System.out.println("==============================A");
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
+        System.out.println("==============================B");
         boolean alguienSeFue = false;
+        System.out.println("==============================C");
 
-        synchronized (tiempos) { //para que no puedan cambiar los tiempos mientras se evaluan los online de cada receptor
-            synchronized (receptores) {
+        synchronized (receptores) { //para que no puedan cambiar los tiempos mientras se evaluan los online de cada receptor
+        System.out.println("==============================D");
+            synchronized (tiempos) {
+                System.out.println("LLEGAMOS EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 for (Object obj : receptores.values()) {
                     Receptor receptor = (Receptor) obj;
                     boolean online;

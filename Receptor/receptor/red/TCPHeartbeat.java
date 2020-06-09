@@ -21,7 +21,7 @@ import receptor.modelo.SistemaReceptor;
 public class TCPHeartbeat implements Runnable {
     private String IPDirectorio;
     private int puertoHeartbeat;
-    public static final int TIEMPO_HEARTBEAT = 500; // en MS
+    public static final int TIEMPO_HEARTBEAT = 1500; // en MS
     
 
     public TCPHeartbeat(String IPDirectorio, int puertoHeartbeat) {
@@ -45,7 +45,8 @@ public class TCPHeartbeat implements Runnable {
                     socket.connect(addr, 500);
 
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                    out.writeObject(heartbeat);
+                    if(socket.isConnected())
+                        out.writeObject(heartbeat);
                     out.close();
                     
                     socket.close();
@@ -61,4 +62,6 @@ public class TCPHeartbeat implements Runnable {
         }
 
     }
+    
+    
 }

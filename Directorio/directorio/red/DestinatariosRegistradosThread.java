@@ -29,6 +29,9 @@ public class DestinatariosRegistradosThread extends Thread {
     private Directorio directorio;
     private int getDestinatariosPort;
 
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectOutputStream out;
 
     public DestinatariosRegistradosThread(Directorio directorio) {
         super();
@@ -47,14 +50,14 @@ public class DestinatariosRegistradosThread extends Thread {
         while (true) {
             try {
 
-                ServerSocket s = new ServerSocket(getDestinatariosPort);
+                s = new ServerSocket(getDestinatariosPort);
 
                 while (true) {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
-                    Socket socket = s.accept();
+                    socket = s.accept();
                     System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
                     System.out.println(directorio.listaDestinatariosRegistrados().toString());
-                    ObjectOutputStream out = null;
+                    out = null;
                     if (socket.isConnected()) {
                         out = new ObjectOutputStream(socket.getOutputStream());
                         out.writeObject(directorio.listaDestinatariosRegistrados());
@@ -68,13 +71,39 @@ public class DestinatariosRegistradosThread extends Thread {
             } catch (BindException e) { //IP y puerto ya estaban utilizados
                 //System.exit(1); no lo dejamos cerrar
             } catch (Exception e) {
-                // e.printStackTrace();
+                System.err.println("Capturada EOFException");
+                try {
+                    if (out != null)
+                        out.close();
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+
+                } catch (IOException f) {f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
         }
     }
 
 
+    @Override
+    protected void finalize() throws Throwable {
+        
+        super.finalize();
+        try {
+            if (out != null)
+                out.close();
+            if (socket != null)
+                socket.close();
+            if (s != null)
+                s.close();
 
+        } catch (IOException f) {f.printStackTrace();
+            System.err.println("esto si es malo");
+        }
+    }
 }
 
 

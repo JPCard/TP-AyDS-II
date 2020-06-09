@@ -779,6 +779,218 @@
             <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
             <value n="profileName" v="ffffffffsistemamensajeria"/>
          </hash>
+         <hash n="gggEMISOR">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="emisor.vista.VistaEmisorBootstrap"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/gggEMISOR.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="gggEMISOR"/>
+         </hash>
+         <hash n="ggggDirectorio">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="directorio.modelo.DirectorioMain"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/ggggDirectorio.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="ggggDirectorio"/>
+         </hash>
+         <hash n="ggggSISTDEARCHIVOS">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="servidormensajeria.modelo.SistemaServidor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/ggggSISTDEARCHIVOS.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="ggggSISTDEARCHIVOS"/>
+         </hash>
+         <hash n="gggRECEPTOR">
+            <hash n="archiveOptions">
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="receptor.vista.VistaReceptor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/gggRECEPTOR.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="gggRECEPTOR"/>
+         </hash>
+         <hash n="hhhhSistmensaj">
+            <hash n="archiveOptions">
+               <list n="additionalManifests">
+                  <url path="META-INF/MANIFEST.MF"/>
+               </list>
+               <value n="hasManifest" v="true"/>
+               <value n="mainClass" v="servidormensajeria.modelo.SistemaServidor"/>
+            </hash>
+            <hash n="fileGroups">
+               <list n="groups">
+                  <hash>
+                     <list n="contributors">
+                        <hash>
+                           <value n="type" v="2"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="7"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="5"/>
+                        </hash>
+                        <hash>
+                           <value n="type" v="6"/>
+                        </hash>
+                     </list>
+                     <value n="displayName" v="Project Output"/>
+                     <hash n="filters">
+                        <list n="rules">
+                           <hash>
+                              <value n="pattern" v="**"/>
+                              <value n="type" v="0"/>
+                           </hash>
+                        </list>
+                     </hash>
+                     <value n="internalName" v="project-output"/>
+                     <value n="type" v="1"/>
+                  </hash>
+               </list>
+            </hash>
+            <url n="jarURL" path="deploy/hhhhSistmensaj.jar"/>
+            <value n="profileClass" v="oracle.jdeveloper.deploy.jar.ArchiveProfile"/>
+            <value n="profileName" v="hhhhSistmensaj"/>
+         </hash>
          <hash n="napo">
             <hash n="archiveOptions">
                <value n="hasManifest" v="true"/>
@@ -1043,6 +1255,11 @@
          <string v="fffffffffffffffEmisor"/>
          <string v="fffffffffreceptor"/>
          <string v="ffffffffsistemamensajeria"/>
+         <string v="gggEMISOR"/>
+         <string v="gggRECEPTOR"/>
+         <string v="ggggSISTDEARCHIVOS"/>
+         <string v="ggggDirectorio"/>
+         <string v="hhhhSistmensaj"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
