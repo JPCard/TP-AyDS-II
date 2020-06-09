@@ -4,6 +4,7 @@ import emisor.modelo.Emisor;
 
 import emisor.modelo.Mensaje;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -21,6 +22,9 @@ public class TCPdeReceptor  implements Runnable{
     
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectInputStream in;
     
     public TCPdeReceptor(String ipServidorMensajeria, int puertoServidorMensajeria) {
         this.ipServidorMensajeria = ipServidorMensajeria;
@@ -32,12 +36,12 @@ public class TCPdeReceptor  implements Runnable{
             
         while(true){
             try {
-                    ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
+                     s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
     
                     while (true) {
                         
-                        Socket socket = s.accept();
-                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                         socket = s.accept();
+                         in = new ObjectInputStream(socket.getInputStream());
                         
                         Mensaje mensaje = (Mensaje) in.readObject();
                         
@@ -52,6 +56,19 @@ public class TCPdeReceptor  implements Runnable{
                 System.exit(1);
             }
             catch (Exception e) {
+                System.err.println("Capturada EOFException");
+                try {
+                    if (in != null)
+                        in.close();
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+
+                } catch (IOException f) {
+                    f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
         }
     }

@@ -5,6 +5,7 @@ import emisor.modelo.Mensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -19,6 +20,10 @@ import receptor.modelo.Comprobante;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class SolicitudComprobantesEmisoresListener implements Runnable{
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     public SolicitudComprobantesEmisoresListener() {
         super();
     }
@@ -28,15 +33,15 @@ public class SolicitudComprobantesEmisoresListener implements Runnable{
             
         while(true){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoDevolverMensajesEmisores());
+                    s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoDevolverMensajesEmisores());
                     while (true) {
                         System.out.println("Servicio de recuperacion de comprobantes para emisores: esperando...");
-                        Socket socket = s.accept();
+                         socket = s.accept();
                         
-                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                         in = new ObjectInputStream(socket.getInputStream());
                         Emisor emisor = (Emisor) in.readObject();
                         System.out.println(emisor.getNombre()+" acaba de solicitar comprobantes de cuando no estuvo");
-                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                         out = new ObjectOutputStream(socket.getOutputStream());
                         Collection<Comprobante> enviable = SistemaServidor.getInstance().getPersistencia().getComprobantesNoEnviados(emisor);
                         out.writeObject(enviable);//envio al emisor la id con la cual debe rotular su mensaje
                         out.close();
@@ -50,7 +55,22 @@ public class SolicitudComprobantesEmisoresListener implements Runnable{
             }
             catch (Exception e) {
                 System.out.println("es em smelistener");
-                e.printStackTrace();
+                System.err.println("Capturada EOFException");
+                try {
+                    if (in != null){
+                        in.close();
+                    }
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+                    if (out != null)
+                        out.close();
+
+                } catch (IOException f) {
+                    f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
         }
     }

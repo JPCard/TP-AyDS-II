@@ -4,6 +4,7 @@ import emisor.modelo.Mensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 
 import java.net.BindException;
@@ -15,6 +16,11 @@ import receptor.modelo.Comprobante;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class ComprobanteListener implements Runnable{
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectInputStream in;
+    
+    
     public ComprobanteListener() {
         super();
     }
@@ -23,11 +29,11 @@ public class ComprobanteListener implements Runnable{
     public void run(){
         while(true){
             try {
-                    ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoComprobantes());
+                     s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoComprobantes());
                     while (true) {
                         System.out.println("Esperando comprobantes...");
-                        Socket socket = s.accept();
-                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                         socket = s.accept();
+                         in = new ObjectInputStream(socket.getInputStream());
                         Comprobante comprobante = (Comprobante) in.readObject();
                         SistemaServidor.getInstance().arriboComprobante(comprobante);
                         in.close();
@@ -40,8 +46,18 @@ public class ComprobanteListener implements Runnable{
                 //System.exit(1);
             }
             catch (Exception e) {
-                System.out.println("es en comprobantelistener");
-               e.printStackTrace();
+                System.err.println("Capturada EOFException");
+                try {
+                    if (in != null)
+                        in.close();
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+
+                } catch (IOException f) {f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
         }
     }

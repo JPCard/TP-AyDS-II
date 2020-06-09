@@ -15,7 +15,7 @@ public class DirectorioMain {
         System.out.println("Directorio creado");
         
         new SincronizacionInicialDirectorios(Directorio.getInstance()).cargarListaDestinatariosRegistrados();
-        
+        System.out.println("Sincronizacion con el otro directorio completada");
         //este estaba segundo pero lo puse primero
         DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(Directorio.getInstance());
         destinatariosRegistrados.start();

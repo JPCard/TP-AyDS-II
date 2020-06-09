@@ -38,6 +38,10 @@ public class TCPdeEmisor implements Runnable {
     
     private Thread TCPMensajesPendientes;
 
+    private ServerSocket s;
+    private Socket socket;
+    private ObjectInputStream in;
+
     public TCPdeEmisor() {
         super();
     }
@@ -57,10 +61,10 @@ public class TCPdeEmisor implements Runnable {
         while (true) {
             try {
                 SistemaEmisor.getInstance().cargarComprobantesAsincronicos();
-                ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
+                 s = new ServerSocket(SistemaEmisor.getInstance().getPuerto());
                 while (true) {
-                    Socket socket = s.accept();
-                    ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                     socket = s.accept();
+                     in = new ObjectInputStream(socket.getInputStream());
                     Comprobante comprobante = (Comprobante) in.readObject();
                     System.out.println("EL COMPROBANTE ES");
                     System.out.println(comprobante);
@@ -75,8 +79,19 @@ public class TCPdeEmisor implements Runnable {
                 System.out.println("Emisor: puerto ocupado, cerrando.");
                 System.exit(1);
             } catch (Exception e) {
-//               System.out.println("algo mas general");
-               e.printStackTrace();
+//                               System.err.println("Capturada EOFException");
+                try {
+                    if (in != null)
+                        in.close();
+                    if (socket != null)
+                        socket.close();
+                    if (s != null)
+                        s.close();
+
+                } catch (IOException f) {
+                    f.printStackTrace();
+                    System.err.println("esto si es malo");
+                }
             }
         }
 

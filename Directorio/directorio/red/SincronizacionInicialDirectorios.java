@@ -56,7 +56,7 @@ public class SincronizacionInicialDirectorios{
             inDest.close();
             socketDest.close();
             
-            
+           
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,10 +76,13 @@ public class SincronizacionInicialDirectorios{
         
         for(Receptor r: destinatariosRegistrados){
             receptores.put(r.getUsuario(),r);
+            directorio.heartbeatRecibido(r);
         }
         
         
         directorio.setReceptores(receptores);
+        
+        
         
         
     }
