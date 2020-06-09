@@ -193,7 +193,8 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
     private void jButtonSilenciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSilenciarActionPerformed
         this.jProgressBar1.setValue(0);
-        this.clip.stop();
+        if(clip != null)
+            this.clip.stop();
         this.sonando = false;
     }//GEN-LAST:event_jButtonSilenciarActionPerformed
 
