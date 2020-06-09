@@ -41,17 +41,20 @@ public class UltimoCambioThread extends Thread {
                     System.out.println("Hilo Comunicador de Ultimo Cambio: Solicitud recibida, enviando tiempo de ultimo cambio");
                     out = null;
                     if (socket.isConnected()) {
+                        System.out.println("=============================1");
                         out = new ObjectOutputStream(socket.getOutputStream());
-
+                        System.out.println("=============================2");
                         System.out.println(directorio.listaDestinatariosRegistrados()); // este va antes para q el tiempo de ultima modificacion este actualizado
                         //el sop es optativo
-
+                        System.out.println("=============================3");
 
                         //nuevo mandatiempos 7000
                         out.writeObject(directorio.getTiempoUltModif()); //siempre en millis
-
+                        System.out.println("=============================4");
                         out.close();
                     }
+                    else
+                        System.out.println("error de conexion en ultimocambiothread");
 
 
                     socket.close();
@@ -75,6 +78,23 @@ public class UltimoCambioThread extends Thread {
                     System.err.println("esto si es malo");
                 }
             }
+        }
+    }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        
+        super.finalize();
+        try {
+            if (out != null)
+                out.close();
+            if (socket != null)
+                socket.close();
+            if (s != null)
+                s.close();
+
+        } catch (IOException f) {f.printStackTrace();
+            System.err.println("esto si es malo");
         }
     }
 }

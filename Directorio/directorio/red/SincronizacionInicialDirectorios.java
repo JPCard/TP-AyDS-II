@@ -15,14 +15,13 @@ import java.util.TreeMap;
 
 import receptor.modelo.Receptor;
 
-public class SincronizacionInicialDirectorios{
+public class SincronizacionInicialDirectorios {
     private Directorio directorio;
+
     public SincronizacionInicialDirectorios(Directorio directorio) {
         super();
         this.directorio = directorio;
     }
-
-
 
 
     /**Se utiliza la primera vez que se abre el directorio, para ponerlo al dia sobre quien esta conectado
@@ -37,11 +36,18 @@ public class SincronizacionInicialDirectorios{
                 new InetSocketAddress(directorio.getIpOtroDirectorio(),
                                       directorio.getOtroDirectorioPuertoUltimoCambio());
             socket.connect(addr, 500);
-            ObjectInputStream inTiempo = new ObjectInputStream(socket.getInputStream());
-            tiempoUltModif = (Long) inTiempo.readObject();
-            inTiempo.close();
-            socket.close();
             
+            if (socket.isConnected()){
+                ObjectInputStream inTiempo = new ObjectInputStream(socket.getInputStream());
+                tiempoUltModif = (Long) inTiempo.readObject();
+                inTiempo.close();
+                socket.close();
+            }
+                
+            else tiempoUltModif = new GregorianCalendar().getTimeInMillis();
+            
+            
+
             Socket socketDest = new Socket();
             InetSocketAddress addr2 =
                 new InetSocketAddress(directorio.getIpOtroDirectorio(),
@@ -52,11 +58,9 @@ public class SincronizacionInicialDirectorios{
             destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
 
 
-            
             inDest.close();
             socketDest.close();
-            
-           
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,25 +71,23 @@ public class SincronizacionInicialDirectorios{
             tiempoUltModif = new GregorianCalendar().getTimeInMillis();
             destinatariosRegistrados = new ArrayList<Receptor>();
         }
-        
-        directorio.setTiempoUltModif(tiempoUltModif);
-//        directorio.setTiempoUltModif(new GregorianCalendar().getTimeInMillis());
 
-        
-        TreeMap<String,Receptor> receptores = new TreeMap<String,Receptor>();
-        
-        for(Receptor r: destinatariosRegistrados){
-            receptores.put(r.getUsuario(),r);
+        directorio.setTiempoUltModif(tiempoUltModif);
+        //        directorio.setTiempoUltModif(new GregorianCalendar().getTimeInMillis());
+
+
+        TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
+
+        for (Receptor r : destinatariosRegistrados) {
+            receptores.put(r.getUsuario(), r);
             directorio.heartbeatRecibido(r);
         }
-        
-        
+
+
         directorio.setReceptores(receptores);
-        
-        
-        
-        
+
+
     }
-    
-    
+
+
 }

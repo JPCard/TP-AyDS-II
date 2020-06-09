@@ -99,4 +99,20 @@ public class HeartbeatThread extends Thread {
 
         }
     }
+    @Override
+    protected void finalize() throws Throwable {
+        
+        super.finalize();
+        try {
+            if (in != null)
+                in.close();
+            if (socket != null)
+                socket.close();
+            if (s != null)
+                s.close();
+
+        } catch (IOException f) {f.printStackTrace();
+            System.err.println("esto si es malo");
+        }
+    }
 }
