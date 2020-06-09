@@ -24,8 +24,6 @@ public class TCPHeartbeat implements Runnable {
     public static final int TIEMPO_HEARTBEAT = 500; // en MS
     
 
-    private Receptor receptor = SistemaReceptor.getInstance().getReceptor();
-
     public TCPHeartbeat(String IPDirectorio, int puertoHeartbeat) {
         super();
         this.IPDirectorio = IPDirectorio;

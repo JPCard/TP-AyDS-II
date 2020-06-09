@@ -20,15 +20,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 
-public class VentanaEnviando extends JDialog implements Observer
+public class VentanaModalCarga extends JDialog implements Observer
 {
-    public static final String RUTA_ICONO_CARGA = "enviando.gif";
+    public Observable terminador;
 
-
-    public VentanaEnviando()
+    public VentanaModalCarga(Observable terminador, String displayedText, String ruta_icono)
     {
         super();
-        ControladorEmisor.getInstance().addObserver(this);
+        setTerminador(terminador);
+        
         this.setUndecorated(true);
         this.setTitle("Guardando");
         this.setModalityType(JDialog.ModalityType.APPLICATION_MODAL);
@@ -42,9 +42,9 @@ public class VentanaEnviando extends JDialog implements Observer
         panelAux.setLayout(new BorderLayout());
 
         panelAux.setPreferredSize(new Dimension(300, 230));
-        panelAux.add("Center", new JLabel(new ImageIcon(RUTA_ICONO_CARGA), JLabel.CENTER));
-
-        JLabel labelAux = new JLabel("Enviando...", JLabel.CENTER);
+        panelAux.add("Center", new JLabel(new ImageIcon(ruta_icono), JLabel.CENTER));
+        
+        JLabel labelAux = new JLabel(displayedText, JLabel.CENTER);
         labelAux.setVerticalAlignment(JLabel.BOTTOM);
         labelAux.setPreferredSize(new Dimension(40, 80));
         labelAux.setFont(new Font("Tahoma", Font.BOLD, 28));
@@ -63,9 +63,19 @@ public class VentanaEnviando extends JDialog implements Observer
     }
 
 
+    private void setTerminador(Observable terminador) {
+        this.terminador = terminador;
+        this.getTerminador().addObserver(this);
+    }
+
+    private Observable getTerminador() {
+        return terminador;
+    }
+
+
     @Override
     public void update(Observable observable, Object object) {
-        if(observable == ControladorEmisor.getInstance())
+        if(observable == this.getTerminador())
             if(object == null){
                 this.dispose();
             }

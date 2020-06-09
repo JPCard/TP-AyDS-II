@@ -20,6 +20,13 @@ public class SistemaReceptor {
     private TCPdeReceptor tcpdeReceptor;
     private IPersistenciaReceptor persistencia = new PersistenciaReceptor();
     private PrivateKey llavePrivada;
+    
+    private SistemaReceptor() throws FileNotFoundException {
+        super();
+        this.receptor = persistencia.cargarReceptor();
+        this.llavePrivada = persistencia.cargarLlavePrivada();
+        this.tcpdeReceptor = new TCPdeReceptor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
+    }
 
     public PrivateKey getLlavePrivada() {
         return llavePrivada;
@@ -29,12 +36,7 @@ public class SistemaReceptor {
         return tcpdeReceptor;
     }
 
-    private SistemaReceptor() throws FileNotFoundException {
-        super();
-        this.receptor = persistencia.cargarReceptor();
-        this.llavePrivada = persistencia.cargarLlavePrivada();
-        this.tcpdeReceptor = new TCPdeReceptor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
-    }
+    
 
     public Receptor getReceptor() {
         return receptor;
