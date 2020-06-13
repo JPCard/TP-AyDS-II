@@ -29,9 +29,6 @@ public class DestinatariosRegistradosThread extends Thread {
     private Directorio directorio;
     private int getDestinatariosPort;
 
-    private ServerSocket s;
-    private Socket socket;
-    private ObjectOutputStream out;
 
     public DestinatariosRegistradosThread(Directorio directorio) {
         super();
@@ -48,60 +45,24 @@ public class DestinatariosRegistradosThread extends Thread {
 
     private void escucharEmisores() {
         while (true) {
-            try {
-
-                s = new ServerSocket(getDestinatariosPort);
-
+            try (ServerSocket s = new ServerSocket(getDestinatariosPort)) {
                 while (true) {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
-                    socket = s.accept();
-                    System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
-                    System.out.println(directorio.listaDestinatariosRegistrados().toString());
-                    out = null;
-                    if (socket.isConnected()) {
-                        out = new ObjectOutputStream(socket.getOutputStream());
-                        out.writeObject(directorio.listaDestinatariosRegistrados());
-                        out.close();
+                    try (Socket socket = s.accept()) {
+                        System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
+                        System.out.println(directorio.listaDestinatariosRegistrados().toString());
+                        if (socket.isConnected()) {
+                            try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+                                out.writeObject(directorio.listaDestinatariosRegistrados());
+                            }
+                        }
+
                     }
-
-
-                    socket.close();
                 }
 
-            } catch (BindException e) { //IP y puerto ya estaban utilizados
-                //System.exit(1); no lo dejamos cerrar
-            } catch (Exception e) {
-                System.err.println("Capturada EOFException");
-                try {
-                    if (out != null)
-                        out.close();
-                    if (socket != null)
-                        socket.close();
-                    if (s != null)
-                        s.close();
-
-                } catch (IOException f) {f.printStackTrace();
-                    System.err.println("esto si es malo");
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-    }
-
-
-    @Override
-    protected void finalize() throws Throwable {
-        
-        super.finalize();
-        try {
-            if (out != null)
-                out.close();
-            if (socket != null)
-                socket.close();
-            if (s != null)
-                s.close();
-
-        } catch (IOException f) {f.printStackTrace();
-            System.err.println("esto si es malo");
         }
     }
 }

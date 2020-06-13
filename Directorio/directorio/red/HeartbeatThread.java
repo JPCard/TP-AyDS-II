@@ -29,10 +29,6 @@ public class HeartbeatThread extends Thread {
     private Directorio directorio;
     private final int HEARTBEAT_PORT;
 
-    private Socket socket;
-    private ObjectInputStream in;
-    private ServerSocket s;
-
 
     public HeartbeatThread(Directorio directorio) {
         super();
@@ -49,70 +45,40 @@ public class HeartbeatThread extends Thread {
 
     private void escucharHeartBeats() {
         while (true) {
-            try {
-                s = new ServerSocket(HEARTBEAT_PORT);
-
+            try (ServerSocket s = new ServerSocket(HEARTBEAT_PORT)) {
                 while (true) {
                     System.out.println("Hilo Heartbeats: Esperando un heartbeat...");
                     Heartbeat heartbeat;
-                    socket = s.accept();
-                    System.out.println("Hilo Heartbeats: heartbeat recibido");
-                    ObjectInputStream in = null;
-                    //aca llega un heartbeat
-                    in = new ObjectInputStream(socket.getInputStream());
-                    heartbeat = (Heartbeat) in.readObject();
-                    in.close();
-                    socket.close();
-                    System.err.println(heartbeat.toString());
+                    try (Socket socket = s.accept()) {
+                        System.out.println("Hilo Heartbeats: heartbeat recibido");
+                        //aca llega un heartbeat
+                        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+                            heartbeat = (Heartbeat) in.readObject();
+                            System.err.println(heartbeat.toString());
+                            
+                            
+                            
+                            if (!heartbeat.isRetransmitido()) { //avisar a los otros directorios
+                                heartbeat.setRetransmitido(true);
+                                new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
 
-                    if (!heartbeat.isRetransmitido()) { //avisar a los otros directorios
-                        heartbeat.setRetransmitido(true);
-                        new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
+                            }
 
+                            new Thread(new HeartbeatHandler(heartbeat)).start();
+                            
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-                    new Thread(new HeartbeatHandler(heartbeat)).start();
-
-
                 }
 
-            } catch (BindException e) {
-                System.out.println("BindException, error fatal");
-                System.exit(1);
-            }
-
-            catch (Exception e) {//Reconexion de directorios, es posible que queden mal cerrados los sockets de los receptores al perder conexion con el directorio
-                System.err.println("Capturada EOFException");
-                try {
-                    if (in != null)
-                        in.close();
-                    if (socket != null)
-                        socket.close();
-                    if (s != null)
-                        s.close();
-
-                } catch (IOException f) {f.printStackTrace();
-                    System.err.println("esto si es malo");
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
 
         }
     }
-    @Override
-    protected void finalize() throws Throwable {
-        
-        super.finalize();
-        try {
-            if (in != null)
-                in.close();
-            if (socket != null)
-                socket.close();
-            if (s != null)
-                s.close();
 
-        } catch (IOException f) {f.printStackTrace();
-            System.err.println("esto si es malo");
-        }
-    }
+
 }

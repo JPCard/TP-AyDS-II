@@ -21,10 +21,6 @@ import receptor.modelo.SistemaReceptor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeListener implements Runnable {
-    private ServerSocket s;
-    private Socket socket;
-    private ObjectInputStream in;
-    private ObjectOutputStream out;
 
     public MensajeListener() {
         super();
@@ -33,63 +29,52 @@ public class MensajeListener implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try {
-                s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoRecepcionMensajes());
+            try (ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoRecepcionMensajes())) {
                 while (true) {
                     System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
-                    socket = s.accept();
+                    try (Socket socket = s.accept()) {
 
-                    //IN 1
-                    in = new ObjectInputStream(socket.getInputStream());
-                    int cantMensajes = (Integer) in.readObject();
+                        //IN 1
+                        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
 
-                    //OUT 1
-                    out = new ObjectOutputStream(socket.getOutputStream());
-                    for (int i = 0; i < cantMensajes; i++) {
-                        Integer nuevaid = SistemaServidor.getInstance()
-                                                         .getPersistencia()
-                                                         .getProximoIdMensaje();
-                        out.writeObject(nuevaid); //envio al emisor la id con la cual debe rotular su mensaje
-                        SistemaServidor.getInstance()
-                                       .getPersistencia()
-                                       .avanzaProximoIdMensaje();
+                            int cantMensajes = (Integer) in.readObject();
+
+                            //OUT 1
+                            try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
+                                for (int i = 0; i < cantMensajes; i++) {
+                                    Integer nuevaid = SistemaServidor.getInstance()
+                                                                     .getPersistencia()
+                                                                     .getProximoIdMensaje();
+                                    out.writeObject(nuevaid); //envio al emisor la id con la cual debe rotular su mensaje
+                                    SistemaServidor.getInstance()
+                                                   .getPersistencia()
+                                                   .avanzaProximoIdMensaje();
+                                }
+
+
+                                //IN 2
+                                Collection<Mensaje> mensajes = (Collection<Mensaje>) in.readObject();
+                                for (Iterator<Mensaje> it = mensajes.iterator(); it.hasNext();) {
+                                    SistemaServidor.getInstance().arriboMensaje(it.next());
+                                }
+
+                                Mensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
+                                System.out.println("Sistema Servidor de mensajeria: Mensaje de " +
+                                                   primerMensaje.getEmisor().getNombre() + " recibido");
+                                //TODO borrar
+                                System.out.println("Dice que asunto: " + primerMensaje.getAsunto());
+                                System.out.println("Y ademas que cuerpo: " + primerMensaje.getCuerpo());
+                            }
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-
-                    //IN 2
-                    Collection<Mensaje> mensajes = (Collection<Mensaje>) in.readObject();
-                    for (Iterator<Mensaje> it = mensajes.iterator(); it.hasNext();) {
-                        SistemaServidor.getInstance().arriboMensaje(it.next());
-                    }
-
-
-                    out.close();
-                    in.close();
-                    socket.close();
-                    Mensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
-                    System.out.println("Sistema Servidor de mensajeria: Mensaje de " +
-                                       primerMensaje.getEmisor().getNombre() + " recibido");
-                    //TODO borrar
-                    System.out.println("Dice que asunto: " + primerMensaje.getAsunto());
-                    System.out.println("Y ademas que cuerpo: " + primerMensaje.getCuerpo());
                 }
-            } catch (BindException e) { //IP y puerto ya estaban utilizados
-                //System.exit(1);
+            } catch (IOException e) {
+                e.printStackTrace();
             } catch (Exception e) {
-                System.err.println("Capturada EOFException");
-                try {
-                    if (in != null)
-                        in.close();
-                    if (socket != null)
-                        socket.close();
-                    if (s != null)
-                        s.close();
-                    if (out != null)
-                        out.close();
-
-                } catch (IOException f) {f.printStackTrace();
-                    System.err.println("esto si es malo");
-                }
+                e.printStackTrace();
             }
         }
     }
@@ -103,7 +88,7 @@ public class MensajeListener implements Runnable {
             out.close();
             socket.close();
         } catch (Exception e) {
-            // e.printStackTrace();
+            e.printStackTrace();
         }
 
     }

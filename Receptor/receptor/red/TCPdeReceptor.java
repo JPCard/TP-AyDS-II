@@ -22,9 +22,6 @@ public class TCPdeReceptor  implements Runnable{
     
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
-    private ServerSocket s;
-    private Socket socket;
-    private ObjectInputStream in;
     
     public TCPdeReceptor(String ipServidorMensajeria, int puertoServidorMensajeria) {
         this.ipServidorMensajeria = ipServidorMensajeria;
@@ -35,41 +32,27 @@ public class TCPdeReceptor  implements Runnable{
     public void run(){
             
         while(true){
-            try {
-                     s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());
+            try (ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());) {
+                     
     
                     while (true) {
-                        
-                         socket = s.accept();
-                         in = new ObjectInputStream(socket.getInputStream());
+                        try(Socket socket = s.accept()){
+                            
+                            try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
                         
                         Mensaje mensaje = (Mensaje) in.readObject();
                         
                         ControladorReceptor.getInstance().mostrarMensaje(mensaje);
                         
-                        in.close();
-                        socket.close();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                        }
                     }
+                    }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            catch (BindException e) { //IP y puerto ya estaban utilizados
-                System.out.println("Receptor: Puerto ocupado, cerrando.");
-                System.exit(1);
-            }
-            catch (Exception e) {
-                System.err.println("Capturada EOFException");
-                try {
-                    if (in != null)
-                        in.close();
-                    if (socket != null)
-                        socket.close();
-                    if (s != null)
-                        s.close();
 
-                } catch (IOException f) {
-                    f.printStackTrace();
-                    System.err.println("esto si es malo");
-                }
-            }
         }
     }
     

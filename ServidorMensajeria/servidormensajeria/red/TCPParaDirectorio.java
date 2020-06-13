@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import receptor.modelo.Receptor;
 
 import servidormensajeria.red.MensajeHandler;
+
 import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPParaDirectorio implements Runnable {
@@ -35,10 +36,7 @@ public class TCPParaDirectorio implements Runnable {
     private String ipDirectorio;
     private int puertoDirectorioTiempo;
     private int puertoDirectorioDestinatarios;
-    
-    private ServerSocket s;
-    private Socket socket;
-    private ObjectInputStream in;
+
 
     public TCPParaDirectorio(String ipDirectorio, int puertoDirectorioDestinatarios, int puertoDirectorioTiempo) {
         this.ipDirectorio = ipDirectorio;
@@ -52,11 +50,11 @@ public class TCPParaDirectorio implements Runnable {
      * Le pide un receptor al directorio para que se traiga la lista de receptores completa
      * y le envia mensajes asincronicos pendientes a cada receptor conectado
      */
-    public void envioInicialMensajesAsincronicos(){
+    public void envioInicialMensajesAsincronicos() {
         this.getReceptor("");
-        for(Receptor receptor : SistemaServidor.getInstance().getReceptores()){
+        for (Receptor receptor : SistemaServidor.getInstance().getReceptores()) {
             try {
-                if(receptor.isConectado())
+                if (receptor.isConectado())
                     this.envioMensajesAsincronicos(receptor);
             } catch (Exception e) {
             }
@@ -105,9 +103,12 @@ public class TCPParaDirectorio implements Runnable {
 
 
             ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
-            System.out.println("Sobre el crash de nullpointer el usuarioactual es: "+usuarioActual);
-            int indice = Collections.binarySearch(receptoresArray, new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual, null)); //este receptor es de mentirita y solo para comparar
-//            System.out.println("INDICE INDICE INDICE " + indice);
+            System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
+            int indice =
+                Collections.binarySearch(receptoresArray,
+                                         new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
+                                                      null)); //este receptor es de mentirita y solo para comparar
+            //            System.out.println("INDICE INDICE INDICE " + indice);
             if (indice == -1)
                 return null;
             else
@@ -116,8 +117,8 @@ public class TCPParaDirectorio implements Runnable {
         } catch (IOException e) {
             //e.printStackTrace();
         } catch (ClassNotFoundException e) {
-           // e.printStackTrace();
-        } 
+            // e.printStackTrace();
+        }
         System.err.println("estoy mandando nullafangos");
         return null;
 
@@ -126,49 +127,39 @@ public class TCPParaDirectorio implements Runnable {
     @Override
     public void run() {
         while (true) {
-            try {
-                 s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoInfoDirectorio());
+            try (ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoInfoDirectorio())) {
+
 
                 while (true) {
                     System.out.println("Hilo notifica sistema de mensajes: esperando");
-                     socket = s.accept();
-                    System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
-                     in = null;
-                    in = new ObjectInputStream(socket.getInputStream());
-                    Receptor receptor = (Receptor) in.readObject();
+                    try (Socket socket = s.accept()) {
+                        System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
 
-                    in.close();
-                    socket.close();
-                    
-                    envioMensajesAsincronicos(receptor);
+                        try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
+                            Receptor receptor = (Receptor) in.readObject();
+                            envioMensajesAsincronicos(receptor);
+                        } catch (Exception e) {
+                            System.out.println("mmm!");
+                            e.printStackTrace();
+                        }
+                    }
+
+
                 }
 
-            } catch (BindException e) { //IP y puerto ya estaban utilizados
-                //System.exit(1); no lo dejamos cerrar
+            } catch (IOException e) {
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("es en tcpparadirectorio");
-                System.err.println("Capturada EOFException");
-                try {
-                    if (in != null)
-                        in.close();
-                    if (socket != null)
-                        socket.close();
-                    if (s != null)
-                        s.close();
-                } catch (IOException f) {f.printStackTrace();
-                    System.err.println("esto si es malo");
-                }
             }
 
         }
     }
-    
+
     public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajes =
-            SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
+        Collection<Mensaje> mensajes = SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
         for (Mensaje mensaje : mensajes) {
-            new Thread(new MensajeHandler(mensaje,false)).start();
+            new Thread(new MensajeHandler(mensaje, false)).start();
         }
     }
 
