@@ -27,6 +27,7 @@ public class SistemaReceptor {
         this.llavePrivada = persistencia.cargarLlavePrivada();
         this.tcpdeReceptor = new TCPdeReceptor(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
     }
+    
 
     public PrivateKey getLlavePrivada() {
         return llavePrivada;

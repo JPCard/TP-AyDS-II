@@ -818,10 +818,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
 
     public void envioExitoso() {
+        limpiarDatosEnvio();
+        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
+    }
+    
+    private void limpiarDatosEnvio(){
         this.jTextFieldAsunto.setText("");
         this.jEditorCuerpo.setText("");
         this.jListDestinatarios.clearSelection();
-        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
 
     public void cargarContactos(Collection<Receptor> destinatariosRegistrados) {
@@ -1028,9 +1032,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     @Override
     public void mostrarErrorServidorNoDisponible() {
-        JOptionPane.showMessageDialog(this,
-                                      "El mensaje no fue enviado por que el servidor no esta disponible, por favor intente nuevamente",
-                                      "Error", JOptionPane.ERROR_MESSAGE);
+        limpiarDatosEnvio();
+        JOptionPane.showMessageDialog(this, "El mensaje sera enviado proximamente", "Envio programado", JOptionPane.INFORMATION_MESSAGE);
     }
 }
 
