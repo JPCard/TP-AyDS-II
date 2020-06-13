@@ -68,4 +68,8 @@ public class SistemaReceptor {
     public int getPuerto() {
         return this.receptor.getPuerto();
     }
+
+    public String getUsuarioReceptor() {
+        return this.receptor.getUsuario();
+    }
 }

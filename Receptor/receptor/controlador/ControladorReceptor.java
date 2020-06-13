@@ -102,4 +102,8 @@ public class ControladorReceptor extends Observable{
         setChanged();
         notifyObservers();
     }
+
+    public String getUsuarioReceptor() {
+        return SistemaReceptor.getInstance().getUsuarioReceptor();
+    }
 }

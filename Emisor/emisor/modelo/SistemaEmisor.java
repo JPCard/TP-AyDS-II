@@ -261,4 +261,8 @@ public class SistemaEmisor {
         }
 
     }
+
+    public String getNombreEmisor() {
+        return this.emisor.getNombre();
+    }
 }

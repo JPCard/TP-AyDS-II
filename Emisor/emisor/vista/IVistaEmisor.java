@@ -18,4 +18,7 @@ public interface IVistaEmisor {
 
     public void mostrarErrorServidorNoDisponible();
     public void envioExitoso();
+    
+    
+    public void setNombreUsuario(String nombreEmisor);
 }
