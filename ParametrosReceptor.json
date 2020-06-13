@@ -9,6 +9,6 @@
 	"PuertoServidorMensajeria":"27447",
 	"IPServidorMensajeria":"127.0.0.1",
 	
-	"DirectorioAlterno_IP":"127.0.0.1",
-	"DirectorioAlterno_PuertoConexion":"27544"
+	"DirectorioSecundario_IP":"127.0.0.1",
+	"DirectorioSecundario_PuertoConexion":"27544"
 }

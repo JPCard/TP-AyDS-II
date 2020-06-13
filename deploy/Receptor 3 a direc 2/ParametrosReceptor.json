@@ -3,9 +3,12 @@
 	"Nombre":"Nomas Tapolitano",
 	"Usuario":"receptortres"
 	"IPPropia":"127.0.0.1",
-	"PuertoDirectorioConexion":"27544",
+	"PuertoDirectorioConexion":"27444",
 	"PuertoDirectorioRegistro":"1234",
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27447",
-	"IPServidorMensajeria":"127.0.0.1"
+	"IPServidorMensajeria":"127.0.0.1",
+	
+	"DirectorioSecundario_IP":"127.0.0.1",
+	"DirectorioSecundario_PuertoConexion":"27544"
 }

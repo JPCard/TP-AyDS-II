@@ -19,15 +19,27 @@ import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
 public class TCPHeartbeat implements Runnable {
-    private String IPDirectorio;
-    private int puertoHeartbeat;
+    private String IPDirectorioPrincipal;
+    private int puertoHeartbeatPrincipal;
     public static final int TIEMPO_HEARTBEAT = 1500; // en MS
     
+    private String IPDirectorioSecundario;
+    private int puertoHeartbeatSecundario;
+    
+    private boolean usandoDirSecundario;
+    
+    private String IPDirectorioActual;
+    private int puertoHeartbeatActual;
 
-    public TCPHeartbeat(String IPDirectorio, int puertoHeartbeat) {
-        super();
-        this.IPDirectorio = IPDirectorio;
-        this.puertoHeartbeat = puertoHeartbeat;
+    public TCPHeartbeat(String IPDirectorioPrincipal, int puertoHeartbeatPrincipal, String IPDirectorioSecundario,
+                        int puertoHeartbeatSecundario) {
+        this.IPDirectorioPrincipal = IPDirectorioPrincipal;
+        this.puertoHeartbeatPrincipal = puertoHeartbeatPrincipal;
+        this.IPDirectorioSecundario = IPDirectorioSecundario;
+        this.puertoHeartbeatSecundario = puertoHeartbeatSecundario;
+        
+        this.usandoDirSecundario = true;
+        this.cambiarDirectorioActivo();
     }
 
     @Override
@@ -46,7 +58,7 @@ public class TCPHeartbeat implements Runnable {
                     Heartbeat heartbeat = new Heartbeat(receptor);
                     
                     Socket socket = new Socket();
-                    InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.puertoHeartbeat);
+                    InetSocketAddress addr = new InetSocketAddress(IPDirectorioActual, this.puertoHeartbeatActual);
                     socket.connect(addr, 500);
 
                     ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -62,11 +74,26 @@ public class TCPHeartbeat implements Runnable {
 
             } catch (Exception e) {
                 //e.printStackTrace();
+                this.cambiarDirectorioActivo();
                 ControladorReceptor.getInstance().updateConectado(false);
             }
         }
 
     }
     
+    private void cambiarDirectorioActivo(){
+        if(this.usandoDirSecundario){
+            this.IPDirectorioActual = this.IPDirectorioPrincipal;
+            this.puertoHeartbeatActual = this.puertoHeartbeatPrincipal;
+            
+            
+        }
+        else {
+            this.IPDirectorioActual = this.IPDirectorioSecundario;
+            this.puertoHeartbeatActual = this.puertoHeartbeatSecundario;
+            
+        }
+        this.usandoDirSecundario = !this.usandoDirSecundario;
+    }
     
 }

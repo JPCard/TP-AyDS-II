@@ -52,6 +52,11 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
     private String ipDirectorio;
     private int puertoDirectorioRegistro; //todo borrar este ysus hermanos
     private int puertoDirectorioConexion;
+    
+    private String ipDirectorioSecundario;
+    private int puertoDirectorioSecundarioConexion;
+    
+    
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private Receptor receptor;
@@ -137,6 +142,9 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
             this.puertoServidorMensajeria = Integer.parseInt(obj2.get("PuertoServidorMensajeria").toString());
             this.ipDirectorio = obj2.get("IPDirectorio").toString();
 
+            this.ipDirectorioSecundario =obj2.get("DirectorioSecundario_IP").toString();
+            this.puertoDirectorioSecundarioConexion = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoConexion").toString());
+
 
             Receptor receptor =
                 new Receptor(obj2.get("IPPropia").toString(), Integer.parseInt(obj2.get("PuertoPropio").toString()),
@@ -212,5 +220,23 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
             this.cargarJSON(PARAMETROS_FILE_PATH);
         }
         return this.llaves.getPrivate();
+    }
+
+    @Override
+    public String cargarIPDirectorioSecundario() {
+        if (!this.cargado) {
+            this.cargarLlaves(LLAVE_PRIVADA_FILE_PATH, LLAVE_PUBLICA_FILE_PATH);
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        }
+        return this.ipDirectorioSecundario;
+    }
+
+    @Override
+    public int cargarPuertoSecundarioConexion() {
+        if (!this.cargado) {
+            this.cargarLlaves(LLAVE_PRIVADA_FILE_PATH, LLAVE_PUBLICA_FILE_PATH);
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        }
+        return this.puertoDirectorioSecundarioConexion;
     }
 }

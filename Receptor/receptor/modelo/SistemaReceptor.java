@@ -52,7 +52,9 @@ public class SistemaReceptor {
             IPersistenciaReceptor auxPersistencia = instance.persistencia;
             Thread hiloHeartbeat =
                 new Thread(new TCPHeartbeat(auxPersistencia.cargarIPDirectorio(),
-                                            auxPersistencia.cargarPuertoConexion()));
+                                            auxPersistencia.cargarPuertoConexion(),
+                                            auxPersistencia.cargarIPDirectorioSecundario(),
+                                            auxPersistencia.cargarPuertoSecundarioConexion()));
             hiloHeartbeat.start();
 
         }
