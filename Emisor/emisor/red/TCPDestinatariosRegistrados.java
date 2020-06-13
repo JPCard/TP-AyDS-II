@@ -24,15 +24,32 @@ public class TCPDestinatariosRegistrados implements Runnable {
     private int puertoDirectorioTiempo;
     private int puertoDirectorioDestinatarios;
     public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000; // en MS
+    
     private Long tiempoUltModif = new Long(-999);
+    
+    
+    private boolean usandoDirSecundario;
+    private String IPDirectorioActual;
+    private int puertoTiempoActual;
+    private int puertoDestActual;
+
+
+    private String ipDirectorioSecundario;
+    private int puertoDirectorioSecundarioTiempo;
+    private int puertoDirectorioSecundarioDest;
 
 
     public TCPDestinatariosRegistrados(String IPDirectorio, int puertoDirectorioTiempo,
-                                       int puertoDirectorioDestinatarios) {
-        super();
+                                       int puertoDirectorioDestinatarios, String ipDirectorioSecundario,
+                                       int puertoDirectorioSecundarioTiempo, int puertoDirectorioSecundarioDest) {
         this.IPDirectorio = IPDirectorio;
         this.puertoDirectorioTiempo = puertoDirectorioTiempo;
         this.puertoDirectorioDestinatarios = puertoDirectorioDestinatarios;
+        this.ipDirectorioSecundario = ipDirectorioSecundario;
+        this.puertoDirectorioSecundarioTiempo = puertoDirectorioSecundarioTiempo;
+        this.puertoDirectorioSecundarioDest = puertoDirectorioSecundarioDest;
+        this.usandoDirSecundario = true;
+        this.cambiarDirectorioActivo();
     }
 
     public long getTiempoUltModif() { //para no tener que usar compareTo entre Longs
@@ -47,7 +64,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
                 while (true) {
                     Socket socket = new Socket();
-                    InetSocketAddress addr = new InetSocketAddress(IPDirectorio, this.puertoDirectorioTiempo);
+                    InetSocketAddress addr = new InetSocketAddress(IPDirectorioActual, this.puertoTiempoActual);
                     socket.connect(addr, 500);
                     ObjectInputStream inTiempo = new ObjectInputStream(socket.getInputStream());
                     System.out.println("esperando q me manden el tiempo");
@@ -67,7 +84,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                         System.out.println("ENTRE");
                         Socket socketDest = new Socket();
                         InetSocketAddress addr2 =
-                            new InetSocketAddress(IPDirectorio, this.puertoDirectorioDestinatarios);
+                            new InetSocketAddress(IPDirectorioActual, this.puertoDestActual);
                         socketDest.connect(addr2, 500);
                         ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
@@ -96,9 +113,26 @@ public class TCPDestinatariosRegistrados implements Runnable {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                this.cambiarDirectorioActivo();
                 ControladorEmisor.getInstance().updateConectado(false);
             }
         }
 
     }
+    
+    private void cambiarDirectorioActivo(){
+        if(this.usandoDirSecundario){
+            this.IPDirectorioActual = this.IPDirectorio;
+            this.puertoDestActual = this.puertoDirectorioDestinatarios;
+            this.puertoTiempoActual = this.puertoDirectorioTiempo;
+            
+        }
+        else {
+            this.IPDirectorioActual = this.ipDirectorioSecundario;
+            this.puertoDestActual = this.puertoDirectorioSecundarioDest;
+            this.puertoTiempoActual  = this.puertoDirectorioSecundarioTiempo;
+        }
+        this.usandoDirSecundario = !this.usandoDirSecundario;
+    }
+    
 }

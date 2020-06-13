@@ -64,7 +64,7 @@ public class SistemaEmisor {
             new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
                             persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
 
-        
+
     }
 
     public static void inicializar() throws Exception {
@@ -77,12 +77,15 @@ public class SistemaEmisor {
         Thread hiloDestinatarios =
             new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),
                                                        instance.persistencia.cargarPuertoDirectorioTiempo(),
-                                                       instance.persistencia.cargarPuertoDirectorioDest()));
+                                                       instance.persistencia.cargarPuertoDirectorioDest(),
+                                                       instance.persistencia.cargarIPDirectorioSecundario(),
+                                                       instance.persistencia.cargarPuertoDirectorioSecundarioTiempo(),
+                                                       instance.persistencia.cargarPuertoDirectorioSecundarioDest()));
         hiloDestinatarios.start();
 
         System.out.println("Hilos de red comenzados");
 
-        if(instance.persistenciaMensajes.quedanMensajesPendientes())
+        if (instance.persistenciaMensajes.quedanMensajesPendientes())
             instance.inciarHiloMensajesPendientes();
 
     }
@@ -249,7 +252,7 @@ public class SistemaEmisor {
     }
 
     public void actualizarIdMensaje(Integer viejaId, Integer nuevaId) {
-        this.persistenciaMensajes.actualizarIdMensaje(viejaId,nuevaId);
+        this.persistenciaMensajes.actualizarIdMensaje(viejaId, nuevaId);
     }
 
     private void inciarHiloMensajesPendientes() {

@@ -36,6 +36,9 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private int puertoServidorSolicitarMensajesEmisor;
+    private String ipDirectorioSecundario;
+    private int puertoDirectorioSecundarioTiempo;
+    private int puertoDirectorioSecundarioDest;
 
 
     public void cargarJSON(String ubicacion) throws IOException, ParseException {
@@ -51,6 +54,11 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             this.puertoServidorSolicitarMensajesEmisor = Integer.parseInt(obj2.get("PuertoServidorSolicitarMensajesEmisor").toString());
             
             this.ipDirectorio = obj2.get("IPDirectorio").toString();
+            
+            
+            this.ipDirectorioSecundario = obj2.get("DirectorioSecundario_IP").toString(); 
+            this.puertoDirectorioSecundarioDest = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoDest").toString());   
+            this.puertoDirectorioSecundarioTiempo = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoTiempo").toString());   
             
             Emisor emisor = new Emisor(Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("IPPropia").toString(),obj2.get("Nombre").toString());
             this.emisor = emisor;
@@ -118,5 +126,26 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
         return this.puertoServidorSolicitarMensajesEmisor;
+    }
+
+    @Override
+    public String cargarIPDirectorioSecundario() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.ipDirectorioSecundario;
+    }
+
+    @Override
+    public int cargarPuertoDirectorioSecundarioTiempo() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.puertoDirectorioSecundarioTiempo;
+    }
+
+    @Override
+    public int cargarPuertoDirectorioSecundarioDest() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.puertoDirectorioSecundarioDest;
     }
 }
