@@ -123,7 +123,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jButtonEnviarConComprobante = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Envio de Mensajes");
         setMinimumSize(new java.awt.Dimension(960, 700));
         setPreferredSize(new java.awt.Dimension(960, 700));
 
@@ -1034,6 +1033,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public void mostrarErrorServidorNoDisponible() {
         limpiarDatosEnvio();
         JOptionPane.showMessageDialog(this, "El mensaje sera enviado proximamente", "Envio programado", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void setNombreUsuario(String nombreEmisor) {
+        this.setTitle("Emisor: "+nombreEmisor);
     }
 }
 

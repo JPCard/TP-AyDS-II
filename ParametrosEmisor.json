@@ -7,5 +7,10 @@
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27446",
 	"PuertoServidorSolicitarMensajesEmisor":"27448",
-	"IPServidorMensajeria":"127.0.0.1"
+	"IPServidorMensajeria":"127.0.0.1",
+	
+	"DirectorioSecundario_IP":"127.0.0.1",
+	"DirectorioSecundario_PuertoDest":"27545",
+	"DirectorioSecundario_PuertoTiempo":"101"
+	
 }

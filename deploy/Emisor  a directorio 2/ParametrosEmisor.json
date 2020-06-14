@@ -1,11 +1,16 @@
 {
-	"PuertoPropio":"27234",
+	"PuertoPropio":"27235",
 	"Nombre":"elmore",
 	"IPPropia":"127.0.0.1",
-	"PuertoDirectorioDest":"27545",
-	"PuertoDirectorioTiempo":"101",
+	"PuertoDirectorioDest":"27445",
+	"PuertoDirectorioTiempo":"1",
 	"IPDirectorio":"127.0.0.1",
 	"PuertoServidorMensajeria":"27446",
 	"PuertoServidorSolicitarMensajesEmisor":"27448",
-	"IPServidorMensajeria":"127.0.0.1"
+	"IPServidorMensajeria":"127.0.0.1",
+	
+	"DirectorioSecundario_IP":"127.0.0.1",
+	"DirectorioSecundario_PuertoDest":"27545",
+	"DirectorioSecundario_PuertoTiempo":"101"
+	
 }

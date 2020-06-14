@@ -39,6 +39,8 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         
         initComponents();
         ControladorReceptor.getInstance(this);
+        this.setTitle("Receptor: "+ControladorReceptor.getInstance().getUsuarioReceptor());
+        
         this.jListMensajes.setCellRenderer(new RendererMensajesRecibidos());
         this.jListMensajes.setSelectionModel(new DefaultListSelectionModel(){
 
@@ -335,4 +337,6 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
         }
         
     }
+
+
 }

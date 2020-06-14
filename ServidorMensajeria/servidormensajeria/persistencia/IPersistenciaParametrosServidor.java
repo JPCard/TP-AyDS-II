@@ -17,7 +17,14 @@ public interface IPersistenciaParametrosServidor {
     
     public int cargarPuertoDevolverMensajesEmisores()  throws Exception;
     
-    public int cargarPuertoInfoDirectorio()  throws Exception;
-    
-    
+    public int cargarpuertoDirectorioPrincipalPushReceptores() throws Exception;
+
+    public int cargarPuertoDirectorioSecundarioPushReceptores() throws Exception;
+
+
+    public String cargarIPDirectorioSecundario()throws Exception ;
+
+    public int cargarPuertoDirectorioSecundarioTiempo()throws Exception ;
+
+    public int cargarPuertoDirectorioSecundarioDestinatarios()throws Exception ;
 }

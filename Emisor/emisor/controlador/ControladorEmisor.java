@@ -45,7 +45,7 @@ public class ControladorEmisor extends Observable {
         this.vistaPrincipal = vista;
         try {
             SistemaEmisor.inicializar();
-            
+            this.vistaPrincipal.setNombreUsuario(SistemaEmisor.getInstance().getNombreEmisor());
             
             
             

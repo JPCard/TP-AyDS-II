@@ -8,4 +8,5 @@ public interface IVistaReceptor {
     public void mostrarErrorNoReceptor();
 
     public void updateConectado(boolean estado);
+    
 }

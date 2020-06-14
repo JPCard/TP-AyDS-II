@@ -22,4 +22,8 @@ public interface IPersistenciaReceptor {
     public int cargarPuertoServidorMensajeria();
     
     public PrivateKey cargarLlavePrivada();
+
+    public String cargarIPDirectorioSecundario();
+
+    public int cargarPuertoSecundarioConexion();
 }
