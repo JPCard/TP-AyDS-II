@@ -8,8 +8,8 @@
 	"IPDirectorio":"127.0.0.1",
 	"MetodoPersistencia":"XML",
 	
-	"DirectorioAlterno_IP":"127.0.0.1",
-	"DirectorioAlterno_PuertoDest":"27545",
-	"DirectorioAlterno_PuertoTiempo":"101",
-	"DirectorioAlterno_PuertoInfo":"41145"
+	"DirectorioSecundario_IP":"127.0.0.1",
+	"DirectorioSecundario_PuertoDest":"27545",
+	"DirectorioSecundario_PuertoTiempo":"101",
+	"DirectorioSecundario_PuertoInfo":"41145"
 }

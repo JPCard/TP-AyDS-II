@@ -23,13 +23,14 @@ public class ReceptoresAsincronicos {
         try {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(Directorio.getInstance().getIpServidorMensajeria(),Directorio.getInstance().getPuertoPushReceptores());
-            socket.connect(addr, 500);
+            socket.connect(addr,1500);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             out.writeObject(receptor);
 
             out.close();
             socket.close();
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
 

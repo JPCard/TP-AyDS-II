@@ -34,9 +34,15 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
     private int puertoRecepcionMensajes;
     private int puertoComprobantes;
     private int puertoDevolverMensajesEmisores;
-    private int puertoInfoDirectorio;
+    private int puertoInfoDirectorioPrincipal;
     
     
+    private String ipDirectorioSecundario;
+    private int puertoDirectorioSecundarioDest;
+    private int puertoDirectorioSecundarioTiempo;
+    private int puertoDirectorioSecundarioInfo;
+
+
     public PersistenciaParametrosServidor() {
         super();
     }
@@ -54,7 +60,25 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
         this.puertoRecepcionMensajes = Integer.parseInt(obj.get("PuertoRecepcionMensajes").toString());
         this.puertoComprobantes = Integer.parseInt(obj.get("PuertoComprobantes").toString());
         this.puertoDevolverMensajesEmisores = Integer.parseInt(obj.get("PuertoDevolverMensajesEmisores").toString());
-        this.puertoInfoDirectorio = Integer.parseInt(obj.get("PuertoInfoDirectorio").toString());
+        this.puertoInfoDirectorioPrincipal = Integer.parseInt(obj.get("PuertoInfoDirectorio").toString());
+        
+        
+        
+        this.ipDirectorioSecundario = obj.get("DirectorioSecundario_IP").toString();
+        this.puertoDirectorioSecundarioDest = Integer.parseInt(obj.get("DirectorioSecundario_PuertoDest").toString());      
+        this.puertoDirectorioSecundarioTiempo = Integer.parseInt(obj.get("DirectorioSecundario_PuertoTiempo").toString());      
+            this.puertoDirectorioSecundarioInfo = Integer.parseInt(obj.get("DirectorioSecundario_PuertoInfo").toString());      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         this.cargado = true;
     }
 
@@ -118,10 +142,39 @@ public class PersistenciaParametrosServidor implements IPersistenciaParametrosSe
     }
 
     @Override
-    public int cargarPuertoInfoDirectorio() throws Exception {
+    public int cargarpuertoDirectorioPrincipalPushReceptores() throws Exception {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         
-        return this.puertoInfoDirectorio;
+        return this.puertoInfoDirectorioPrincipal;
+    }
+    
+    @Override
+    public int cargarPuertoDirectorioSecundarioPushReceptores() throws Exception {
+        if(!this.cargado)
+        this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.puertoDirectorioSecundarioInfo;
+    }
+    
+
+    @Override
+    public String cargarIPDirectorioSecundario()throws Exception  {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.ipDirectorioSecundario;
+    }
+
+    @Override
+    public int cargarPuertoDirectorioSecundarioTiempo()throws Exception  {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.puertoDirectorioSecundarioTiempo;
+    }
+
+    @Override
+    public int cargarPuertoDirectorioSecundarioDestinatarios() throws Exception {
+        if(!this.cargado)
+            this.cargarJSON(PARAMETROS_FILE_PATH);
+        return this.puertoDirectorioSecundarioDest;
     }
 }
