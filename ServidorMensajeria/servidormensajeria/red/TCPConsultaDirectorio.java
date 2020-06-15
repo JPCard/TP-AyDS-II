@@ -118,6 +118,7 @@ public class TCPConsultaDirectorio {
                     if (receptor.isConectado())
                         this.envioMensajesAsincronicos(receptor);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

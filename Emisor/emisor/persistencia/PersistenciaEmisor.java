@@ -1,7 +1,10 @@
 package emisor.persistencia;
 
 import emisor.modelo.Agenda;
-import emisor.modelo.Emisor;
+import emisor.modelo.DatosEmisor;
+import emisor.modelo.IDatosEmisor;
+
+import emisor.modelo.IDatosEmisor;
 
 import java.beans.XMLDecoder;
 
@@ -28,7 +31,7 @@ import org.json.simple.parser.ParseException;
 
 public class PersistenciaEmisor implements IPersistenciaEmisor {
     public static final String PARAMETROS_FILE_PATH = "ParametrosEmisor.json";
-    private Emisor emisor;
+    private IDatosEmisor emisor;
     private boolean cargado = false;
     private String ipDirectorio;
     private int puertoDirectorioDest;
@@ -60,7 +63,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
             this.puertoDirectorioSecundarioDest = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoDest").toString());   
             this.puertoDirectorioSecundarioTiempo = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoTiempo").toString());   
             
-            Emisor emisor = new Emisor(Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("IPPropia").toString(),obj2.get("Nombre").toString());
+            IDatosEmisor emisor = new DatosEmisor(Integer.parseInt(obj2.get("PuertoPropio").toString()),obj2.get("IPPropia").toString(),obj2.get("Nombre").toString());
             this.emisor = emisor;
             
             this.ipServidorMensajeria = obj2.get("IPServidorMensajeria").toString();
@@ -70,7 +73,7 @@ public class PersistenciaEmisor implements IPersistenciaEmisor {
     }
 
     @Override
-    public Emisor cargarEmisor() throws IOException, ParseException {
+    public IDatosEmisor cargarEmisor() throws IOException, ParseException {
         if(!this.cargado)
             this.cargarJSON(PARAMETROS_FILE_PATH);
         

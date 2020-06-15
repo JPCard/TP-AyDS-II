@@ -15,12 +15,12 @@ public class Mensaje implements IMensaje {
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
-    private Emisor emisor;
+    private IDatosEmisor emisor;
     private int id;
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
     private String receptorObjetivo;
     
-    public Mensaje(Emisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
+    public Mensaje(IDatosEmisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                    String receptorObjetivo) {
         this.datetime = new GregorianCalendar(); //fecha y hora actual
         this.asunto = asunto;
@@ -109,7 +109,7 @@ public class Mensaje implements IMensaje {
         return cuerpo;
     }
 
-    public Emisor getEmisor() {
+    public IDatosEmisor getEmisor() {
         return emisor;
     }
 
@@ -147,7 +147,7 @@ public class Mensaje implements IMensaje {
         this.cuerpo = cuerpo;
     }
 
-    public void setEmisor(Emisor emisor) {
+    public void setEmisor(IDatosEmisor emisor) {
         this.emisor = emisor;
     }
 

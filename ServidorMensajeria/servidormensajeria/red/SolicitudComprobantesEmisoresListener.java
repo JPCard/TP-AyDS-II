@@ -1,6 +1,6 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
@@ -37,7 +37,7 @@ public class SolicitudComprobantesEmisoresListener implements Runnable {
                     try (Socket socket = s.accept()) {
 
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-                            Emisor emisor = (Emisor) in.readObject();
+                            IDatosEmisor emisor = (IDatosEmisor) in.readObject();
                             System.out.println(emisor.getNombre() +
                                                " acaba de solicitar comprobantes de cuando no estuvo");
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {

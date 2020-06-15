@@ -42,7 +42,7 @@ import org.json.simple.*;
 import org.json.simple.parser.ParseException;
 
 public class SistemaEmisor {
-    private Emisor emisor;
+    private IDatosEmisor emisor;
     private TCPdeEmisor tcpdeEmisor;
     private IEncriptacion encriptacion;
     private static SistemaEmisor instance;
@@ -96,7 +96,7 @@ public class SistemaEmisor {
     }
 
 
-    public Emisor getEmisor() {
+    public IDatosEmisor getEmisor() {
         return emisor;
     }
 

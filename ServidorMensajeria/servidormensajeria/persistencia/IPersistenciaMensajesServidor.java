@@ -1,6 +1,6 @@
 package servidormensajeria.persistencia;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
@@ -23,7 +23,7 @@ public interface IPersistenciaMensajesServidor {
 
     public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
 
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception;
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception;
     
     public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
 
@@ -33,8 +33,8 @@ public interface IPersistenciaMensajesServidor {
     
     public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception;
     
-    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor);
+    public Collection<Comprobante> getComprobantesNoEnviados(IDatosEmisor emisor);
     
-    public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception;
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) throws Exception;
 }
     

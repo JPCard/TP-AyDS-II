@@ -1,6 +1,7 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 import emisor.modelo.IMensaje;
 
@@ -80,7 +81,7 @@ public class MensajeListener implements Runnable {
         }
     }
 
-    public void enviarComprobante(Comprobante comprobante, Emisor emisor) {
+    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor) {
 
         try {
             Socket socket = new Socket(emisor.getIP(), emisor.getPuerto());

@@ -10,7 +10,7 @@ import receptor.modelo.Receptor;
 
 public class MensajeConAlerta extends Mensaje implements Serializable {
 
-    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo, ArrayList<String> receptores,
+    public MensajeConAlerta(IDatosEmisor emisor, String asunto, String cuerpo, ArrayList<String> receptores,
                             String receptorObjetivo) {
         super(emisor, asunto, cuerpo, receptores, receptorObjetivo);
     }

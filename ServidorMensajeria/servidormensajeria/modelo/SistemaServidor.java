@@ -1,6 +1,6 @@
 package servidormensajeria.modelo;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
@@ -157,7 +157,7 @@ public class SistemaServidor {
      * @return null si no hay mensajes enviados de ese emisor, una coleccion de los mensajes enviados de ese emisor en caso contrario
      * @throws Exception
      */
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception {
         return persistenciaMensajes.obtenerMsjsComprobadosEmisor(emisor);
     }
 
@@ -193,7 +193,7 @@ public class SistemaServidor {
     }
 
 
-    public void eliminarComprobantesNoEnviados(Emisor emisor) {
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) {
         try {
             persistenciaMensajes.eliminarComprobantesNoEnviados(emisor);
         } catch (Exception e) {

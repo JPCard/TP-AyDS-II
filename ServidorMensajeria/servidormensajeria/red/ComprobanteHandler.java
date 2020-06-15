@@ -1,6 +1,8 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
+
+import emisor.modelo.IDatosEmisor;
 
 import java.io.ObjectOutputStream;
 
@@ -26,7 +28,7 @@ public class ComprobanteHandler implements Runnable {
     public void run() {
         try {
             SistemaServidor.getInstance().guardarComp(comprobante);
-            Emisor emisor = comprobante.getEmisorOriginal();
+            IDatosEmisor emisor = comprobante.getEmisorOriginal();
 
             Socket socket = new Socket();
 //            System.out.println("BORRAME"+this.comprobante.getEmisorOriginal().getPuerto()+" asdsada "+this.comprobante.getEmisorOriginal().getIP());

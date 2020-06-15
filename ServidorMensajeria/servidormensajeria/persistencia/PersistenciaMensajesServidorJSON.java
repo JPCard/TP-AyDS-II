@@ -12,7 +12,8 @@ import com.google.gson.reflect.TypeToken;
 
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConAlerta;
@@ -304,7 +305,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception {
         Collection<MensajeConComprobante> mensajesComprobados = new ArrayList<MensajeConComprobante>();
         String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesConComprobEmisores) {
@@ -419,14 +420,14 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor) {
+    public Collection<Comprobante> getComprobantesNoEnviados(IDatosEmisor emisor) {
         synchronized(comprobantesNoEnviados){
             return this.comprobantesNoEnviados.get(emisor.getNombre());
         }
     }
 
     @Override
-    public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception {
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) throws Exception {
         String json;
         FileWriter file;
         synchronized(comprobantesNoEnviados){

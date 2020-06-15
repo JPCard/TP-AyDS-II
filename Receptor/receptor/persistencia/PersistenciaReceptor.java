@@ -1,6 +1,6 @@
 package receptor.persistencia;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 
 import java.beans.XMLDecoder;
 

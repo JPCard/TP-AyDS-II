@@ -1,7 +1,8 @@
 package receptor.red;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class TCPdeReceptor  implements Runnable{
         }
     }
     
-    public void enviarComprobante(Comprobante comprobante,Emisor emisor){
+    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor){
         
         try {
                 Socket socket = new Socket(this.ipServidorMensajeria, this.puertoServidorMensajeria);

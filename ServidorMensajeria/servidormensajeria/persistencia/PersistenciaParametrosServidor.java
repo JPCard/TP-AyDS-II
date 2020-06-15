@@ -1,6 +1,6 @@
 package servidormensajeria.persistencia;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConComprobante;
 

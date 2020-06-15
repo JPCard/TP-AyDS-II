@@ -1,6 +1,7 @@
 package servidormensajeria.persistencia;
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConAlerta;
@@ -331,7 +332,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception {
         Collection<MensajeConComprobante> mensajesComprobados = new ArrayList<MensajeConComprobante>();
         String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesConComprobEmisores) {
@@ -438,14 +439,14 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     
     
     @Override
-    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor){
+    public Collection<Comprobante> getComprobantesNoEnviados(IDatosEmisor emisor){
         synchronized(comprobantesNoEnviados){
             return this.comprobantesNoEnviados.get(emisor.getNombre());
         }
     }
     
     @Override
-    public void eliminarComprobantesNoEnviados(Emisor emisor) throws FileNotFoundException{
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) throws FileNotFoundException{
         synchronized(comprobantesNoEnviados){
             this.comprobantesNoEnviados.get(emisor.getNombre()).clear();
             

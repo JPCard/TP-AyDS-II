@@ -15,7 +15,7 @@ import receptor.modelo.SistemaReceptor;
 public class MensajeConComprobante extends Mensaje implements Serializable {
     private Collection<String> receptoresConfirmados;
     
-    public MensajeConComprobante(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores, String receptorObjetivo) {
+    public MensajeConComprobante(IDatosEmisor emisor, String asunto, String cuerpo,ArrayList<String> receptores, String receptorObjetivo) {
         super(emisor, asunto, cuerpo,receptores,receptorObjetivo);
         receptoresConfirmados = new  ArrayList<String>(); //por el momento no hay nadie confirmado
     }

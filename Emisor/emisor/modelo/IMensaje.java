@@ -32,7 +32,7 @@ public interface IMensaje extends Cloneable, Serializable {
 
     public String getCuerpo();
 
-    public Emisor getEmisor();
+    public IDatosEmisor getEmisor();
 
     @Override
     public String toString();
@@ -43,7 +43,7 @@ public interface IMensaje extends Cloneable, Serializable {
 
     public void setCuerpo(String cuerpo);
 
-    public void setEmisor(Emisor emisor);
+    public void setEmisor(IDatosEmisor emisor);
 
     public void setUsuariosReceptores(ArrayList<String> usuariosReceptores);
 

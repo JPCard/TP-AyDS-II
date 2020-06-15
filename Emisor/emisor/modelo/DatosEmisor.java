@@ -1,25 +1,23 @@
 package emisor.modelo;
 
 
-import emisor.modelo.Agenda;
-
 import java.io.Serializable;
 
 import java.util.Iterator;
 
 import receptor.modelo.Receptor;
 
-public class Emisor implements Serializable,Cloneable{
+public class DatosEmisor implements IDatosEmisor {
     private String IP; //{id}
     private int puerto;
     private String nombre;
     private transient Agenda agenda;
 
-    public Emisor() {
+    public DatosEmisor() {
         super();
     }
     
-    public Emisor(int puerto, String IP, String nombre) {
+    public DatosEmisor(int puerto, String IP, String nombre) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
@@ -28,7 +26,7 @@ public class Emisor implements Serializable,Cloneable{
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-       return new Emisor(this.getPuerto(),this.getIP(),this.getNombre());
+       return new DatosEmisor(this.getPuerto(),this.getIP(),this.getNombre());
     }
 
     @Override
@@ -36,11 +34,11 @@ public class Emisor implements Serializable,Cloneable{
         if (this == object) {
             return true;
         }
-        if (!(object instanceof Emisor)) {
+        if (!(object instanceof IDatosEmisor)) {
             return false;
         }
-        final Emisor other = (Emisor) object;
-        if (!(nombre == null ? other.nombre == null : nombre.equals(other.nombre))) {
+        final IDatosEmisor other = (IDatosEmisor) object;
+        if (!(nombre == null ? other.getNombre() == null : nombre.equals(other.getNombre()))) {
             return false;
         }
         return true;

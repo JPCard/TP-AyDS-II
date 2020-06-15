@@ -1,7 +1,8 @@
 package receptor.controlador;
 
 
-import emisor.modelo.Emisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 
 
@@ -68,7 +69,7 @@ public class ControladorReceptor extends Observable{
         return instance;
     }
     
-    public void enviarComprobante(Comprobante comprobante,Emisor emisor){
+    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor){
         SistemaReceptor.getInstance().getTcpdeReceptor().enviarComprobante(comprobante,emisor);
     }
     
