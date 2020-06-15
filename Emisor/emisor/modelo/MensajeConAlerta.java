@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
 
 public class MensajeConAlerta extends Mensaje implements Serializable {
 
@@ -20,10 +21,12 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
     } //para serializacion
 
     @Override
-    public void onLlegada() {
-        super.onLlegada();
-        ControladorReceptor.getInstance().activarAlerta();
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        
+        super.onLlegada(llegadaMensaje);
+        llegadaMensaje.arriboMensajeConAlerta(this);
     }
+
 
     @Override
     public IMensaje clone() {

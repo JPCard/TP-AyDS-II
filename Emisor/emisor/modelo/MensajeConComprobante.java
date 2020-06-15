@@ -11,6 +11,8 @@ import receptor.controlador.ControladorReceptor;
 import receptor.modelo.Comprobante;
 import receptor.modelo.IComprobante;
 import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
+import receptor.modelo.ISistemaReceptor;
 import receptor.modelo.SistemaReceptor;
 
 public class MensajeConComprobante extends Mensaje implements Serializable {
@@ -29,11 +31,9 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
      *Pre: el mensaje tiene id seteado
      */
     @Override
-    public void onLlegada() {
-        super.onLlegada();
-        IComprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),this.getEmisor());
-
-        ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        super.onLlegada(llegadaMensaje);
+        llegadaMensaje.arriboMensajeConComprobante(this);
     }
     
     @Override

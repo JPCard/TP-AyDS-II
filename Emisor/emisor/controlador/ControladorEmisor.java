@@ -39,7 +39,7 @@ public class ControladorEmisor extends Observable {
     private IVistaComprobantes vistaComprobantes;
     private static ControladorEmisor instance = null;
     private boolean directorioConectado =false;
-
+    
 
     private ControladorEmisor(IVistaEmisor vista) {
         super();

@@ -91,7 +91,7 @@ public class Directorio implements IDirectorio {
             this.receptoresAsincronicos = new ReceptoresAsincronicos(this);
             
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
     }

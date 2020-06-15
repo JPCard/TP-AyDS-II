@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 
 import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
 
 
 public class Mensaje implements IMensaje {
@@ -165,9 +166,10 @@ public class Mensaje implements IMensaje {
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
      * <b>Invariante:</b> datetime, asunto, cuerpo y emisor del mensaje no varían
      */
-    public void onLlegada() {
-        // el mensaje comun no hace nada
-        //
-    }
 
+
+    @Override
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        llegadaMensaje.arriboMensajeSimple(this);
+    }
 }

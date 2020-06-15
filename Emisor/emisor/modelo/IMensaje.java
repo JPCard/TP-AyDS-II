@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
+import receptor.modelo.ILlegadaMensaje;
+
 public interface IMensaje extends Cloneable, Serializable {
     
     public IMensaje clone();
@@ -54,5 +56,5 @@ public interface IMensaje extends Cloneable, Serializable {
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
      * <b>Invariante:</b> datetime, asunto, cuerpo y emisor del mensaje no varían
      */
-    public void onLlegada();
+    public void onLlegada(ILlegadaMensaje llegadaMensaje);
 }

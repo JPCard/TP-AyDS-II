@@ -29,7 +29,11 @@ public class MensajeHandler implements Runnable {
      *                         primerIntento = true  -> mensaje sincronico <br>
      *                         primerIntento = false -> mensaje asincronico <br>
      */
-
+    public MensajeHandler(IMensaje mensaje, boolean primerIntento, ISistemaServidor sistemaServidor) {
+        this.mensaje = mensaje;
+        this.primerIntento = primerIntento;
+        this.sistemaServidor = sistemaServidor;
+    }
 
     @Override
     public void run() {
@@ -100,9 +104,4 @@ public class MensajeHandler implements Runnable {
 
     }
 
-    public MensajeHandler(IMensaje mensaje, boolean primerIntento, ISistemaServidor sistemaServidor) {
-        this.mensaje = mensaje;
-        this.primerIntento = primerIntento;
-        this.sistemaServidor = sistemaServidor;
-    }
 }

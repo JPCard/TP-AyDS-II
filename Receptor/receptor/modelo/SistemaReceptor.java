@@ -8,6 +8,10 @@ import emisor.modelo.IDatosEmisor;
 
 import emisor.modelo.IMensaje;
 
+import emisor.modelo.Mensaje;
+import emisor.modelo.MensajeConAlerta;
+import emisor.modelo.MensajeConComprobante;
+
 import java.io.FileNotFoundException;
 
 import java.security.PrivateKey;
@@ -22,7 +26,7 @@ import receptor.red.TCPMensajeListener;
 import receptor.red.TCPHeartbeat;
 import receptor.red.TCPEnvioComprobante;
 
-public class SistemaReceptor implements ISistemaReceptor {
+public class SistemaReceptor implements ISistemaReceptor,ILlegadaMensaje {
     private IDatosReceptor receptor;
     private IEnvioComprobante envioComprobante;
     private IPersistenciaReceptor persistencia = new PersistenciaReceptor();
@@ -82,8 +86,25 @@ public class SistemaReceptor implements ISistemaReceptor {
     @Override
     public void arriboMensaje(IMensaje mensaje) {
         PrivateKey privateKey = this.getLlavePrivada();
-        
+        mensaje.onLlegada(this);
         ControladorReceptor.getInstance().mostrarMensaje(this.desencriptador.desencriptar(mensaje,privateKey ));
-        mensaje.onLlegada();
+        
+    }
+
+    @Override
+    public void arriboMensajeSimple(Mensaje mensaje) {
+        //nada
+    }
+
+    @Override
+    public void arriboMensajeConAlerta(MensajeConAlerta mensajeConAlerta) {
+        ControladorReceptor.getInstance().activarAlerta();
+    }
+
+    @Override
+    public void arriboMensajeConComprobante(MensajeConComprobante mensajeConComprobante) {
+        IComprobante comprobante = new Comprobante(mensajeConComprobante.getId(),mensajeConComprobante.getReceptorObjetivo(),mensajeConComprobante.getEmisor());
+
+        ControladorReceptor.getInstance().enviarComprobante(comprobante,mensajeConComprobante.getEmisor());
     }
 }

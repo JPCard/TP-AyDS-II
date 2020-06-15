@@ -60,7 +60,7 @@ public class HeartbeatListener extends Thread {
                             
                             if (!heartbeat.isRetransmitido()) { //avisar a los otros directorios
                                 heartbeat.setRetransmitido(true);
-                                new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
+                                new Thread(new HeartbeatRetransmitirThread(directorio,heartbeat)).start();
 
                             }
 

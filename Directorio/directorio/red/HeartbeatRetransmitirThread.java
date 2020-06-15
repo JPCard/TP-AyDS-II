@@ -16,8 +16,9 @@ public class HeartbeatRetransmitirThread implements Runnable {
     private Heartbeat heartbeat;
     private IDirectorio directorio;
 
-    public HeartbeatRetransmitirThread(Heartbeat heartbeat) {
+    public HeartbeatRetransmitirThread(IDirectorio directorio,Heartbeat heartbeat) {
         super();
+        this.directorio = directorio;
         this.heartbeat = heartbeat;
     }
 

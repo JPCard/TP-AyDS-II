@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_251" class="java.beans.XMLDecoder">
- <object class="java.util.TreeMap">
+ <object class="java.util.HashMap">
   <void method="put">
    <int>3</int>
    <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante0">
     <void property="asunto">
-     <string>804910fba2a3b37bbd41d53f117e270716bf10f6ae9ff951e2924f123b2c5f107d9441474958c0b68140c51db6431ff8add4a97fee55724cf0cd6ea44b3cf78f32524561498e7ebd471ffccbb3b5a3d8895c9fc5fcfee9fb4fb946ed495465885fd58276ff52f2c3a830cff41d79309ed21fa3e1d713ac9c8f31f2ccda304d225c923b39cca5b5e673769b349b6f17e74bb62b231704b1455d5acfc20f19e82739434bfe9a8da73d1caa4c9bdceaa62b6a2cab5bb875e0da1d3b343e4032f68d665c4c68b471e68daa9b04c322cb7ac115fde1045ef3312c71120840cc66befe9b090f36371b584bd352750cd41f320646d2e7400b875d318b14f68efe83a5c6</string>
+     <string>yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</string>
     </void>
     <void property="cuerpo">
-     <string>693a8affb9c80a6b5e50dbeb6e7ad5c95ea521e4ed52e7f2eaa9c7ca7713e51e30cf49cd237f483bd97bc6cbf32fcfdb06745949df30e6d6c07c14e732b7180123162234ef9442d53fcb09d3b9d5ea29e114f2300a13998db7e25382af18d43f4c634597fceb4c1aed1d40ec7dcdf022013e9f65d00e09d729ba2cf82217548339cfcd18e97d1c585c7252c4a4e4d663f199aee5a9be43a40e0b3750b64a9f98d08510122a93c4d67eaaa3c0b91dc8772ebf590409eb6c0a891a73387a5a947c24ca88bf6b042e3ffe75505aff9377b9919d3d9ba2bcc07311ebf1d5ab4a6d98506c1d7f61cd72d723b9004491368c6e13ac6a2aebd4c39d728cc5dc9cb7aa7e</string>
+     <string>yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy</string>
     </void>
     <void property="datetime">
      <object class="java.util.GregorianCalendar">
@@ -23,6 +23,28 @@
      <object class="emisor.modelo.DatosEmisor">
       <void property="IP">
        <string>127.0.0.1</string>
+      </void>
+      <void property="agenda">
+       <object class="emisor.modelo.Agenda" id="Agenda0">
+        <void property="contactos">
+         <void method="add">
+          <object class="receptor.modelo.DatosReceptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas 434politano</string>
+           </void>
+           <void property="puerto">
+            <int>27041</int>
+           </void>
+           <void property="usuario">
+            <string>napopan343123</string>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
       </void>
       <void property="nombre">
        <string>bine</string>

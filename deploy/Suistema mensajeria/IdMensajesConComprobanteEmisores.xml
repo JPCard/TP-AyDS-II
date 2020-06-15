@@ -2,16 +2,10 @@
 <java version="1.8.0_251" class="java.beans.XMLDecoder">
  <object class="java.util.TreeMap">
   <void method="put">
-   <string>elmore</string>
+   <string>bine</string>
    <object class="java.util.ArrayList">
     <void method="add">
-     <int>1</int>
-    </void>
-    <void method="add">
      <int>3</int>
-    </void>
-    <void method="add">
-     <int>4</int>
     </void>
    </object>
   </void>
