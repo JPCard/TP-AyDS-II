@@ -27,14 +27,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesServidor {
     public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,IMensaje>
     public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,IMensaje>
     public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,IMensaje>
-    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<nombreEmisor,Collection<Comprobante>>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<nombreEmisor,Collection<IComprobante>>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.xml"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH =
@@ -54,7 +55,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     private TreeMap<String, Collection<Integer>> idMensajesConComprobEmisores;
 
     private Integer proximoIdMensaje;
-    private HashMap<String,Collection<Comprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<Comprobante>>
+    private HashMap<String,Collection<IComprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<IComprobante>>
 
     public PersistenciaMensajesServidorXML() {
         super();
@@ -172,13 +173,13 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
         try {
             XMLDecoder decoder =
                 new XMLDecoder(new BufferedInputStream(new FileInputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
-            this.comprobantesNoEnviados = (HashMap<String, Collection<Comprobante>>) decoder.readObject();
+            this.comprobantesNoEnviados = (HashMap<String, Collection<IComprobante>>) decoder.readObject();
             decoder.close();
             if (comprobantesNoEnviados ==
                 null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+                comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         } catch (IOException e) {
-            comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+            comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         }
     }
 
@@ -293,7 +294,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public void guardarComp(Comprobante comprobante) throws Exception {
+    public void guardarComp(IComprobante comprobante) throws Exception {
 
         MensajeConComprobante mensaje;
         synchronized (mensajes) {
@@ -416,11 +417,11 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws FileNotFoundException {
+    public void guardarComprobanteNoEnviado(IComprobante comprobante) throws FileNotFoundException {
         synchronized(comprobantesNoEnviados){
-            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
+            Collection<IComprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
             if(coleccion==null){
-                coleccion = new ArrayList<Comprobante>();
+                coleccion = new ArrayList<IComprobante>();
                 this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal().getNombre(),coleccion);
             }
                     
@@ -439,7 +440,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     
     
     @Override
-    public Collection<Comprobante> getComprobantesNoEnviados(IDatosEmisor emisor){
+    public Collection<IComprobante> getComprobantesNoEnviados(IDatosEmisor emisor){
         synchronized(comprobantesNoEnviados){
             return this.comprobantesNoEnviados.get(emisor.getNombre());
         }

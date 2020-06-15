@@ -11,7 +11,7 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
 import servidormensajeria.modelo.SistemaServidor;
 
@@ -30,8 +30,8 @@ public class ComprobanteListener implements Runnable {
                     System.out.println("Esperando comprobantes...");
                     try (Socket socket = s.accept()) {
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-                            Comprobante comprobante = (Comprobante) in.readObject();
-                            System.out.println("Comprobante para " + comprobante.getEmisorOriginal().getNombre() +
+                            IComprobante comprobante = (IComprobante) in.readObject();
+                            System.out.println("IComprobante para " + comprobante.getEmisorOriginal().getNombre() +
                                                " de " + comprobante.getUsuarioReceptor() + " recibido");
                             SistemaServidor.getInstance().arriboComprobante(comprobante);
 

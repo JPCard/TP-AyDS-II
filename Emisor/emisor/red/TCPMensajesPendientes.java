@@ -16,9 +16,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
-public class TCPMensajesPendientes implements Runnable{
+public class TCPMensajesPendientes implements IMensajesPendientes {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     

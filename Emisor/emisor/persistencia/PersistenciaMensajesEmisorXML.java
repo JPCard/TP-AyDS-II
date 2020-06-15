@@ -26,7 +26,8 @@ import java.util.Iterator;
 
 import java.util.TreeMap;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IComprobante;
 
 public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmisor {
 
@@ -108,7 +109,7 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
 
 
     @Override
-    public void guardarComp(Comprobante comprobante) {
+    public void guardarComp(IComprobante comprobante) {
         synchronized (mensajesConComprobante) {
             MensajeConComprobante mensajeC = mensajesConComprobante.get(comprobante.getidMensaje());
             if (mensajeC != null && !mensajeC.getReceptoresConfirmados().contains(comprobante.getUsuarioReceptor()))

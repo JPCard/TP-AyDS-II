@@ -42,7 +42,8 @@ import java.util.Map;
 
 import java.util.TreeMap;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesServidor {
@@ -54,7 +55,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
         "IdMensajesPendientesReceptores.json"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH =
         "IdMensajesConComprobanteEmisores.json"; //<nombreEmisor, <Collection<idMensaje> >
-    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<nombreEmisor,Collection<Comprobante>>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<nombreEmisor,Collection<IComprobante>>
 
 
     RuntimeTypeAdapterFactory<IMensaje> factory =
@@ -78,7 +79,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     private HashMap<String, Collection<Integer>> idMensajesEntregadosRecep;
     private HashMap<String, Collection<Integer>> idMensajesEntregarRecep;
     private HashMap<String, Collection<Integer>> idMensajesConComprobEmisores;
-    private HashMap<String,Collection<Comprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<Comprobante>>
+    private HashMap<String,Collection<IComprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<IComprobante>>
 
 
     private Integer proximoIdMensaje;
@@ -172,14 +173,14 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
             String json =
                 new String(Files.readAllBytes(Paths.get(COMPROBANTES_SIN_ENVIAR_FILE_PATH)),
                            StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<String, Collection<Comprobante>>>() {
+            Type mapType = new TypeToken<HashMap<String, Collection<IComprobante>>>() {
             }.getType();
             comprobantesNoEnviados = this.gson.fromJson(json, mapType);
             if (comprobantesNoEnviados ==
                 null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+                comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         } catch (IOException e) {
-            comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+            comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         }
     }
 
@@ -265,7 +266,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public void guardarComp(Comprobante comprobante) throws Exception {
+    public void guardarComp(IComprobante comprobante) throws Exception {
         String json = "";
         FileWriter file;
 
@@ -394,15 +395,15 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
 
 
     @Override
-    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception {
+    public void guardarComprobanteNoEnviado(IComprobante comprobante) throws Exception {
         String json;
         FileWriter file;
         
         synchronized(comprobantesNoEnviados){  
             
-            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
+            Collection<IComprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
             if(coleccion==null){
-                coleccion = new ArrayList<Comprobante>();
+                coleccion = new ArrayList<IComprobante>();
                 this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal().getNombre(),coleccion);
             }
                     
@@ -420,7 +421,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public Collection<Comprobante> getComprobantesNoEnviados(IDatosEmisor emisor) {
+    public Collection<IComprobante> getComprobantesNoEnviados(IDatosEmisor emisor) {
         synchronized(comprobantesNoEnviados){
             return this.comprobantesNoEnviados.get(emisor.getNombre());
         }

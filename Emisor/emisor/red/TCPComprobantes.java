@@ -25,25 +25,31 @@ import java.util.Collection;
 import java.util.Iterator;
 
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
-public class TCPdeEmisor implements Runnable {
+public class TCPComprobantes implements IRedComprobantes {
 
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private int puertoServidorMensajeriaSolicitarMensajes;
-    
-    private Thread TCPMensajesPendientes;
 
 
-    public TCPdeEmisor() {
+    public String getIpServidorMensajeria() {
+        return ipServidorMensajeria;
+    }
+
+    public int getPuertoServidorMensajeria() {
+        return puertoServidorMensajeria;
+    }
+
+    public TCPComprobantes() {
         super();
     }
 
-    public TCPdeEmisor(String ipServidorMensajeria, int puertoServidorMensajeria,
+    public TCPComprobantes(String ipServidorMensajeria, int puertoServidorMensajeria,
                        int puertoServidorMensajeriaSolicitarMensajes) {
         this.ipServidorMensajeria = ipServidorMensajeria;
         this.puertoServidorMensajeria = puertoServidorMensajeria;
@@ -62,7 +68,7 @@ public class TCPdeEmisor implements Runnable {
                 while (true) {
                     try(Socket socket = s.accept()){
                         try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
-                    Comprobante comprobante = (Comprobante) in.readObject();
+                    IComprobante comprobante = (IComprobante) in.readObject();
                     System.out.println("EL COMPROBANTE ES");
                     System.out.println(comprobante);
                     ControladorEmisor.getInstance().agregarComprobante(comprobante);
@@ -81,68 +87,12 @@ public class TCPdeEmisor implements Runnable {
 
 
 
-    /**
-     * Pre: hay una relacion 1:1 entre mensajesPreCifrado y Post, solo llegan hasta aca para recibir una ID
-     * @param mensajesPreCifrado
-     * @param mensajesPostCifrado
-     * @return
-     */
-    public boolean enviarMensaje(Collection<IMensaje> mensajesPreCifrado,Collection<IMensaje> mensajesPostCifrado) {
-        try {
-            Socket socket = new Socket();
-            InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
-            socket.connect(addr, 500);
-
-            
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            int cantMensajes = mensajesPostCifrado.size();
-            //OUT 1
-            out.writeObject(cantMensajes); //le digo cuantos son para que me mande esas ID
-            
-            //IN 1
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            
-            Iterator<IMensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
-            Iterator<IMensaje> itMensajesPreCifrados = mensajesPreCifrado.iterator();
-            int nextId;
-            IMensaje mensajeActual;
-            while(itMensajesCifrados.hasNext()){
-                nextId = (Integer) in.readObject();
-                mensajeActual = itMensajesPreCifrados.next();
-                    
-                itMensajesCifrados.next().setId(nextId);
-                
-                mensajeActual.setId(nextId);
-            }
-            
-            
-            //OUT 2
-            out.writeObject(mensajesPostCifrado);
-            out.close();
-            return true;
-
-        } catch (Exception e) {
-           
-                
-                
-            
-           // e.printStackTrace();
-            return false;
-        }
-
-    }
-
-    public String getIpServidorMensajeria() {
-        return ipServidorMensajeria;
-    }
-
-    public int getPuertoServidorMensajeria() {
-        return puertoServidorMensajeria;
-    }
+    
 
 
-    public Collection<Comprobante> solicitarComprobantesAsincronicos() {
-        Collection<Comprobante> comprobantes = null;
+
+    public Collection<IComprobante> solicitarComprobantesAsincronicos() {
+        Collection<IComprobante> comprobantes = null;
 
                boolean leido = false;
 
@@ -157,7 +107,7 @@ public class TCPdeEmisor implements Runnable {
                        out.writeObject(SistemaEmisor.getInstance()
                                        .getEmisor()); //envio al emisor la id con la cual debe rotular su mensaje
                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-                       comprobantes = (Collection<Comprobante>) in.readObject();
+                       comprobantes = (Collection<IComprobante>) in.readObject();
                        System.out.println("Hilo recuperador de mensajes con comprobante: Comprobantes recuperados exitosamente");
                        out.close();
                        in.close();

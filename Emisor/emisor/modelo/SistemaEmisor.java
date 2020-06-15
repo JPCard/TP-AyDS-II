@@ -12,9 +12,13 @@ import emisor.persistencia.PersistenciaEmisor;
 
 import emisor.persistencia.PersistenciaMensajesEmisorXML;
 
+import emisor.red.IEnvioMensaje;
+import emisor.red.IRedComprobantes;
 import emisor.red.TCPDestinatariosRegistrados;
 import emisor.red.TCPMensajesPendientes;
-import emisor.red.TCPdeEmisor;
+import emisor.red.TCPComprobantes;
+
+import emisor.red.TCPEnvioMensaje;
 
 import java.io.FileNotFoundException;
 
@@ -27,7 +31,7 @@ import java.util.Iterator;
 
 import java.util.TreeSet;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 //jsoneando
@@ -43,7 +47,7 @@ import org.json.simple.parser.ParseException;
 
 public class SistemaEmisor {
     private IDatosEmisor emisor;
-    private TCPdeEmisor tcpdeEmisor;
+    private IRedComprobantes iRedComprobantes;
     private IEncriptacion encriptacion;
     private static SistemaEmisor instance;
 
@@ -51,7 +55,8 @@ public class SistemaEmisor {
     private IPersistenciaMensajesEmisor persistenciaMensajes;
 
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
-    private Thread TCPMensajesPendientes = null;
+    private Thread hiloMensajesPendientes = null;
+    private IEnvioMensaje tcpEnvioMensaje;
 
 
     private SistemaEmisor() throws Exception {
@@ -60,10 +65,12 @@ public class SistemaEmisor {
         encriptacion = new EncriptacionRSA();
         emisor = persistencia.cargarEmisor();
 
-        this.tcpdeEmisor =
-            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
+        this.iRedComprobantes =
+            new TCPComprobantes(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
                             persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
-
+        
+        this.tcpEnvioMensaje = new TCPEnvioMensaje(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
+        
 
     }
 
@@ -72,7 +79,7 @@ public class SistemaEmisor {
             instance = new SistemaEmisor();
         }
 
-        Thread hiloenviar = new Thread(instance.tcpdeEmisor);
+        Thread hiloenviar = new Thread(instance.iRedComprobantes);
         hiloenviar.start();
         Thread hiloDestinatarios =
             new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),
@@ -100,8 +107,8 @@ public class SistemaEmisor {
         return emisor;
     }
 
-    public TCPdeEmisor getTcpdeEmisor() {
-        return tcpdeEmisor;
+    public IRedComprobantes getTcpdeEmisor() {
+        return iRedComprobantes;
     }
 
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
@@ -137,7 +144,7 @@ public class SistemaEmisor {
             mensajesCifrados.add(this.encriptacion.encriptar(mensajeCifrado, publicKey));
         }
 
-        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado, mensajesCifrados);
+        boolean logroEnviar = this.tcpEnvioMensaje.enviarMensaje(mensajesPreCifrado, mensajesCifrados);
 
 
         if (!logroEnviar) { //aca setear id negativa
@@ -193,7 +200,7 @@ public class SistemaEmisor {
                    .iterator();
     }
 
-    public void agregarComprobante(Comprobante comprobante) {
+    public void agregarComprobante(IComprobante comprobante) {
         //System.out.println("me llamaron");
         //        int idMensaje = comprobante.getidMensaje();
         //        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
@@ -228,9 +235,9 @@ public class SistemaEmisor {
 
     public void cargarComprobantesAsincronicos() {
 
-        Collection<Comprobante> comprobantes = instance.tcpdeEmisor.solicitarComprobantesAsincronicos();
+        Collection<IComprobante> comprobantes = instance.iRedComprobantes.solicitarComprobantesAsincronicos();
         if (comprobantes != null && !comprobantes.isEmpty())
-            for (Comprobante comprobante : comprobantes) {
+            for (IComprobante comprobante : comprobantes) {
                 this.persistenciaMensajes.guardarComp(comprobante);
             }
     }
@@ -256,11 +263,11 @@ public class SistemaEmisor {
     }
 
     private void inciarHiloMensajesPendientes() {
-        if (this.TCPMensajesPendientes == null || !this.TCPMensajesPendientes.isAlive()) {
-            this.TCPMensajesPendientes =
-                new Thread(new TCPMensajesPendientes(this.tcpdeEmisor.getIpServidorMensajeria(),
-                                                     this.tcpdeEmisor.getPuertoServidorMensajeria()));
-            this.TCPMensajesPendientes.start();
+        if (this.hiloMensajesPendientes == null || !this.hiloMensajesPendientes.isAlive()) {
+            this.hiloMensajesPendientes =
+                new Thread(new TCPMensajesPendientes(iRedComprobantes.getIpServidorMensajeria(),
+                                                     iRedComprobantes.getPuertoServidorMensajeria()));
+            this.hiloMensajesPendientes.start();
         }
 
     }

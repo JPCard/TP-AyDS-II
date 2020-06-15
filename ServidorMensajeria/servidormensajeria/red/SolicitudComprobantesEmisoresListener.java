@@ -15,7 +15,7 @@ import java.net.Socket;
 
 import java.util.Collection;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
 import servidormensajeria.modelo.SistemaServidor;
 
@@ -41,7 +41,7 @@ public class SolicitudComprobantesEmisoresListener implements Runnable {
                             System.out.println(emisor.getNombre() +
                                                " acaba de solicitar comprobantes de cuando no estuvo");
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
-                                Collection<Comprobante> enviable = SistemaServidor.getInstance()
+                                Collection<IComprobante> enviable = SistemaServidor.getInstance()
                                                                                   .getPersistencia()
                                                                                   .getComprobantesNoEnviados(emisor);
                                 out.writeObject(enviable); //envio al emisor la id con la cual debe rotular su mensaje

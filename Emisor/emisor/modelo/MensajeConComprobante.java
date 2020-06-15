@@ -9,6 +9,7 @@ import java.util.Collection;
 import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 import receptor.modelo.SistemaReceptor;
 
@@ -30,7 +31,7 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     @Override
     public void onLlegada() {
         super.onLlegada();
-        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),this.getEmisor());
+        IComprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),this.getEmisor());
 
         ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
     }
@@ -47,7 +48,7 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     
     @Override
     public String toString() {
-        return "IMensaje con Comprobante\n"+super.toString();
+        return "IMensaje con IComprobante\n"+super.toString();
     }
 
     /**

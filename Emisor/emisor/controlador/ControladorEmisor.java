@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 
 import org.json.simple.parser.ParseException;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public class ControladorEmisor extends Observable {
@@ -129,7 +129,7 @@ public class ControladorEmisor extends Observable {
         return vistaComprobantes;
     }
 
-    public void agregarComprobante(Comprobante comprobante) {
+    public void agregarComprobante(IComprobante comprobante) {
         
         SistemaEmisor.getInstance().agregarComprobante(comprobante);
         if(vistaComprobantes != null)

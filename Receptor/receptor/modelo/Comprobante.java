@@ -5,7 +5,7 @@ import emisor.modelo.IDatosEmisor;
 
 import java.io.Serializable;
 
-public class Comprobante implements Serializable {
+public class Comprobante implements IComprobante {
     private int idMensaje;
     private String usuarioReceptor;
     private IDatosEmisor emisorOriginal;

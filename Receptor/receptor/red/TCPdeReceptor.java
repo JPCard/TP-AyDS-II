@@ -16,7 +16,7 @@ import java.net.Socket;
 
 import receptor.controlador.ControladorReceptor;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.SistemaReceptor;
 
 public class TCPdeReceptor  implements Runnable{
@@ -57,7 +57,7 @@ public class TCPdeReceptor  implements Runnable{
         }
     }
     
-    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor){
+    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor){
         
         try {
                 Socket socket = new Socket(this.ipServidorMensajeria, this.puertoServidorMensajeria);

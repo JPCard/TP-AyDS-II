@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public class Directorio {

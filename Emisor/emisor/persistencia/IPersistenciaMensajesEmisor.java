@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public interface IPersistenciaMensajesEmisor {
@@ -16,7 +16,7 @@ public interface IPersistenciaMensajesEmisor {
     
     public void guardarMensajeConComprobante(MensajeConComprobante mensaje);
 
-    public void guardarComp(Comprobante comprobante) ;
+    public void guardarComp(IComprobante comprobante) ;
 
     public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor();
     

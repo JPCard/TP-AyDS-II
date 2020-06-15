@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import java.util.Collection;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
@@ -166,7 +166,7 @@ public class SistemaServidor {
         persistenciaMensajes.guardarMsj(mensaje, usuarioReceptor, entregado);
     }
 
-    public void guardarComp(Comprobante comprobante) throws Exception {
+    public void guardarComp(IComprobante comprobante) throws Exception {
         persistenciaMensajes.guardarComp(comprobante);
     }
 
@@ -175,7 +175,7 @@ public class SistemaServidor {
         persistenciaMensajes.marcarMensajeEnviado(mensaje, usuarioReceptor, primerIntento);
     }
 
-    public void arriboComprobante(Comprobante comprobante) {
+    public void arriboComprobante(IComprobante comprobante) {
         new Thread(new ComprobanteHandler(comprobante)).start();
     }
 

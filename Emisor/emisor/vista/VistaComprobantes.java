@@ -20,7 +20,8 @@ import javax.swing.DefaultListModel;
 
 import javax.swing.JList;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 import receptor.vista.RendererMensajesRecibidos;
@@ -345,7 +346,7 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     }
 
     @Override
-    public void actualizarComprobanteRecibidos(Comprobante comprobante) {
+    public void actualizarComprobanteRecibidos(IComprobante comprobante) {
         repaint();//le avisa a lista que tiene que actualiza el estado de un receptor a traves de su cell renderer
     }
     

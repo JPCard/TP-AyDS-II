@@ -11,16 +11,16 @@ import java.net.Socket;
 
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
 public class ComprobanteHandler implements Runnable {
-    private Comprobante comprobante;
+    private IComprobante comprobante;
 
 
-    public ComprobanteHandler(Comprobante comprobante) {
+    public ComprobanteHandler(IComprobante comprobante) {
         this.comprobante = comprobante;
     }
 
@@ -46,7 +46,7 @@ public class ComprobanteHandler implements Runnable {
 
         } catch (Exception e) {
             //e.printStackTrace();
-            System.out.println("Comprobante no se pudo enviar al emisor, guardando para ser enviado posteriormente");
+            System.out.println("IComprobante no se pudo enviar al emisor, guardando para ser enviado posteriormente");
             try {
                 SistemaServidor.getInstance()
                                .getPersistencia()

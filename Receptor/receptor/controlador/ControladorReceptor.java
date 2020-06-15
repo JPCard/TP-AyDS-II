@@ -14,7 +14,7 @@ import java.security.PrivateKey;
 
 import java.util.Observable;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
 
 import receptor.modelo.DesencriptarRSA;
@@ -69,7 +69,7 @@ public class ControladorReceptor extends Observable{
         return instance;
     }
     
-    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor){
+    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor){
         SistemaReceptor.getInstance().getTcpdeReceptor().enviarComprobante(comprobante,emisor);
     }
     

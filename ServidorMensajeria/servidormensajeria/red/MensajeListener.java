@@ -17,7 +17,7 @@ import java.util.Collection;
 
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.SistemaReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
@@ -81,7 +81,7 @@ public class MensajeListener implements Runnable {
         }
     }
 
-    public void enviarComprobante(Comprobante comprobante, IDatosEmisor emisor) {
+    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor) {
 
         try {
             Socket socket = new Socket(emisor.getIP(), emisor.getPuerto());

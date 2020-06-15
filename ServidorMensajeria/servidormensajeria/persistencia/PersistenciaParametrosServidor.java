@@ -21,7 +21,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
 public class PersistenciaParametrosServidor implements IPersistenciaParametrosServidor {
