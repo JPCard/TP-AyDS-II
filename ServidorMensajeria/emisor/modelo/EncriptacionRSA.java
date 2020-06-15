@@ -44,7 +44,7 @@ public class EncriptacionRSA implements IEncriptacion {
         
     }
     @Override
-    public Mensaje encriptar(Mensaje mensaje, PublicKey publicKey) {
+    public IMensaje encriptar(IMensaje mensaje, PublicKey publicKey) {
        
         try {
             

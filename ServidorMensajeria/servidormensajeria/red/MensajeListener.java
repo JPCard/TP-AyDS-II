@@ -1,7 +1,8 @@
 package servidormensajeria.red;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -53,13 +54,13 @@ public class MensajeListener implements Runnable {
 
 
                                 //IN 2
-                                Collection<Mensaje> mensajes = (Collection<Mensaje>) in.readObject();
-                                for (Iterator<Mensaje> it = mensajes.iterator(); it.hasNext();) {
+                                Collection<IMensaje> mensajes = (Collection<IMensaje>) in.readObject();
+                                for (Iterator<IMensaje> it = mensajes.iterator(); it.hasNext();) {
                                     SistemaServidor.getInstance().arriboMensaje(it.next());
                                 }
 
-                                Mensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
-                                System.out.println("Sistema Servidor de mensajeria: Mensaje de " +
+                                IMensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
+                                System.out.println("Sistema Servidor de mensajeria: IMensaje de " +
                                                    primerMensaje.getEmisor().getNombre() + " recibido");
                                 //TODO borrar
                                 System.out.println("Dice que asunto: " + primerMensaje.getAsunto());

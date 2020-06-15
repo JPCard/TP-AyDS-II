@@ -1,7 +1,8 @@
 package servidormensajeria.persistencia;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConAlerta;
 import emisor.modelo.MensajeConComprobante;
 
@@ -29,9 +30,9 @@ import receptor.modelo.Comprobante;
 import receptor.modelo.Receptor;
 
 public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesServidor {
-    public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,Mensaje>
+    public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,IMensaje>
+    public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,IMensaje>
+    public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,IMensaje>
     public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<nombreEmisor,Collection<Comprobante>>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.xml"; //<usuarioReceptor,Collection<idMensaje>>
@@ -40,9 +41,9 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH =
         "IdMensajesConComprobanteEmisores.xml"; //<nombreEmisor, <Collection<idMensaje> >
 
-    private TreeMap<Integer, Mensaje> mensajes; //usamos TreeMap porque es serializable
+    private TreeMap<Integer, IMensaje> mensajes; //usamos TreeMap porque es serializable
 
-    private TreeMap<Integer, Mensaje> mensajesComunes = new TreeMap<Integer, Mensaje>(); //SDMOP
+    private TreeMap<Integer, IMensaje> mensajesComunes = new TreeMap<Integer, IMensaje>(); //SDMOP
     private TreeMap<Integer, MensajeConAlerta> mensajesConAlerta = new TreeMap<Integer, MensajeConAlerta>(); //SDMOP
     private TreeMap<Integer, MensajeConComprobante> mensajesConComprobante =
         new TreeMap<Integer, MensajeConComprobante>(); //SDMOP
@@ -82,10 +83,10 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
             try {
                 XMLDecoder decoderNormales =
                     new XMLDecoder(new BufferedInputStream(new FileInputStream(MENSAJES_COMUNES_FILE_PATH)));
-                this.mensajesComunes = (TreeMap<Integer, Mensaje>) decoderNormales.readObject();
+                this.mensajesComunes = (TreeMap<Integer, IMensaje>) decoderNormales.readObject();
                 decoderNormales.close();
             } catch (IOException e) {
-                mensajesComunes = new TreeMap<Integer, Mensaje>();
+                mensajesComunes = new TreeMap<Integer, IMensaje>();
             }
             
             try{
@@ -108,19 +109,19 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                 this.mensajesConComprobante = new TreeMap<Integer,MensajeConComprobante>();
             }
 
-            mensajes = new TreeMap<Integer, Mensaje>();
+            mensajes = new TreeMap<Integer, IMensaje>();
             //a ensamblar
-            for (Mensaje mensaje : mensajesComunes.values())
+            for (IMensaje mensaje : mensajesComunes.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
-            for (Mensaje mensaje : mensajesConAlerta.values())
+            for (IMensaje mensaje : mensajesConAlerta.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
-            for (Mensaje mensaje : mensajesConComprobante.values())
+            for (IMensaje mensaje : mensajesConComprobante.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
             if (mensajes == null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                mensajes = new TreeMap<Integer, Mensaje>();
+                mensajes = new TreeMap<Integer, IMensaje>();
 
     }
 
@@ -190,7 +191,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      * @throws Exception
      */
     @Override
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
         //System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
         try {
             synchronized (mensajes) {
@@ -215,7 +216,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                             encoder.writeObject(mensajesConComprobante);
                             encoder.close();
                         }
-                    } else if (mensaje instanceof Mensaje) { //SDMOP
+                    } else if (mensaje instanceof IMensaje) { //SDMOP
                         this.mensajesComunes.put(mensaje.getId(), mensaje);
 
                         synchronized (MENSAJES_COMUNES_FILE_PATH) {
@@ -312,8 +313,8 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajesParaReceptor = new ArrayList<Mensaje>();
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+        Collection<IMensaje> mensajesParaReceptor = new ArrayList<IMensaje>();
 
         synchronized (idMensajesEntregarRecep) {
             Collection<Integer> idMensajesEntregarRecepAct = idMensajesEntregarRecep.get(receptor.getUsuario());
@@ -354,7 +355,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      * @throws Exception
      */
     @Override
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
 
         if (!primerIntento) { //si estaba marcado para entregar hay que sacar
             synchronized (idMensajesEntregarRecep) {

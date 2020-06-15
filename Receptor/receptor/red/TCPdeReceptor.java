@@ -2,7 +2,7 @@ package receptor.red;
 
 import emisor.modelo.Emisor;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -40,7 +40,7 @@ public class TCPdeReceptor  implements Runnable{
                             
                             try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
                         
-                        Mensaje mensaje = (Mensaje) in.readObject();
+                        IMensaje mensaje = (IMensaje) in.readObject();
                         
                         ControladorReceptor.getInstance().mostrarMensaje(mensaje);
                         

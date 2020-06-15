@@ -1,7 +1,7 @@
 package servidormensajeria.persistencia;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
@@ -17,15 +17,15 @@ import receptor.modelo.Receptor;
 
 public interface IPersistenciaMensajesServidor {
 
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
 
     public void guardarComp(Comprobante comprobante) throws Exception;
 
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
 
     public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception;
     
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
 
     public void avanzaProximoIdMensaje(); //una vez que le mandamos el id al emisor
 

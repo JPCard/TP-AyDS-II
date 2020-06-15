@@ -1,7 +1,7 @@
 package servidormensajeria.modelo;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
@@ -123,7 +123,7 @@ public class SistemaServidor {
         return instance;
     }
 
-    public void arriboMensaje(Mensaje mensaje) {
+    public void arriboMensaje(IMensaje mensaje) {
         new Thread(new MensajeHandler(mensaje, true)).start();
     }
 
@@ -148,7 +148,7 @@ public class SistemaServidor {
      * @return null si no hay mensajes para ese receptor, una coleccion de los mensajes para ese receptor en caso contrario
      * @throws Exception
      */
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
         return persistenciaMensajes.obtenerMsjsPendientesReceptor(receptor);
     }
 
@@ -162,7 +162,7 @@ public class SistemaServidor {
     }
 
 
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
         persistenciaMensajes.guardarMsj(mensaje, usuarioReceptor, entregado);
     }
 
@@ -171,7 +171,7 @@ public class SistemaServidor {
     }
 
 
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
         persistenciaMensajes.marcarMensajeEnviado(mensaje, usuarioReceptor, primerIntento);
     }
 

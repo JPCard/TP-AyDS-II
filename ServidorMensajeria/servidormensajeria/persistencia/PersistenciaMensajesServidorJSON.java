@@ -13,7 +13,8 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConAlerta;
 import emisor.modelo.MensajeConComprobante;
 
@@ -45,7 +46,7 @@ import receptor.modelo.Receptor;
 
 public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesServidor {
    
-    public static final String MENSAJES_FILE_PATH = "Mensajes.json"; //<idMensaje,Mensaje>
+    public static final String MENSAJES_FILE_PATH = "Mensajes.json"; //<idMensaje,IMensaje>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.json"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH =
@@ -55,14 +56,14 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.json"; //<nombreEmisor,Collection<Comprobante>>
 
 
-    RuntimeTypeAdapterFactory<Mensaje> factory =
-        RuntimeTypeAdapterFactory.of(Mensaje.class, "tipo") // actually type is the default field to determine
+    RuntimeTypeAdapterFactory<IMensaje> factory =
+        RuntimeTypeAdapterFactory.of(IMensaje.class, "tipo") // actually type is the default field to determine
                                                                           // the sub class so not needed to set here
                                                                           // but set just to point that it is used
                                                                           // assuming value 1 in field "int type" identifies TextMessage
                                                                           .registerSubtype(MensajeConComprobante.class,
                                                                                            "conComprobante")
-                                                                          .registerSubtype(Mensaje.class, "normal") //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                                                                          .registerSubtype(IMensaje.class, "normal") //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
                                                                           // and assuming int 2 identifies ImageMessage
                                                                           .registerSubtype(MensajeConAlerta.class, "conAlerta");
                                                                           
@@ -72,7 +73,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                                          .create();
 
 
-    private HashMap<Integer, Mensaje> mensajes;
+    private HashMap<Integer, IMensaje> mensajes;
     private HashMap<String, Collection<Integer>> idMensajesEntregadosRecep;
     private HashMap<String, Collection<Integer>> idMensajesEntregarRecep;
     private HashMap<String, Collection<Integer>> idMensajesConComprobEmisores;
@@ -107,13 +108,13 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     private void cargaInicialMensajes() {
         try {
             String json = new String(Files.readAllBytes(Paths.get(MENSAJES_FILE_PATH)), StandardCharsets.UTF_8);
-            Type mapType = new TypeToken<HashMap<Integer, Mensaje>>() {
+            Type mapType = new TypeToken<HashMap<Integer, IMensaje>>() {
             }.getType();
             mensajes = this.gson.fromJson(json, mapType);
             if (mensajes == null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                mensajes = new HashMap<Integer, Mensaje>();
+                mensajes = new HashMap<Integer, IMensaje>();
         } catch (IOException e) {
-            mensajes = new HashMap<Integer, Mensaje>();
+            mensajes = new HashMap<Integer, IMensaje>();
         }
     }
 
@@ -191,7 +192,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
      * @throws Exception
      */
     @Override
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
         String json = "";
         FileWriter file;
 
@@ -285,8 +286,8 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajesParaReceptor = new ArrayList<Mensaje>();
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+        Collection<IMensaje> mensajesParaReceptor = new ArrayList<IMensaje>();
 
         synchronized (idMensajesEntregarRecep) {
             Collection<Integer> idMensajesEntregarRecepAct = idMensajesEntregarRecep.get(receptor.getUsuario());
@@ -328,7 +329,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
      * @throws Exception
      */
     @Override
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
         String json;
         FileWriter file;
 

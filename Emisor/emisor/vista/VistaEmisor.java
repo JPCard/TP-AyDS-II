@@ -818,7 +818,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void envioExitoso() {
         limpiarDatosEnvio();
-        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(this, "IMensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
     
     private void limpiarDatosEnvio(){

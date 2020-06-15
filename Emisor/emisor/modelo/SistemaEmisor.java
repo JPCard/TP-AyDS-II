@@ -113,14 +113,14 @@ public class SistemaEmisor {
 
         ArrayList<Receptor> contactosArr = new ArrayList(contactos);
 
-        ArrayList<Mensaje> mensajesCifrados = new ArrayList<Mensaje>();
-        ArrayList<Mensaje> mensajesPreCifrado = new ArrayList<Mensaje>();
+        ArrayList<IMensaje> mensajesCifrados = new ArrayList<IMensaje>();
+        ArrayList<IMensaje> mensajesPreCifrado = new ArrayList<IMensaje>();
         for (String receptorActual : usuariosReceptores) {
-            Mensaje mensajeCifrado =
+            IMensaje mensajeCifrado =
                 MensajeFactory.getInstance()
                 .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
 
-            Mensaje mensajePreCifrado =
+            IMensaje mensajePreCifrado =
                 MensajeFactory.getInstance()
                 .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
 
@@ -142,13 +142,13 @@ public class SistemaEmisor {
 
         if (!logroEnviar) { //aca setear id negativa
 
-            Iterator<Mensaje> itPre = mensajesPreCifrado.iterator();
-            Iterator<Mensaje> itPost = mensajesCifrados.iterator();
+            Iterator<IMensaje> itPre = mensajesPreCifrado.iterator();
+            Iterator<IMensaje> itPost = mensajesCifrados.iterator();
 
 
             while (itPre.hasNext()) {
                 //
-                Mensaje mensajeCifrado = itPost.next();
+                IMensaje mensajeCifrado = itPost.next();
 
                 itPre.next().setId(this.persistenciaMensajes.getNextIdNoEnviados());
                 mensajeCifrado.setId(this.persistenciaMensajes.getNextIdNoEnviados());
@@ -161,7 +161,7 @@ public class SistemaEmisor {
         }
 
         //aca guardar
-        for (Mensaje mensaje : mensajesPreCifrado) {
+        for (IMensaje mensaje : mensajesPreCifrado) {
             guardarMensaje(mensaje);
         }
 
@@ -172,7 +172,7 @@ public class SistemaEmisor {
     }
 
 
-    public void guardarMensaje(Mensaje mensajeSinEncriptar) {
+    public void guardarMensaje(IMensaje mensajeSinEncriptar) {
 
         if (mensajeSinEncriptar instanceof MensajeConComprobante) {
             System.out.println(mensajeSinEncriptar);
@@ -235,7 +235,7 @@ public class SistemaEmisor {
             }
     }
 
-    public Collection<Mensaje> getMensajesNoEnviados() {
+    public Collection<IMensaje> getMensajesNoEnviados() {
         return this.persistenciaMensajes.getMensajesNoEnviados();
     }
 
@@ -243,7 +243,7 @@ public class SistemaEmisor {
     /**
      * Marca los mensajes que estaban esperando ser enviados. Los marca como enviados.
      */
-    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes) {
+    public void marcarMensajesPendientesComoEnviados(Collection<IMensaje> mensajesPendientes) {
         this.persistenciaMensajes.marcarMensajesPendientesComoEnviados(mensajesPendientes);
     }
 

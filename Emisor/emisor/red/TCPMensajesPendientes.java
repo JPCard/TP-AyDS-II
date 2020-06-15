@@ -1,6 +1,7 @@
 package emisor.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.IOException;
@@ -41,7 +42,7 @@ public class TCPMensajesPendientes implements Runnable{
 
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 
-                Collection<Mensaje> mensajesPostCifrado = SistemaEmisor.getInstance().getMensajesNoEnviados();
+                Collection<IMensaje> mensajesPostCifrado = SistemaEmisor.getInstance().getMensajesNoEnviados();
                 
                 int cantMensajes = mensajesPostCifrado.size();
                 //OUT 1
@@ -50,14 +51,14 @@ public class TCPMensajesPendientes implements Runnable{
                 //IN 1
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 
-                Iterator<Mensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
+                Iterator<IMensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
                 int nextId;
                 int viejaId;
                 
                 HashMap<Integer,Integer> cambiadorDeIds = new HashMap<Integer,Integer>(); //<ViejaId,NuevaId>
                 
                 while(itMensajesCifrados.hasNext()){
-                    Mensaje mensaje = itMensajesCifrados.next();
+                    IMensaje mensaje = itMensajesCifrados.next();
                     viejaId = mensaje.getId();
                     
                     System.err.println("el usuario de este mensaje es (receptor): +"+mensaje.getReceptorObjetivo());

@@ -1,6 +1,6 @@
 package receptor.modelo;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +39,7 @@ public class DesencriptarRSA implements IDesencriptar {
     }
 
     @Override
-    public Mensaje desencriptar(Mensaje mensaje, PrivateKey privateKey) {
+    public IMensaje desencriptar(IMensaje mensaje, PrivateKey privateKey) {
         try {
             
             

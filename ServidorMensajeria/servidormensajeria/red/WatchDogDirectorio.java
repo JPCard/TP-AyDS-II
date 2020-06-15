@@ -1,6 +1,6 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

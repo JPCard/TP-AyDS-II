@@ -26,8 +26,8 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
     }
 
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = MensajeFactory.getInstance()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_CON_ALERTA, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -37,6 +37,6 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
 
     @Override
     public String toString() {
-        return "Mensaje con Alerta\n" + super.toString();
+        return "IMensaje con Alerta\n" + super.toString();
     }
 }

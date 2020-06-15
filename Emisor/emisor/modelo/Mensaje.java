@@ -11,7 +11,7 @@ import java.util.Iterator;
 import receptor.modelo.Receptor;
 
 
-public class Mensaje implements Serializable, Cloneable {
+public class Mensaje implements IMensaje {
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
@@ -19,6 +19,18 @@ public class Mensaje implements Serializable, Cloneable {
     private int id;
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
     private String receptorObjetivo;
+    
+    public Mensaje(Emisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
+                   String receptorObjetivo) {
+        this.datetime = new GregorianCalendar(); //fecha y hora actual
+        this.asunto = asunto;
+        this.cuerpo = cuerpo;
+        this.emisor = emisor;
+        this.receptorObjetivo = receptorObjetivo;
+
+        this.usuariosReceptores = usuariosReceptores;
+        this.id = -1;
+    }
 
    
 
@@ -28,8 +40,8 @@ public class Mensaje implements Serializable, Cloneable {
 
 
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = MensajeFactory.getInstance()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_NORMAL, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -46,17 +58,6 @@ public class Mensaje implements Serializable, Cloneable {
         return usuariosReceptores.iterator();
     }
 
-    public Mensaje(Emisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
-                   String receptorObjetivo) {
-        this.datetime = new GregorianCalendar(); //fecha y hora actual
-        this.asunto = asunto;
-        this.cuerpo = cuerpo;
-        this.emisor = emisor;
-        this.receptorObjetivo = receptorObjetivo;
-
-        this.usuariosReceptores = usuariosReceptores;
-        this.id = -1;
-    }
 
 
     public void setReceptorObjetivo(String receptorObjetivo) {
@@ -77,11 +78,11 @@ public class Mensaje implements Serializable, Cloneable {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof Mensaje)) {
+        if (!(object instanceof IMensaje)) {
             return false;
         }
-        final Mensaje other = (Mensaje) object;
-        if (id != other.id) {
+        final IMensaje other = (IMensaje) object;
+        if (id != other.getId()) {
             return false;
         }
         return true;

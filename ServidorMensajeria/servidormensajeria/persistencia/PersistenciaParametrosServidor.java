@@ -1,7 +1,7 @@
 package servidormensajeria.persistencia;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConComprobante;
 
 import java.io.FileReader;

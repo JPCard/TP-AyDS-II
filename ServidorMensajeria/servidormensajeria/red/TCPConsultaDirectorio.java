@@ -2,7 +2,7 @@ package servidormensajeria.red;
 
 import emisor.controlador.ControladorEmisor;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -124,8 +124,8 @@ public class TCPConsultaDirectorio {
     
     
     public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajes = SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
-        for (Mensaje mensaje : mensajes) {
+        Collection<IMensaje> mensajes = SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
+        for (IMensaje mensaje : mensajes) {
             new Thread(new MensajeHandler(mensaje, false)).start();
         }
     }

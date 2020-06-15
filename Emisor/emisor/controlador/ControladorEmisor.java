@@ -1,7 +1,7 @@
 package emisor.controlador;
 
 import emisor.modelo.AbstractMensajeFactory;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
 

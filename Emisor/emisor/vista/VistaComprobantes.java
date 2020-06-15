@@ -3,7 +3,7 @@ package emisor.vista;
 
 import emisor.controlador.ControladorEmisor;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConComprobante;
 
 import java.awt.Color;

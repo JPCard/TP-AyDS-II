@@ -1,7 +1,8 @@
 package emisor.persistencia;
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConComprobante;
 
 import java.beans.XMLDecoder;
@@ -30,11 +31,11 @@ import receptor.modelo.Comprobante;
 public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmisor {
 
 
-    public static final String MENSAJES_COMPROBANTE_FILE_PATH = "Mensajes_Con_Comprobante.xml"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_NOENVIADOS_FILE_PATH = "Mensajes_No_Enviados.xml"; //<idMensaje,Mensaje>
+    public static final String MENSAJES_COMPROBANTE_FILE_PATH = "Mensajes_Con_Comprobante.xml"; //<idMensaje,IMensaje>
+    public static final String MENSAJES_NOENVIADOS_FILE_PATH = "Mensajes_No_Enviados.xml"; //<idMensaje,IMensaje>
 
     private HashMap<Integer, MensajeConComprobante> mensajesConComprobante; //estos tambien son los no encriptados
-    private ArrayList<Mensaje> mensajesNoEnviados; //estos, son los si encriptados , no en viados
+    private ArrayList<IMensaje> mensajesNoEnviados; //estos, son los si encriptados , no en viados
     //los si encriptados, si enviados, no se guardan
     //al igual que los mensajes sin comprobante
 
@@ -83,20 +84,20 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
         try {
             XMLDecoder decoder =
                 new XMLDecoder(new BufferedInputStream(new FileInputStream(MENSAJES_NOENVIADOS_FILE_PATH)));
-            this.mensajesNoEnviados = (ArrayList<Mensaje>) decoder.readObject();
+            this.mensajesNoEnviados = (ArrayList<IMensaje>) decoder.readObject();
             decoder.close();
             if (this.mensajesNoEnviados == null)
-                mensajesNoEnviados = new ArrayList<Mensaje>();
+                mensajesNoEnviados = new ArrayList<IMensaje>();
 
             System.out.println("bien");
         } catch (IOException e) {
             //e.printStackTrace();
             System.out.println("catch");
-            mensajesNoEnviados = new ArrayList<Mensaje>();
+            mensajesNoEnviados = new ArrayList<IMensaje>();
         }
 
         if (mensajesNoEnviados.size() > 0)
-            for(Mensaje mensaje: mensajesNoEnviados)
+            for (IMensaje mensaje: mensajesNoEnviados)
                 if(mensaje.getId()<ultimaIdUtilizada)
                     ultimaIdUtilizada = mensaje.getId();
             
@@ -144,17 +145,17 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
     }
 
     @Override
-    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes) {
+    public void marcarMensajesPendientesComoEnviados(Collection<IMensaje> mensajesPendientes) {
         synchronized (mensajesNoEnviados) {
 
-            ArrayList<Mensaje> mensajes2 = new ArrayList<Mensaje>();
+            ArrayList<IMensaje> mensajes2 = new ArrayList<IMensaje>();
             //todo quizas se salva
-            for (Mensaje m : mensajesPendientes) {
+            for (IMensaje m : mensajesPendientes) {
                 mensajes2.add(m.clone());
 
             }
 
-            for (Mensaje m : mensajes2) {
+            for (IMensaje m : mensajes2) {
                 mensajesNoEnviados.remove(m);
             }
 
@@ -180,7 +181,7 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
     }
 
     @Override
-    public void guardarMensajeEncriptado(Mensaje mensaje) {
+    public void guardarMensajeEncriptado(IMensaje mensaje) {
         synchronized (mensajesNoEnviados) {
             
             
@@ -214,7 +215,7 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
     }
 
     @Override
-    public Collection<Mensaje> getMensajesNoEnviados() {
+    public Collection<IMensaje> getMensajesNoEnviados() {
         synchronized (mensajesNoEnviados) {
             return this.mensajesNoEnviados;
         }

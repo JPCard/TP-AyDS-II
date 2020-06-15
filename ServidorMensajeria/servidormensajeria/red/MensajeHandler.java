@@ -1,6 +1,6 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import receptor.modelo.Receptor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeHandler implements Runnable {
-    private Mensaje mensaje;
+    private IMensaje mensaje;
     private boolean primerIntento = true;
     
     
@@ -28,7 +28,7 @@ public class MensajeHandler implements Runnable {
      *                         primerIntento = true  -> mensaje sincronico <br>
      *                         primerIntento = false -> mensaje asincronico <br>
      */
-    public MensajeHandler(Mensaje mensaje, boolean primerIntento) {
+    public MensajeHandler(IMensaje mensaje, boolean primerIntento) {
         this.mensaje = mensaje;
         this.primerIntento = primerIntento;
     }

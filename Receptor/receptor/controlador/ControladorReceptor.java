@@ -2,7 +2,7 @@ package receptor.controlador;
 
 
 import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 
 import emisor.vista.VentanaModalCarga;
@@ -72,7 +72,7 @@ public class ControladorReceptor extends Observable{
         SistemaReceptor.getInstance().getTcpdeReceptor().enviarComprobante(comprobante,emisor);
     }
     
-    public void mostrarMensaje(Mensaje mensaje){
+    public void mostrarMensaje(IMensaje mensaje){
         //
         
         PrivateKey privateKey = SistemaReceptor.getInstance().getLlavePrivada();

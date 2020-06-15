@@ -1,6 +1,6 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 

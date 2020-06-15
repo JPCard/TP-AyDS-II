@@ -36,8 +36,8 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     }
     
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = MensajeFactory.getInstance()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -47,7 +47,7 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     
     @Override
     public String toString() {
-        return "Mensaje con Comprobante\n"+super.toString();
+        return "IMensaje con Comprobante\n"+super.toString();
     }
 
     /**

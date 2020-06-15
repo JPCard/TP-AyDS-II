@@ -3,7 +3,7 @@ package emisor.red;
 import emisor.controlador.ControladorEmisor;
 
 import emisor.modelo.AbstractMensajeFactory;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
@@ -87,7 +87,7 @@ public class TCPdeEmisor implements Runnable {
      * @param mensajesPostCifrado
      * @return
      */
-    public boolean enviarMensaje(Collection<Mensaje> mensajesPreCifrado,Collection<Mensaje> mensajesPostCifrado) {
+    public boolean enviarMensaje(Collection<IMensaje> mensajesPreCifrado,Collection<IMensaje> mensajesPostCifrado) {
         try {
             Socket socket = new Socket();
             InetSocketAddress addr = new InetSocketAddress(this.ipServidorMensajeria, this.puertoServidorMensajeria);
@@ -102,10 +102,10 @@ public class TCPdeEmisor implements Runnable {
             //IN 1
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
             
-            Iterator<Mensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
-            Iterator<Mensaje> itMensajesPreCifrados = mensajesPreCifrado.iterator();
+            Iterator<IMensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
+            Iterator<IMensaje> itMensajesPreCifrados = mensajesPreCifrado.iterator();
             int nextId;
-            Mensaje mensajeActual;
+            IMensaje mensajeActual;
             while(itMensajesCifrados.hasNext()){
                 nextId = (Integer) in.readObject();
                 mensajeActual = itMensajesPreCifrados.next();
