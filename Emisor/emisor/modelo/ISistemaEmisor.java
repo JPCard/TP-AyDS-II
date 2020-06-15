@@ -1,6 +1,6 @@
 package emisor.modelo;
 
-import emisor.red.IRedComprobantes;
+import emisor.red.RedComprobantes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,7 @@ import receptor.modelo.IDatosReceptor;
 public interface ISistemaEmisor {
     IDatosEmisor getEmisor();
 
-    IRedComprobantes getTcpdeEmisor();
+    RedComprobantes getTcpdeEmisor();
 
     boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                           AbstractMensajeFactory.TipoMensaje tipoMensaje);

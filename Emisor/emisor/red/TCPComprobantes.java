@@ -31,7 +31,7 @@ import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
-public class TCPComprobantes implements IRedComprobantes {
+public class TCPComprobantes extends RedComprobantes {
 
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
@@ -53,35 +53,6 @@ public class TCPComprobantes implements IRedComprobantes {
         this.puertoServidorMensajeria = puertoServidorMensajeria;
         this.puertoServidorMensajeriaSolicitarMensajes = puertoServidorMensajeriaSolicitarMensajes;
         this.sistemaEmisor = sistemaEmisor;
-    }
-
-
-    /**
-     * Precondicion: El objeto que llega en XML es siempre un comprobante
-     */
-    public void run() {
-        while (true) {
-            try (ServerSocket s = new ServerSocket(sistemaEmisor.getPuerto())){
-                sistemaEmisor.cargarComprobantesAsincronicos();
-                 
-                while (true) {
-                    try(Socket socket = s.accept()){
-                        try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
-                    IComprobante comprobante = (IComprobante) in.readObject();
-                    System.out.println("EL COMPROBANTE ES");
-                    System.out.println(comprobante);
-                    ControladorEmisor.getInstance().agregarComprobante(comprobante);
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 
@@ -123,5 +94,30 @@ public class TCPComprobantes implements IRedComprobantes {
                }
 
                return comprobantes;
+    }
+
+    @Override
+    protected void escucharComprobantes() {
+        while (true) {
+            try (ServerSocket s = new ServerSocket(sistemaEmisor.getPuerto())){
+                sistemaEmisor.cargarComprobantesAsincronicos();
+                 
+                while (true) {
+                    try(Socket socket = s.accept()){
+                        try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
+                    IComprobante comprobante = (IComprobante) in.readObject();
+                    System.out.println("EL COMPROBANTE ES");
+                    System.out.println(comprobante);
+                    ControladorEmisor.getInstance().agregarComprobante(comprobante);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

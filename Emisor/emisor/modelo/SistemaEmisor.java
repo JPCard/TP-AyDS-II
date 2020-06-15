@@ -13,7 +13,7 @@ import emisor.persistencia.PersistenciaEmisor;
 import emisor.persistencia.PersistenciaMensajesEmisorXML;
 
 import emisor.red.IEnvioMensaje;
-import emisor.red.IRedComprobantes;
+import emisor.red.RedComprobantes;
 import emisor.red.TCPDestinatariosRegistrados;
 import emisor.red.TCPMensajesPendientes;
 import emisor.red.TCPComprobantes;
@@ -49,7 +49,7 @@ import receptor.modelo.DatosReceptor;
 
 public class SistemaEmisor implements ISistemaEmisor {
     private IDatosEmisor emisor;
-    private IRedComprobantes iRedComprobantes;
+    private RedComprobantes iRedComprobantes;
     private IEncriptacion encriptacion;
 
     private IPersistenciaMensajesEmisor persistenciaMensajes;
@@ -99,7 +99,7 @@ public class SistemaEmisor implements ISistemaEmisor {
         return emisor;
     }
 
-    public IRedComprobantes getTcpdeEmisor() {
+    public RedComprobantes getTcpdeEmisor() {
         return iRedComprobantes;
     }
 
