@@ -39,11 +39,10 @@ public class VistaContactos extends javax.swing.JFrame {
         jListDestinatarios = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Contactos");
+        setTitle("Receptores");
         setMinimumSize(new java.awt.Dimension(200, 300));
         setPreferredSize(new java.awt.Dimension(200, 300));
 
-        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Contactos"));
         jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(600, 100));
         jPanelDestinatarios.setPreferredSize(new java.awt.Dimension(600, 100));
         jPanelDestinatarios.setLayout(new java.awt.BorderLayout());

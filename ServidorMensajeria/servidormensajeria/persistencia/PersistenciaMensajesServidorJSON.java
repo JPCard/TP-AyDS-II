@@ -16,6 +16,7 @@ import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IDatosEmisor;
 import emisor.modelo.IMensaje;
 import emisor.modelo.IMensaje;
+import emisor.modelo.Mensaje;
 import emisor.modelo.MensajeConAlerta;
 import emisor.modelo.MensajeConComprobante;
 
@@ -66,7 +67,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
                                                                           // assuming value 1 in field "int type" identifies TextMessage
                                                                           .registerSubtype(MensajeConComprobante.class,
                                                                                            "conComprobante")
-                                                                          .registerSubtype(IMensaje.class, "normal") //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                                                                          .registerSubtype(Mensaje.class, "normal") 
                                                                           // and assuming int 2 identifies ImageMessage
                                                                           .registerSubtype(MensajeConAlerta.class, "conAlerta");
                                                                           
