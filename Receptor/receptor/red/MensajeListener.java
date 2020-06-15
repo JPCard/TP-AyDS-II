@@ -2,10 +2,10 @@ package receptor.red;
 
 public abstract class MensajeListener implements Runnable {
     
-    public abstract void escucharMensajes();
+    protected abstract void escucharMensajes();
     
     @Override
-   public void run(){
+   public  final void run(){
         this.escucharMensajes();
     }
 }

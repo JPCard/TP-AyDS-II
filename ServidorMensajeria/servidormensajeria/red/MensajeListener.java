@@ -59,7 +59,7 @@ public class MensajeListener implements Runnable {
                                 //IN 2
                                 Collection<IMensaje> mensajes = (Collection<IMensaje>) in.readObject();
                                 for (Iterator<IMensaje> it = mensajes.iterator(); it.hasNext();) {
-                                    sistemaServidor.arriboMensaje(it.next());
+                                    this.arriboMensaje(it.next());
                                 }
 
                                 IMensaje primerMensaje = mensajes.iterator().next();
@@ -81,6 +81,11 @@ public class MensajeListener implements Runnable {
             }
         }
     }
+
+    public void arriboMensaje(IMensaje mensaje) {
+        new Thread(new MensajeHandler(mensaje, true,this.sistemaServidor)).start();
+    }
+
 
     public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor) {
 

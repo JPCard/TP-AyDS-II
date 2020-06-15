@@ -63,7 +63,7 @@ public class ControladorEmisor extends Observable {
         }
     }
     
-    public static ControladorEmisor getInstance(IVistaEmisor vista){
+    public static synchronized ControladorEmisor getInstance(IVistaEmisor vista){
         if(instance==null)
             instance=new ControladorEmisor(vista);
         return instance;

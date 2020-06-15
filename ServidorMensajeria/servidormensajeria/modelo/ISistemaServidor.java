@@ -30,7 +30,6 @@ public interface ISistemaServidor {
 
     void setTiempoUltimaActualizacionReceptores(long tiempoUltimaActualizacionReceptores);
 
-    void arriboMensaje(IMensaje mensaje);
 
     IPersistenciaMensajesServidor getPersistencia();
 
@@ -62,7 +61,6 @@ public interface ISistemaServidor {
 
     void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
 
-    void arriboComprobante(IComprobante comprobante);
 
     int cargarPuertoRecepcionMensajes() throws Exception;
 

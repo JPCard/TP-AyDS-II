@@ -20,7 +20,7 @@ public abstract class AbstractMensajeFactory {
      * <b>Pre:</b> emisor != null, asunto != null y asunto != "", cuerpo != null, cuerpo != "".
      * <b>Post:</b> se crea el mensaje con el contenido y tipo especificados y es retornado.
      */
-    public IMensaje crearMensaje(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
+    public  final IMensaje crearMensaje(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
         
         switch (tipoMensaje) {
         case MSJ_NORMAL: 
@@ -34,10 +34,10 @@ public abstract class AbstractMensajeFactory {
         }
     }
     
-    public abstract IMensaje crearMensajeNormal(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
+    protected abstract IMensaje crearMensajeNormal(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
-    public abstract IMensaje crearMensajeConAlerta(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
+    protected abstract IMensaje crearMensajeConAlerta(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
-    public abstract IMensaje crearMensajeConComprobante(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
+    protected abstract IMensaje crearMensajeConComprobante(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo);
     
 }

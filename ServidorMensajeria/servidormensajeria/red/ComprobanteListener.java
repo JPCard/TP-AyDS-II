@@ -35,7 +35,7 @@ public class ComprobanteListener implements Runnable {
                             IComprobante comprobante = (IComprobante) in.readObject();
                             System.out.println("Comprobante para " + comprobante.getEmisorOriginal().getNombre() +
                                                " de " + comprobante.getUsuarioReceptor() + " recibido");
-                            sistemaServidor.arriboComprobante(comprobante);
+                            this.arriboComprobante(comprobante);
 
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -50,5 +50,9 @@ public class ComprobanteListener implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+    
+    public void arriboComprobante(IComprobante comprobante) {
+        new Thread(new ComprobanteHandler(sistemaServidor,comprobante)).start();
     }
 }
