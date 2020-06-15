@@ -28,6 +28,7 @@ import java.util.TreeSet;
 import receptor.modelo.Receptor;
 
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPConsultaDirectorio {
@@ -49,14 +50,15 @@ public class TCPConsultaDirectorio {
 
     private boolean usandoDirSecundario;
 
+    private ISistemaServidor sistemaServidor;
 
 
-    public TCPConsultaDirectorio(String ipDirectorioPrincipal, int puertoDirectorioPrincipalTiempo,
+    public TCPConsultaDirectorio(ISistemaServidor sistemaServidor,String ipDirectorioPrincipal, int puertoDirectorioPrincipalTiempo,
                              int puertoDirectorioPrincipalDestinatarios,
                              String ipDirectorioSecundario,
                              int puertoDirectorioSecundarioTiempo, int puertoDirectorioSecundarioDestinatarios) {
         
-        
+        this.sistemaServidor = sistemaServidor;
         this.ipDirectorioPrincipal = ipDirectorioPrincipal;
         this.puertoDirectorioPrincipalTiempo = puertoDirectorioPrincipalTiempo;
         this.puertoDirectorioPrincipalDestinatarios = puertoDirectorioPrincipalDestinatarios;
@@ -113,7 +115,7 @@ public class TCPConsultaDirectorio {
         public void envioInicialMensajesAsincronicos() {
             this.getReceptor("");
             System.err.println("el magico????");
-            for (Receptor receptor : SistemaServidor.getInstance().getReceptores()) {
+            for (Receptor receptor : sistemaServidor.getReceptores()) {
                 try {
                     if (receptor.isConectado())
                         this.envioMensajesAsincronicos(receptor);
@@ -125,9 +127,9 @@ public class TCPConsultaDirectorio {
     
     
     public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
-        Collection<IMensaje> mensajes = SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
+        Collection<IMensaje> mensajes = sistemaServidor.obtenerMsjsPendientesReceptor(receptor);
         for (IMensaje mensaje : mensajes) {
-            new Thread(new MensajeHandler(mensaje, false)).start();
+            new Thread(new MensajeHandler(mensaje, false,sistemaServidor)).start();
         }
     }
     
@@ -154,7 +156,7 @@ public class TCPConsultaDirectorio {
         in.close();
         socketTiempo.close();
 
-        if (SistemaServidor.getInstance().getTiempoUltimaActualizacionReceptores() < tiempoUltimaActualizacion) {
+        if (sistemaServidor.getTiempoUltimaActualizacionReceptores() < tiempoUltimaActualizacion) {
 
 
             Socket socketDest = new Socket();
@@ -163,19 +165,19 @@ public class TCPConsultaDirectorio {
             socketDest.connect(addr2, 500);
             ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-            SistemaServidor.getInstance().setReceptores((ArrayList<Receptor>) inDest.readObject());
+            sistemaServidor.setReceptores((ArrayList<Receptor>) inDest.readObject());
 
 
             inDest.close();
             socketDest.close();
 
 
-            SistemaServidor.getInstance().setTiempoUltimaActualizacionReceptores(tiempoUltimaActualizacion);
+            sistemaServidor.setTiempoUltimaActualizacionReceptores(tiempoUltimaActualizacion);
 
         }
 
 
-        ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
+        ArrayList<Receptor> receptoresArray = sistemaServidor.getReceptores();
         System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
         int indice =
             Collections.binarySearch(receptoresArray,

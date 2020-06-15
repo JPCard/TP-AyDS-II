@@ -17,12 +17,15 @@ import java.util.Collection;
 
 import receptor.modelo.IComprobante;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class SolicitudComprobantesEmisoresListener implements Runnable {
 
-    public SolicitudComprobantesEmisoresListener() {
-        super();
+    private ISistemaServidor sistemaServidor;
+
+    public SolicitudComprobantesEmisoresListener(ISistemaServidor sistemaServidor) {
+        this.sistemaServidor = sistemaServidor;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class SolicitudComprobantesEmisoresListener implements Runnable {
 
         while (true) {
             try (ServerSocket s =
-                 new ServerSocket(SistemaServidor.getInstance().cargarPuertoDevolverMensajesEmisores())) {
+                 new ServerSocket(sistemaServidor.cargarPuertoDevolverMensajesEmisores())) {
 
                 while (true) {
                     System.out.println("Servicio de recuperacion de comprobantes para emisores: esperando...");
@@ -41,11 +44,11 @@ public class SolicitudComprobantesEmisoresListener implements Runnable {
                             System.out.println(emisor.getNombre() +
                                                " acaba de solicitar comprobantes de cuando no estuvo");
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
-                                Collection<IComprobante> enviable = SistemaServidor.getInstance()
+                                Collection<IComprobante> enviable = sistemaServidor
                                                                                   .getPersistencia()
                                                                                   .getComprobantesNoEnviados(emisor);
                                 out.writeObject(enviable); //envio al emisor la id con la cual debe rotular su mensaje
-                                SistemaServidor.getInstance().eliminarComprobantesNoEnviados(emisor);
+                                sistemaServidor.eliminarComprobantesNoEnviados(emisor);
                             }
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();

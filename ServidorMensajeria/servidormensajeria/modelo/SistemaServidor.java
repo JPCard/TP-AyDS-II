@@ -27,9 +27,9 @@ import servidormensajeria.red.MensajeListener;
 import servidormensajeria.red.SolicitudComprobantesEmisoresListener;
 import servidormensajeria.red.WatchDogDirectorio;
 
-public class SistemaServidor {
+public class SistemaServidor implements ISistemaServidor {
 
-    private static SistemaServidor instance;
+    
     private IPersistenciaMensajesServidor persistenciaMensajes;
     private TCPConsultaDirectorio tcpParaDirectorio;
 
@@ -42,7 +42,7 @@ public class SistemaServidor {
 
 
     public static void main(String[] args) throws Exception {
-        SistemaServidor sistema = getInstance();
+        SistemaServidor sistema = new SistemaServidor();
 
         IPersistenciaParametrosServidor persistencia = sistema.persistenciaParametros;
 
@@ -51,7 +51,7 @@ public class SistemaServidor {
             PersistenciaMensajesFactory.getInstance().crearMetodoPersistenciaMensajes(metodoPersistencia);
 
         sistema.tcpParaDirectorio =
-            new TCPConsultaDirectorio(persistencia.cargarIPDirectorio(),
+            new TCPConsultaDirectorio(sistema,persistencia.cargarIPDirectorio(),
                                   persistencia.cargarPuertoDirectorioTiempoUltModif(), persistencia.cargarPuertoDirectorioDestinatarios(),
 
                                   persistencia.cargarIPDirectorioSecundario(),
@@ -59,16 +59,16 @@ public class SistemaServidor {
                                   persistencia.cargarPuertoDirectorioSecundarioDestinatarios());
 
         sistema.watchDogDirectorio =
-            new Thread(new WatchDogDirectorio(persistencia.cargarIPDirectorio(),
+            new Thread(new WatchDogDirectorio(sistema,persistencia.cargarIPDirectorio(),
                                               persistencia.cargarpuertoDirectorioPrincipalPushReceptores(),
                                               persistencia.cargarIPDirectorioSecundario(),
                                               persistencia.cargarPuertoDirectorioSecundarioPushReceptores()));
 
 
-        new Thread(new MensajeListener()).start();
+        new Thread(new MensajeListener(sistema)).start();
         //        System.out.println("hola");
-        new Thread(new ComprobanteListener()).start();
-        new Thread(new SolicitudComprobantesEmisoresListener()).start();
+        new Thread(new ComprobanteListener(sistema)).start();
+        new Thread(new SolicitudComprobantesEmisoresListener(sistema)).start();
         sistema.watchDogDirectorio.start();
         
         
@@ -117,14 +117,10 @@ public class SistemaServidor {
         super();
     }
 
-    public static SistemaServidor getInstance() {
-        if (instance == null)
-            instance = new SistemaServidor();
-        return instance;
-    }
+
 
     public void arriboMensaje(IMensaje mensaje) {
-        new Thread(new MensajeHandler(mensaje, true)).start();
+        new Thread(new MensajeHandler(mensaje, true,this)).start();
     }
 
     public IPersistenciaMensajesServidor getPersistencia() {
@@ -176,7 +172,7 @@ public class SistemaServidor {
     }
 
     public void arriboComprobante(IComprobante comprobante) {
-        new Thread(new ComprobanteHandler(comprobante)).start();
+        new Thread(new ComprobanteHandler(this,comprobante)).start();
     }
 
 

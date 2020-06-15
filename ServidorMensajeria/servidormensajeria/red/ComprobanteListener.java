@@ -13,18 +13,20 @@ import java.net.Socket;
 
 import receptor.modelo.IComprobante;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class ComprobanteListener implements Runnable {
+    private ISistemaServidor sistemaServidor;
 
-    public ComprobanteListener() {
-        super();
+    public ComprobanteListener(ISistemaServidor sistemaServidor) {
+        this.sistemaServidor = sistemaServidor;
     }
 
     @Override
     public void run() {
         while (true) {
-            try (ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoComprobantes())) {
+            try (ServerSocket s = new ServerSocket(sistemaServidor.cargarPuertoComprobantes())) {
 
                 while (true) {
                     System.out.println("Esperando comprobantes...");
@@ -33,7 +35,7 @@ public class ComprobanteListener implements Runnable {
                             IComprobante comprobante = (IComprobante) in.readObject();
                             System.out.println("IComprobante para " + comprobante.getEmisorOriginal().getNombre() +
                                                " de " + comprobante.getUsuarioReceptor() + " recibido");
-                            SistemaServidor.getInstance().arriboComprobante(comprobante);
+                            sistemaServidor.arriboComprobante(comprobante);
 
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();

@@ -20,18 +20,20 @@ import java.util.Iterator;
 import receptor.modelo.IComprobante;
 import receptor.modelo.SistemaReceptor;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeListener implements Runnable {
+    private ISistemaServidor sistemaServidor;
 
-    public MensajeListener() {
-        super();
+    public MensajeListener(ISistemaServidor sistemaServidor) {
+        this.sistemaServidor = sistemaServidor;
     }
 
     @Override
     public void run() {
         while (true) {
-            try (ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoRecepcionMensajes())) {
+            try (ServerSocket s = new ServerSocket(sistemaServidor.cargarPuertoRecepcionMensajes())) {
                 while (true) {
                     System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
                     try (Socket socket = s.accept()) {
@@ -44,11 +46,11 @@ public class MensajeListener implements Runnable {
                             //OUT 1
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
                                 for (int i = 0; i < cantMensajes; i++) {
-                                    Integer nuevaid = SistemaServidor.getInstance()
+                                    Integer nuevaid = sistemaServidor
                                                                      .getPersistencia()
                                                                      .getProximoIdMensaje();
                                     out.writeObject(nuevaid); //envio al emisor la id con la cual debe rotular su mensaje
-                                    SistemaServidor.getInstance()
+                                    sistemaServidor
                                                    .getPersistencia()
                                                    .avanzaProximoIdMensaje();
                                 }
@@ -57,7 +59,7 @@ public class MensajeListener implements Runnable {
                                 //IN 2
                                 Collection<IMensaje> mensajes = (Collection<IMensaje>) in.readObject();
                                 for (Iterator<IMensaje> it = mensajes.iterator(); it.hasNext();) {
-                                    SistemaServidor.getInstance().arriboMensaje(it.next());
+                                    sistemaServidor.arriboMensaje(it.next());
                                 }
 
                                 IMensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug

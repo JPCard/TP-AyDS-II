@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import receptor.modelo.Receptor;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class WatchDogDirectorio implements Runnable{
@@ -27,10 +28,12 @@ public class WatchDogDirectorio implements Runnable{
     private int puertoDirectorioPushReceptoresActual;
     
     private boolean usandoDirSecundario;
+    
+    private ISistemaServidor sistemaServidor;
 
-
-    public WatchDogDirectorio(String ipDirectorioPrincipal, int puertoDirectorioPrincipalPushReceptores,
+    public WatchDogDirectorio(ISistemaServidor sistemaServidor,String ipDirectorioPrincipal, int puertoDirectorioPrincipalPushReceptores,
                               String ipDirectorioSecundario, int puertoDirectorioSecundarioPushReceptores) {
+        this.sistemaServidor = sistemaServidor;
         this.ipDirectorioPrincipal = ipDirectorioPrincipal;
         this.puertoDirectorioPrincipalPushReceptores = puertoDirectorioPrincipalPushReceptores;
         this.ipDirectorioSecundario = ipDirectorioSecundario;
@@ -51,7 +54,7 @@ public class WatchDogDirectorio implements Runnable{
 
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
                             Receptor receptor = (Receptor) in.readObject();
-                            SistemaServidor.getInstance().envioMensajesAsincronicos(receptor);
+                            sistemaServidor.envioMensajesAsincronicos(receptor);
                         } catch (Exception e) {
                             System.out.println("mmm!");
                             e.printStackTrace();
