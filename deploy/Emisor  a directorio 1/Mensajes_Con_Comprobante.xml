@@ -296,5 +296,78 @@
     </void>
    </object>
   </void>
+  <void method="put">
+   <int>11</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante4">
+    <void property="asunto">
+     <string>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</string>
+    </void>
+    <void property="cuerpo">
+     <string>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1592246639627</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.DatosEmisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="agenda">
+       <object class="emisor.modelo.Agenda" id="Agenda4">
+        <void property="contactos">
+         <void method="add">
+          <object class="receptor.modelo.DatosReceptor">
+           <void property="IP">
+            <string>127.0.0.1</string>
+           </void>
+           <void property="nombre">
+            <string>Nomas 434politano</string>
+           </void>
+           <void property="puerto">
+            <int>27041</int>
+           </void>
+           <void property="usuario">
+            <string>napopan343123</string>
+           </void>
+          </object>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="nombre">
+       <string>bine</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>11</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

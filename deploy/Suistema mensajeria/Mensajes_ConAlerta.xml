@@ -89,5 +89,49 @@
     </void>
    </object>
   </void>
+  <void method="put">
+   <int>10</int>
+   <object class="emisor.modelo.MensajeConAlerta" id="MensajeConAlerta2">
+    <void property="asunto">
+     <string>1b7d7c1b2680a02db0e7811c8ad141a3af293e1ee4e1df04af500548196d0cd15007649ad61604d41d1c203acb1d060e9b559bc92f23e21eb80b18c0cf73373ca75577253410880d5bd75246ea40ea07e5dcfce1043ec4bd249169257c9332092a636e7d5ad4d436054fcc6c59dc5432388c3495b374ea84ac803954b929bc51e3fa1fe9114d78602aed4b295442d515affb0d0b3793e106c99d692af682b19a7f4f602977af64f7ffc59df7b15eda6a37d904110cb3de40f830d3a767a11815859bb9013e077b8cc8bd93dabfaaea08c008372ca45c2465ba19ceec089aeacf88c4bb062b05cea99b4ffe6a2cf6ae5e72da247d33eabd7a3b96283a8eea040a</string>
+    </void>
+    <void property="cuerpo">
+     <string>31dc74bf11d8b58a82ddc9a02d03a3902750ca6f2586d0d08fb5a24f7fd9f40c25aabc1aba67106215623a79f963de0ac4351f104b596ede42267e61eb6ef0c99a469fefeb718874dabc6aaf943bf2db988f3817160614b73b086b88d8b82e9b0659fb33520f2c3e99b33dcb2182ae5b612980ffc065841e0ad602cdc22073e9d0f3e6db3d840450a38ff959ea10e65a06dfc0102fb4f08f840ffb62597b5948e65facc8f28287a260c391c5f27bd75dcb3b86a6cf1950311ac6d6c0545ee5b5d4f0b6cc77d6eb971561cf62e5b613ae550ebd08d360476834b5a349ee03f1c756653131aa1c41bc6c3b5582fbf4723716c2e870cbdcfca779b5b7ce53773f3a</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1592246635478</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.DatosEmisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="nombre">
+       <string>bine</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>10</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
  </object>
 </java>
