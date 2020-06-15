@@ -52,7 +52,6 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
     private static final String LLAVE_PRIVADA_FILE_PATH = "llavePrivada";
     private boolean cargado = false;
     private String ipDirectorio;
-    private int puertoDirectorioRegistro; //todo borrar este ysus hermanos
     private int puertoDirectorioConexion;
     
     private String ipDirectorioSecundario;

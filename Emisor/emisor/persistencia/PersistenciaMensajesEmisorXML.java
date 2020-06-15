@@ -150,7 +150,6 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
         synchronized (mensajesNoEnviados) {
 
             ArrayList<IMensaje> mensajes2 = new ArrayList<IMensaje>();
-            //todo quizas se salva
             for (IMensaje m : mensajesPendientes) {
                 mensajes2.add(m.clone());
 
