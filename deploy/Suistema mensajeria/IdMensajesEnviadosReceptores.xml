@@ -22,6 +22,15 @@
     <void method="add">
      <int>5</int>
     </void>
+    <void method="add">
+     <int>6</int>
+    </void>
+    <void method="add">
+     <int>7</int>
+    </void>
+    <void method="add">
+     <int>8</int>
+    </void>
    </object>
   </void>
  </object>

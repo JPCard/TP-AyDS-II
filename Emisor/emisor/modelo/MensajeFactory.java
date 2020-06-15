@@ -5,16 +5,11 @@ import java.util.ArrayList;
 
 
 public class MensajeFactory extends AbstractMensajeFactory{
-    private static AbstractMensajeFactory instance = null;
 
-    private MensajeFactory() {
+    public MensajeFactory() {
     }
 
-    public static AbstractMensajeFactory getInstance(){
-        if(instance == null)
-            instance = new MensajeFactory();
-        return instance;
-    }
+
     
     public IMensaje crearMensajeNormal(IDatosEmisor emisor, String asunto, String cuerpo, TipoMensaje tipoMensaje,ArrayList<String> usuariosReceptores, String receptorObjetivo){
         return new Mensaje(emisor, asunto, cuerpo,usuariosReceptores,  receptorObjetivo);

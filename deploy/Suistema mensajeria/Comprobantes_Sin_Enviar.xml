@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <java version="1.8.0_251" class="java.beans.XMLDecoder">
- <object class="java.util.TreeMap">
+ <object class="java.util.HashMap">
   <void method="put">
-   <string>napopan343123</string>
+   <string>bine</string>
    <object class="java.util.ArrayList"/>
   </void>
  </object>

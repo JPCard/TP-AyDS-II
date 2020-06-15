@@ -52,5 +52,158 @@
     </void>
    </object>
   </void>
+  <void method="put">
+   <int>6</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante1">
+    <void property="asunto">
+     <string>05f2c8177a64976b6a097440fd785571aaa61e574f320f69fedf9eab913259d24ac9775971a965376ebe656d189f891972e975fab50aeb1b13f5795dc3ae7418913d884c93cdb3181175f0fe2265fed13ab4d3ed8ac1cc8c4193c402726f6de3c7cb39649e72c5f2099c1f4dbe4153b9f1fd76c54a957c75716caf94223883935aee719bfd404cdb8f15badd97369d32fa7281cbca093582d74c7ec1f959968fed140963397ebbc2c295607d7a45fbeea2b7765e4ce5ec53a5539218c5cdb5579e3bebd61cc19913d103ec5099deeaf728bc88540d391b426d3c1c8233f9736f5e474fa680db2f0ae9c74877156bb7639e88866206b516bea5d8792507aec6cf</string>
+    </void>
+    <void property="cuerpo">
+     <string>6decc157c64fa6baf92cd80679622d846cb53e862600fdb6ca9a42a13d9d6ef8446e314aa00342da0ab64288930792f9a3395572e51a7a56443d98cf7073ff012debf19177a867b69e949d2bb1f4da183c1f30da92170e7f618dc3b6bd45904a6f84743547230cb67e6652de58a54efb5a91d6bd4aa526fcb4852ef07ee22f925c754039a7cca17a4da29a12a5f6451155734757452d5ef8cfd5be5056991d0608261647f770a0e4e93d2bfe9cd898fd60b1f8126666fdf3d85b42f29caf567738ee70ac07bb6bd0e407e4b7bffa044d1f3e1330303e17c5de0b58eca7514c7f9e63099464cdd18f2834db69752dea165fb0eb9ae6317dac407c139d73ac738a</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1592205233110</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.DatosEmisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="nombre">
+       <string>bine</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>6</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>7</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante2">
+    <void property="asunto">
+     <string>5d306be0d4fccfcfab7d6f9377c854e10881aa2031005e8050c7eb61f77c031c68a22e079aa64c11abcccb859efcdb9c2b0e60d331cf20a2e84f9082a9d00fe9b4cbfbb2d8795662347639b46dce1c2a356c4730608726368478d521e42c002408c4477b9aa4c90a253c4a317d463df27238613f6d0e6fe8596997a247ce5bc4c11bac29bbb5106beaa48f0300180e52aeb486768b68349cb9ff1739cc629fb8ee956fbdf6b515e32cb5453d9fa70d684991f138006c123e6b88d768ff30f586e924ebe262abf73ef8a3498e1e200f804f18602b8d0391ee3f2584350d09b617758be007fb7d86eb1879679f6496b4ae8f2ce44da0aa7fc1e30dcaa555ab5624</string>
+    </void>
+    <void property="cuerpo">
+     <string>3138f8198fba2e8867ac6e5f6f94e6254c0114223c2e410ccebcd7e778547ab6c38efb4568ccd11a64e20c56824d53b99d7ecfbb50ac7c3335c34616dd850c954aab60344f7178f4d8ff004371ae43fd704a1b05257cafb52d4af99b8831c4214ccaf57e75b03612a58caa60d42deb6f02f70d1cb9f60f76bde3ba023a94f3c68448bfc4a58e5ce158dda04704a89750414f2a7882edbb724de4f2601be2c39e04d72087347593a297ba3be84f83f806fdebcc8bf961b0993da2f03c2480a42f687cf6165deac7ca4cbf06497b27ffe215ea16dcce4c42965839f6fab8d0fad563ca9c812d8290eb4cd827ad6ba61964b268cf5128f4a03a0dfb5aaac701fc3b</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1592205308499</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.DatosEmisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="nombre">
+       <string>bine</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>7</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>8</int>
+   <object class="emisor.modelo.MensajeConComprobante" id="MensajeConComprobante3">
+    <void property="asunto">
+     <string>6978bbd1572e1e9c7d5d1c841d32da168d8e020677006b1195ed7cf3bda22ff91be859342d865882590519a12ac0bd818d5d00674b1bd53a55bb8e86387109e57863ac91fc7d52496406149c2820b7518478a7dab93cf6ce78bb94aaa04a83c8be3bf9dc0f3ab79e1f969c7e371c9ebeb63284425a44a6f0c29b3c0f7766dd19074009b6acc8daf1fed07dd1f8f03393b98c1dd4bb169847227ce993a741826f42b4eed1e854c1c5ead768a62b3fbe08bb3e1ec1faace0fd0347af5524f0dd1c1bce7ad4d75e5c6a6e8a52123254a79d6d9004fc9e917a9a37269de7a199f31e892dc6e42c407b2b4ea2dbba1e9ee8590d95b4e7f165c78d77c5cd383fcfefdb</string>
+    </void>
+    <void property="cuerpo">
+     <string>76032ef901db56dfdf5be0e4d473e077c88ec3dbd32df470b52c5a160690df83c5e6d8aaa0fb7dd39dbc1607b790153576ff401f82500249822016333fb90fdebab5a5870a3300218383f371138a389cb0e57c565985a20a26ad8ec213c6e4afbfcc4c52edd37f7f2bdadec51a2b8811533e8d134cbde757fb46b3f36686abf87cd002f578222d578c68bafeca46c2dfc1bee40f9f7e54829fc036e2cd99ce6385b88e7f6ce17da3516867e2e228d3c48d0e4ff10f9888d4876d217e05ef0afcf93795006aa614a7eddb28e73fc71964a22b6c0ba359987eb38d073499f30772a1e9ea64d2edd8976bcfe767121a565974d24903be7f2107d0c4a973cafcc849</string>
+    </void>
+    <void property="datetime">
+     <object class="java.util.GregorianCalendar">
+      <void property="time">
+       <object class="java.util.Date">
+        <long>1592206604189</long>
+       </object>
+      </void>
+     </object>
+    </void>
+    <void property="emisor">
+     <object class="emisor.modelo.DatosEmisor">
+      <void property="IP">
+       <string>127.0.0.1</string>
+      </void>
+      <void property="nombre">
+       <string>bine</string>
+      </void>
+      <void property="puerto">
+       <int>27234</int>
+      </void>
+     </object>
+    </void>
+    <void property="id">
+     <int>8</int>
+    </void>
+    <void property="receptorObjetivo">
+     <string>napopan343123</string>
+    </void>
+    <void property="receptoresConfirmados">
+     <object class="java.util.ArrayList">
+      <void method="add">
+       <string>napopan343123</string>
+      </void>
+     </object>
+    </void>
+    <void property="usuariosReceptores">
+     <void method="add">
+      <string>napopan343123</string>
+     </void>
+    </void>
+   </object>
+  </void>
  </object>
 </java>

@@ -2,6 +2,7 @@ package emisor.controlador;
 
 import emisor.modelo.AbstractMensajeFactory;
 import emisor.modelo.IMensaje;
+import emisor.modelo.ISistemaEmisor;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
 
@@ -39,14 +40,14 @@ public class ControladorEmisor extends Observable {
     private IVistaComprobantes vistaComprobantes;
     private static ControladorEmisor instance = null;
     private boolean directorioConectado =false;
-    
+    private ISistemaEmisor sistemaEmisor;
 
     private ControladorEmisor(IVistaEmisor vista) {
         super();
         this.vistaPrincipal = vista;
         try {
-            SistemaEmisor.inicializar();
-            this.vistaPrincipal.setNombreUsuario(SistemaEmisor.getInstance().getNombreEmisor());
+            sistemaEmisor = new SistemaEmisor();
+            this.vistaPrincipal.setNombreUsuario(sistemaEmisor.getNombreEmisor());
             
             
             
@@ -94,7 +95,7 @@ public class ControladorEmisor extends Observable {
 
             @Override
             public void run() {
-                if(!SistemaEmisor.getInstance().enviarMensaje(asunto,cuerpo,usuariosReceptores,tipo)) {
+                if(!sistemaEmisor.enviarMensaje(asunto,cuerpo,usuariosReceptores,tipo)) {
                     ControladorEmisor.getInstance().cerrarEnviando();
                     ControladorEmisor.getInstance().vistaPrincipal.mostrarErrorServidorNoDisponible();   
                 }
@@ -120,7 +121,7 @@ public class ControladorEmisor extends Observable {
 
     
     public void consultarAgenda(){
-        Iterator<IDatosReceptor> it = SistemaEmisor.getInstance().getEmisor().consultarAgenda();
+        Iterator<IDatosReceptor> it = sistemaEmisor.getEmisor().consultarAgenda();
         while(it.hasNext()){
             vistaContactos.agregarContacto(it.next());
         }
@@ -132,17 +133,17 @@ public class ControladorEmisor extends Observable {
 
     public void agregarComprobante(IComprobante comprobante) {
         
-        SistemaEmisor.getInstance().agregarComprobante(comprobante);
+        sistemaEmisor.agregarComprobante(comprobante);
         if(vistaComprobantes != null)
             vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
     }
 
     public Iterator<MensajeConComprobante> getMensajesConComprobanteIterator() {
-        return SistemaEmisor.getInstance().getMensajesConComprobanteIterator();
+        return sistemaEmisor.getMensajesConComprobanteIterator();
     }
 
     public Iterator<IDatosReceptor> getContactos() {
-        return SistemaEmisor.getInstance().
+        return sistemaEmisor.
                              consultarAgenda();
     }
 
@@ -158,11 +159,11 @@ public class ControladorEmisor extends Observable {
     }
 
     public boolean isComprobado(MensajeConComprobante mensajeSeleccionado, String usuarioReceptor) {
-        return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor);
+        return sistemaEmisor.isComprobado(mensajeSeleccionado,usuarioReceptor);
     }
 
     public void setAgenda(Collection<IDatosReceptor> destinatariosRegistrados) {
-        SistemaEmisor.getInstance().setAgenda(destinatariosRegistrados);
+        sistemaEmisor.setAgenda(destinatariosRegistrados);
         this.vistaPrincipal.cargarContactos(destinatariosRegistrados);
     }
 

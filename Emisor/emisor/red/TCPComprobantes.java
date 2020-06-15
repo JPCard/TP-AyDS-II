@@ -5,6 +5,7 @@ import emisor.controlador.ControladorEmisor;
 import emisor.modelo.AbstractMensajeFactory;
 import emisor.modelo.IMensaje;
 
+import emisor.modelo.ISistemaEmisor;
 import emisor.modelo.MensajeConComprobante;
 import emisor.modelo.MensajeFactory;
 import emisor.modelo.SistemaEmisor;
@@ -35,7 +36,7 @@ public class TCPComprobantes implements IRedComprobantes {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     private int puertoServidorMensajeriaSolicitarMensajes;
-
+    private ISistemaEmisor sistemaEmisor;
 
     public String getIpServidorMensajeria() {
         return ipServidorMensajeria;
@@ -45,15 +46,13 @@ public class TCPComprobantes implements IRedComprobantes {
         return puertoServidorMensajeria;
     }
 
-    public TCPComprobantes() {
-        super();
-    }
 
     public TCPComprobantes(String ipServidorMensajeria, int puertoServidorMensajeria,
-                       int puertoServidorMensajeriaSolicitarMensajes) {
+                           int puertoServidorMensajeriaSolicitarMensajes, ISistemaEmisor sistemaEmisor) {
         this.ipServidorMensajeria = ipServidorMensajeria;
         this.puertoServidorMensajeria = puertoServidorMensajeria;
         this.puertoServidorMensajeriaSolicitarMensajes = puertoServidorMensajeriaSolicitarMensajes;
+        this.sistemaEmisor = sistemaEmisor;
     }
 
 
@@ -62,8 +61,8 @@ public class TCPComprobantes implements IRedComprobantes {
      */
     public void run() {
         while (true) {
-            try (ServerSocket s = new ServerSocket(SistemaEmisor.getInstance().getPuerto())){
-                SistemaEmisor.getInstance().cargarComprobantesAsincronicos();
+            try (ServerSocket s = new ServerSocket(sistemaEmisor.getPuerto())){
+                sistemaEmisor.cargarComprobantesAsincronicos();
                  
                 while (true) {
                     try(Socket socket = s.accept()){
@@ -104,7 +103,7 @@ public class TCPComprobantes implements IRedComprobantes {
                        socket.connect(addr, 500);
 
                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                       out.writeObject(SistemaEmisor.getInstance()
+                       out.writeObject(sistemaEmisor
                                        .getEmisor()); //envio al emisor la id con la cual debe rotular su mensaje
                        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                        comprobantes = (Collection<IComprobante>) in.readObject();

@@ -2,6 +2,7 @@ package emisor.red;
 
 import emisor.modelo.IMensaje;
 import emisor.modelo.IMensaje;
+import emisor.modelo.ISistemaEmisor;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.IOException;
@@ -18,14 +19,17 @@ import java.util.Iterator;
 
 import receptor.modelo.IComprobante;
 
-public class TCPMensajesPendientes implements IMensajesPendientes {
+public class TCPMensajesPendientes implements Runnable {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
-    
-    
-    public TCPMensajesPendientes(String ipServidorMensajeria, int puertoServidorMensajeria) {
+    private ISistemaEmisor sistemaEmisor;
+
+
+    public TCPMensajesPendientes(String ipServidorMensajeria, int puertoServidorMensajeria,
+                                 ISistemaEmisor sistemaEmisor) {
         this.ipServidorMensajeria = ipServidorMensajeria;
         this.puertoServidorMensajeria = puertoServidorMensajeria;
+        this.sistemaEmisor = sistemaEmisor;
     }
 
 
@@ -42,7 +46,7 @@ public class TCPMensajesPendientes implements IMensajesPendientes {
 
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 
-                Collection<IMensaje> mensajesPostCifrado = SistemaEmisor.getInstance().getMensajesNoEnviados();
+                Collection<IMensaje> mensajesPostCifrado = sistemaEmisor.getMensajesNoEnviados();
                 
                 int cantMensajes = mensajesPostCifrado.size();
                 //OUT 1
@@ -78,12 +82,12 @@ public class TCPMensajesPendientes implements IMensajesPendientes {
                 out.close();
                 
                 for(Integer i:cambiadorDeIds.keySet()){
-                    SistemaEmisor.getInstance().actualizarIdMensaje(i,cambiadorDeIds.get(i));
+                    sistemaEmisor.actualizarIdMensaje(i,cambiadorDeIds.get(i));
                 }
                 
-                SistemaEmisor.getInstance().marcarMensajesPendientesComoEnviados(mensajesPostCifrado);
+                sistemaEmisor.marcarMensajesPendientesComoEnviados(mensajesPostCifrado);
                 
-                hayParaEnviar = SistemaEmisor.getInstance().quedanMensajesPendientes();
+                hayParaEnviar = sistemaEmisor.quedanMensajesPendientes();
                 
             } catch (IOException e) {
                 System.out.println("Hilo enviar mensajes pendientes: Servidor de Mensajeria Fuera de linea. Reintentando...");

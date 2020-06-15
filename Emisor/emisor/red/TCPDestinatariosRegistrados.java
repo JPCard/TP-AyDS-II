@@ -19,7 +19,9 @@ import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
-public class TCPDestinatariosRegistrados implements IDestinatariosRegistrados {
+public class TCPDestinatariosRegistrados implements Runnable {
+    public static final int TIEMPO_ACTUALIZACION_DESTINATARIOS = 1000; // en MS
+
     private String IPDirectorio;
     private int puertoDirectorioTiempo;
     private int puertoDirectorioDestinatarios; // en MS
