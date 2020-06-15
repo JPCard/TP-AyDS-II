@@ -33,7 +33,7 @@ public class ComprobanteListener implements Runnable {
                     try (Socket socket = s.accept()) {
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
                             IComprobante comprobante = (IComprobante) in.readObject();
-                            System.out.println("IComprobante para " + comprobante.getEmisorOriginal().getNombre() +
+                            System.out.println("Comprobante para " + comprobante.getEmisorOriginal().getNombre() +
                                                " de " + comprobante.getUsuarioReceptor() + " recibido");
                             sistemaServidor.arriboComprobante(comprobante);
 

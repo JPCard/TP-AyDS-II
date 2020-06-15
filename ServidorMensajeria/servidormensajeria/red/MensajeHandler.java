@@ -78,27 +78,27 @@ public class MensajeHandler implements Runnable {
                 //System.out.println(mensaje);
                 //System.out.println(usuarioActual);
                 if(primerIntento){
-                    System.err.println("1");
+//                    System.err.println("1");
                     
                     try{
                     sistemaServidor.guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
                     }
                     catch(Exception e){
-                        System.out.println("es entre el 1 y el 2 en serio!!");
+//                        System.out.println("es entre el 1 y el 2 en serio!!");
                         e.printStackTrace();
                     }
                     
-                    System.err.println("2");
+//                    System.err.println("2");
                 }
                 else if(enviado){ //si se manda pero no es a la primera hay que marcar que se mando
-                    System.err.println("3");
+//                    System.err.println("3");
                     sistemaServidor.marcarMensajeEnviado(mensaje, usuarioActual, false);
-                    System.err.println("4");
+//                    System.err.println("4");
                 }
             } catch (Exception f) {
-                System.out.println("es aca!!");
+//                System.out.println("es aca!!");
                f.printStackTrace();
-               System.out.println("es aca11");
+//               System.out.println("es aca11");
             }
 
 

@@ -860,7 +860,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                         clip.open(audioInputStream);
                         clip.start();
                     } catch (Exception e) {
-                        System.out.println("problemas de audio");
+                        System.err.println("problemas de audio");
                         //e.printStackTrace();
 
                     }
@@ -878,7 +878,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                         clip.open(audioInputStream);
                         clip.start();
                     } catch (Exception e) {
-                        System.out.println("problemas de audio");
+                        System.err.println("problemas de audio");
                         //e.printStackTrace();
 
                     }
@@ -895,7 +895,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                     clip.open(audioInputStream);
                     clip.start();
                 } catch (Exception e) {
-                    System.out.println("problemas de audio");
+                    System.err.println("problemas de audio");
                     //e.printStackTrace();
 
                 }
@@ -947,7 +947,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
      */
     public void cargarContacto(IDatosReceptor receptor) {
         this.listModel.addElement(receptor);
-        System.out.println(listModel.toString());
+//        System.out.println(listModel.toString());
         //System.out.println("Se agrego "+ receptor);
         this.addPanelEstadoConexion(receptor.isConectado());
 

@@ -103,7 +103,7 @@ public class ControladorEmisor extends Observable {
                     ControladorEmisor.getInstance().cerrarEnviando();
                     ControladorEmisor.getInstance().vistaPrincipal.envioExitoso();
                 }
-                System.out.println("hilo chiquito llega  a su fin =====================================================================================");
+//                System.out.println("hilo chiquito llega  a su fin =====================================================================================");
             }
             
         }).start();

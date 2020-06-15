@@ -50,13 +50,13 @@ public class WatchDogDirectorio implements Runnable{
                 while (true) {
                     System.out.println("Hilo notifica sistema de mensajes: esperando");
                     try (Socket socket = s.accept()) {
-                        System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
+                        System.out.println("Nuevo receptor: enviandole mensajes pendientes");
 
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
                             IDatosReceptor receptor = (IDatosReceptor) in.readObject();
                             sistemaServidor.envioMensajesAsincronicos(receptor);
                         } catch (Exception e) {
-                            System.out.println("mmm!");
+//                            System.out.println("mmm!");
                             e.printStackTrace();
                         }
                     }
@@ -80,7 +80,7 @@ public class WatchDogDirectorio implements Runnable{
 
 
     private void cambiarDirectorioActivo(){
-            System.out.println("----------------------------------------------------------cambie de directorio");
+//            System.out.println("----------------------------------------------------------cambie de directorio");
             if(this.usandoDirSecundario){
                 this.ipDirectorioActual = this.ipDirectorioPrincipal;
                 this.puertoDirectorioPushReceptoresActual = this.puertoDirectorioPrincipalPushReceptores;

@@ -35,7 +35,8 @@ public class ReceptoresAsincronicos {
             out.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Directorio: El sistema de mensajeria esta desconectado");
+//            e.printStackTrace();
         }
 
 

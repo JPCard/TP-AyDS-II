@@ -54,7 +54,7 @@ public class HeartbeatListener extends Thread {
                         //aca llega un heartbeat
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
                             heartbeat = (Heartbeat) in.readObject();
-                            System.err.println(heartbeat.toString());
+                            System.out.println(heartbeat.toString());
                             
                             
                             

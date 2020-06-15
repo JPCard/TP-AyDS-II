@@ -201,7 +201,7 @@ public class SistemaServidor implements ISistemaServidor {
             this.tcpParaDirectorio.envioMensajesAsincronicos(receptor);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("problemas de persistencia");
+            System.err.println("problemas de persistencia");
         }
     }
 }

@@ -12,7 +12,7 @@ public class DirectorioMain {
 
     public static void main(String[] args) {
         IDirectorio directorio = new Directorio();
-        System.out.println("IDirectorio creado");
+        System.out.println("Directorio creado");
         
         new SincronizacionInicialDirectorios(directorio).cargarListaDestinatariosRegistrados();
         System.out.println("Sincronizacion con el otro directorio completada");

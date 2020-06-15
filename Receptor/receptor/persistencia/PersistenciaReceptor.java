@@ -157,9 +157,9 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
 
             this.cargado = true;
         } catch (IOException e) {
-            System.out.println("ERROR DE I/O En carga de receptor");
+            System.err.println("ERROR DE I/O En carga de receptor");
         } catch (ParseException e) {
-            System.out.println("ERROR de parseo en carga de receptor");
+            System.err.println("ERROR de parseo en carga de receptor");
         }
 
     }
