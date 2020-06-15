@@ -52,7 +52,7 @@ public class DestinatariosRegistradosThread extends Thread {
                     System.out.println("Hilo Destinatarios: Esperando una solicitud...");
                     try (Socket socket = s.accept()) {
                         System.out.println("Hilo Destinatarios: Solicitud recibida, enviando destinatarios");
-                        System.out.println(directorio.listaDestinatariosRegistrados().toString());
+//                        System.out.println(directorio.listaDestinatariosRegistrados().toString());
                         if (socket.isConnected()) {
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
                                 out.writeObject(directorio.listaDestinatariosRegistrados());
@@ -62,7 +62,9 @@ public class DestinatariosRegistradosThread extends Thread {
                     }
                 }
 
-            } catch (IOException e) {
+            } 
+            
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }

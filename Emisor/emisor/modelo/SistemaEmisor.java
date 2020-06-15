@@ -174,7 +174,7 @@ public class SistemaEmisor implements ISistemaEmisor {
     public void guardarMensaje(IMensaje mensajeSinEncriptar) {
 
         if (mensajeSinEncriptar instanceof MensajeConComprobante) {
-            System.out.println(mensajeSinEncriptar);
+//            System.out.println(mensajeSinEncriptar);
             //mensajesConComprobante.put(mensajeSinEncriptar.getId(), (MensajeConComprobante) mensaje);
             this.persistenciaMensajes.guardarMensajeConComprobante((MensajeConComprobante) mensajeSinEncriptar);
             ControladorEmisor.getInstance().mostrarMensajeConComprobante((MensajeConComprobante) mensajeSinEncriptar);

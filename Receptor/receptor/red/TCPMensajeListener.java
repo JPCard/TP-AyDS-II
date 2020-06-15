@@ -5,6 +5,7 @@ import emisor.modelo.IMensaje;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -41,7 +42,13 @@ public class TCPMensajeListener implements IMensajeListener {
                         }
                     }
                     }
-            } catch (IOException e) {
+            }catch(BindException f){
+                System.err.println("Puerto utilizado, cerrando");
+                //f.printStackTrace();
+                System.exit(1);// puerto ya en uso, se cierra.
+            }
+            
+            catch (IOException e) {
                 e.printStackTrace();
             }
 

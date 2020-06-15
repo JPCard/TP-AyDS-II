@@ -65,14 +65,14 @@ public class TCPMensajesPendientes implements Runnable {
                     IMensaje mensaje = itMensajesCifrados.next();
                     viejaId = mensaje.getId();
                     
-                    System.err.println("el usuario de este mensaje es (receptor): +"+mensaje.getReceptorObjetivo());
+                    //System.err.println("el usuario de este mensaje es (receptor): +"+mensaje.getReceptorObjetivo());
                     nextId = (Integer) in.readObject();
                     
                     //actualiza la id real para que pueda recibir comprobantes
                     cambiadorDeIds.put(viejaId,nextId);
                     
-                    System.out.println("vieja id = " + viejaId);
-                    System.out.println("nueva id = " + nextId);
+                    //System.out.println("vieja id = " + viejaId);
+                    //System.out.println("nueva id = " + nextId);
                     
                     mensaje.setId(nextId);
                 }
@@ -90,9 +90,9 @@ public class TCPMensajesPendientes implements Runnable {
                 hayParaEnviar = sistemaEmisor.quedanMensajesPendientes();
                 
             } catch (IOException e) {
-                System.out.println("Hilo enviar mensajes pendientes: Servidor de Mensajeria Fuera de linea. Reintentando...");
+                System.err.println("Hilo enviar mensajes pendientes: Servidor de Mensajeria Fuera de linea. Reintentando...");
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(1000);
                 } catch (InterruptedException f) {
                 }
             } catch (ClassNotFoundException e) {

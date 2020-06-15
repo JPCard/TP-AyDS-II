@@ -93,7 +93,7 @@ public class TCPConsultaDirectorio {
                 r = pedirReceptor(usuarioActual);
             } catch (ClassNotFoundException | IOException f) {
                 this.cambiarDirectorioActivo();
-                System.err.println("estoy mandando nullafangos");
+                System.err.println("Servidor Mensajeria: Directorios no disponibles para consulta de receptor");
             }
         } 
        
@@ -115,7 +115,7 @@ public class TCPConsultaDirectorio {
      */
         public void envioInicialMensajesAsincronicos() {
             this.getReceptor("");
-            System.err.println("el magico????");
+//            System.err.println("el magico????"); // :)
             for (IDatosReceptor receptor : sistemaServidor.getReceptores()) {
                 try {
                     if (receptor.isConectado())
@@ -179,7 +179,7 @@ public class TCPConsultaDirectorio {
 
 
         ArrayList<IDatosReceptor> receptoresArray = sistemaServidor.getReceptores();
-        System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
+        //System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
         int indice =
             Collections.binarySearch(receptoresArray,
                                      new DatosReceptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
@@ -199,7 +199,7 @@ public class TCPConsultaDirectorio {
 
     private void cambiarDirectorioActivo(){
         synchronized(this.semaforoActuales){
-            System.out.println("----------------------------------------------------------cambie de directorio");
+            System.out.println("Sistema Servidor: Cambie de Directorio para consultar el receptor");
             if(this.usandoDirSecundario){
                 this.ipDirectorioActual = this.ipDirectorioPrincipal;
                 this.puertoDirectorioDestActual = this.puertoDirectorioPrincipalDestinatarios;

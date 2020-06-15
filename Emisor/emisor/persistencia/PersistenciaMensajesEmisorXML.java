@@ -90,10 +90,10 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
             if (this.mensajesNoEnviados == null)
                 mensajesNoEnviados = new ArrayList<IMensaje>();
 
-            System.out.println("bien");
+            //System.out.println("bien");
         } catch (IOException e) {
             //e.printStackTrace();
-            System.out.println("catch");
+            //System.out.println("catch");
             mensajesNoEnviados = new ArrayList<IMensaje>();
         }
 
@@ -104,7 +104,7 @@ public class PersistenciaMensajesEmisorXML implements IPersistenciaMensajesEmiso
             
         this.nextIdNoEnviados=ultimaIdUtilizada--;
 
-        System.out.println("En la lista hay:" + mensajesNoEnviados);
+//        System.out.println("Mensajes Pendientes: " + mensajesNoEnviados);
     }
 
 

@@ -58,18 +58,21 @@ public class SincronizacionInicialDirectorios {
             ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
             destinatariosRegistrados = (Collection<IDatosReceptor>) inDest.readObject();
-
+            System.out.println("Directorio: sincronizado con el otro directorio , lista de Receptores:");
+            System.out.println(destinatariosRegistrados);
 
             inDest.close();
             socketDest.close();
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Directorio: segundo directorio no encontrado, iniciando con lista de receptores vacia");
+//            e.printStackTrace();
             tiempoUltModif = new GregorianCalendar().getTimeInMillis();
             destinatariosRegistrados = new ArrayList<IDatosReceptor>();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            System.out.println("Directorio: segundo directorio no encontrado, iniciando con lista de receptores vacia");
             tiempoUltModif = new GregorianCalendar().getTimeInMillis();
             destinatariosRegistrados = new ArrayList<IDatosReceptor>();
         }

@@ -63,7 +63,7 @@ public class MensajeListener implements Runnable {
                                 }
 
                                 IMensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
-                                System.out.println("Sistema Servidor de mensajeria: IMensaje de " +
+                                System.out.println("Sistema Servidor de mensajeria: Mensaje de " +
                                                    primerMensaje.getEmisor().getNombre() + " recibido");
                                 //TODO borrar
                                 System.out.println("Dice que asunto: " + primerMensaje.getAsunto());

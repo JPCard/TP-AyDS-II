@@ -225,11 +225,11 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                         synchronized (MENSAJES_COMUNES_FILE_PATH) {
                             XMLEncoder encoder =
                                 new XMLEncoder(new BufferedOutputStream(new FileOutputStream(MENSAJES_COMUNES_FILE_PATH)));
-                            System.out.println("A");
+//                            System.out.println("A");
                             
-                            encoder.writeObject(mensajesComunes);//TODO tira carteles feos ... =(.
+                            encoder.writeObject(mensajesComunes);
                             
-                            System.out.println("B");
+//                            System.out.println("B");
                             encoder.close();
                         }
                     }

@@ -91,7 +91,9 @@ public class Directorio implements IDirectorio {
             this.receptoresAsincronicos = new ReceptoresAsincronicos(this);
             
         } catch (Exception e) {
+            System.err.println("Error en la persistencia del directorio");
             e.printStackTrace();
+            
         }
 
     }
@@ -170,16 +172,16 @@ public class Directorio implements IDirectorio {
 
 
     public Collection<IDatosReceptor> listaDestinatariosRegistrados() {
-        System.out.println("==============================A");
+        //System.out.println("==============================A");
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
-        System.out.println("==============================B");
+        //System.out.println("==============================B");
         boolean alguienSeFue = false;
-        System.out.println("==============================C");
+       //System.out.println("==============================C");
 
         synchronized (receptores) { //para que no puedan cambiar los tiempos mientras se evaluan los online de cada receptor
-        System.out.println("==============================D");
+        //System.out.println("==============================D");
             synchronized (tiempos) {
-                System.out.println("LLEGAMOS EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                //System.out.println("LLEGAMOS EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 for (Object obj : receptores.values()) {
                     IDatosReceptor receptor = (IDatosReceptor) obj;
                     boolean online;

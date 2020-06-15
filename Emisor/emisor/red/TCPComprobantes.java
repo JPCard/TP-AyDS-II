@@ -106,8 +106,8 @@ public class TCPComprobantes extends RedComprobantes {
                     try(Socket socket = s.accept()){
                         try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
                     IComprobante comprobante = (IComprobante) in.readObject();
-                    System.out.println("EL COMPROBANTE ES");
-                    System.out.println(comprobante);
+                    //System.out.println("EL COMPROBANTE ES");
+                    //System.out.println(comprobante);
                     ControladorEmisor.getInstance().agregarComprobante(comprobante);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
@@ -115,7 +115,13 @@ public class TCPComprobantes extends RedComprobantes {
                     }
                 }
 
-            } catch (IOException e) {
+            } catch(BindException f){
+                System.out.println("Puerto utilizado, cerrando");
+                //f.printStackTrace();
+                System.exit(1);// puerto ya en uso, se cierra.
+            }
+            
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
