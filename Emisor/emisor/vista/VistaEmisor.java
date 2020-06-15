@@ -659,6 +659,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }//GEN-LAST:event_jLabelCantCaracteresCuerpoKeyReleased
 
     private void jButtonListaContactosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonListaContactosActionPerformed
+        this.mostrarContactos();
+    }//GEN-LAST:event_jButtonListaContactosActionPerformed
+    private void mostrarContactos(){
         jButtonListaContactos.setEnabled(false);
         JFrame vistaContactos = new VistaContactos();
         vistaContactos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -672,8 +675,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
                 jButtonListaContactos.setEnabled(true);
             }
         });
-    }//GEN-LAST:event_jButtonListaContactosActionPerformed
-
+    }
 
     /**
      * @param args the command line arguments
