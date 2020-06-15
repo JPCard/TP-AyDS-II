@@ -826,6 +826,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jTextFieldAsunto.setText("");
         this.jEditorCuerpo.setText("");
         this.jListDestinatarios.clearSelection();
+        
+        String asunto = this.jTextFieldAsunto.getText();
+        jLabelCantCaracteresAsunto.setText(String.valueOf(MAX_CHAR_ASUNTO - asunto.length()));
+        
+        
+        String texto = this.jEditorCuerpo.getText();
+        jLabelCantCaracteresCuerpo.setText(String.valueOf(MAX_CHAR_CUERPO - texto.length()));
     }
 
     public void cargarContactos(Collection<IDatosReceptor> destinatariosRegistrados) {
