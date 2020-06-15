@@ -1,6 +1,8 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -10,7 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class UltimoCambioThread extends Thread {
-    private Directorio directorio;
+    private IDirectorio directorio;
     private final int ULTIMOCAMBIO_PORT;
 
     @Override
@@ -19,7 +21,7 @@ public class UltimoCambioThread extends Thread {
         this.escuchar();
     }
 
-    public UltimoCambioThread(Directorio directorio) {
+    public UltimoCambioThread(IDirectorio directorio) {
         super();
         this.directorio = directorio;
         this.ULTIMOCAMBIO_PORT = directorio.getPuertoRecibeGetUltimoCambio();

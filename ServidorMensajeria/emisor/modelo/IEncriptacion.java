@@ -5,5 +5,5 @@ import java.security.PublicKey;
 
 public interface IEncriptacion {
     
-     public Mensaje encriptar(Mensaje mensaje, PublicKey publicKey);
+     public IMensaje encriptar(IMensaje mensaje, PublicKey publicKey);
 }

@@ -1,6 +1,6 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.IOException;
@@ -11,14 +11,15 @@ import java.net.Socket;
 
 import java.util.Iterator;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeHandler implements Runnable {
-    private Mensaje mensaje;
+    private IMensaje mensaje;
     private boolean primerIntento = true;
-    
+    private ISistemaServidor sistemaServidor;
     
 
     /**
@@ -28,9 +29,10 @@ public class MensajeHandler implements Runnable {
      *                         primerIntento = true  -> mensaje sincronico <br>
      *                         primerIntento = false -> mensaje asincronico <br>
      */
-    public MensajeHandler(Mensaje mensaje, boolean primerIntento) {
+    public MensajeHandler(IMensaje mensaje, boolean primerIntento, ISistemaServidor sistemaServidor) {
         this.mensaje = mensaje;
         this.primerIntento = primerIntento;
+        this.sistemaServidor = sistemaServidor;
     }
 
     @Override
@@ -39,7 +41,7 @@ public class MensajeHandler implements Runnable {
         //se termino xq los mensajes son 1 a 1while (usuarios.hasNext()) {
             String usuarioActual = mensaje.getReceptorObjetivo();
 
-            Receptor receptorActual = SistemaServidor.getInstance().getReceptor(usuarioActual);
+            IDatosReceptor receptorActual = sistemaServidor.getReceptor(usuarioActual);
             boolean enviado;
             if (receptorActual != null) {
 //                System.out.println("le voy a mandar a este tipo");
@@ -79,7 +81,7 @@ public class MensajeHandler implements Runnable {
                     System.err.println("1");
                     
                     try{
-                    SistemaServidor.getInstance().guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
+                    sistemaServidor.guardarMsj(mensaje, usuarioActual, enviado);  //solo se guarda el mensaje en el primer intento
                     }
                     catch(Exception e){
                         System.out.println("es entre el 1 y el 2 en serio!!");
@@ -90,7 +92,7 @@ public class MensajeHandler implements Runnable {
                 }
                 else if(enviado){ //si se manda pero no es a la primera hay que marcar que se mando
                     System.err.println("3");
-                    SistemaServidor.getInstance().marcarMensajeEnviado(mensaje, usuarioActual, false);
+                    sistemaServidor.marcarMensajeEnviado(mensaje, usuarioActual, false);
                     System.err.println("4");
                 }
             } catch (Exception f) {
@@ -101,4 +103,5 @@ public class MensajeHandler implements Runnable {
 
 
     }
+
 }

@@ -9,10 +9,10 @@ import java.io.FileOutputStream;
 
 import java.security.PrivateKey;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IPersistenciaReceptor {
-    public Receptor cargarReceptor() throws FileNotFoundException ;
+    public IDatosReceptor cargarReceptor() throws FileNotFoundException ;
     public String cargarIPDirectorio() throws FileNotFoundException;
     public int cargarPuertoConexion() throws FileNotFoundException;
 

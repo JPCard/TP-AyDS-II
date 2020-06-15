@@ -1,8 +1,9 @@
 package receptor.controlador;
 
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IMensaje;
 
 
 import emisor.vista.VentanaModalCarga;
@@ -13,12 +14,13 @@ import java.security.PrivateKey;
 
 import java.util.Observable;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
 
 import receptor.modelo.DesencriptarRSA;
 import receptor.modelo.IDesencriptar;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ISistemaReceptor;
 import receptor.modelo.SistemaReceptor;
 
 
@@ -29,19 +31,18 @@ public class ControladorReceptor extends Observable{
     
     private IVistaReceptor vistaReceptor;
     private static ControladorReceptor instance;
-    private IDesencriptar desencriptador;
+    private ISistemaReceptor sistemaReceptor;
     
     private ControladorReceptor(IVistaReceptor vista) {
         super();
         this.vistaReceptor = vista;
-        this.desencriptador = new DesencriptarRSA();
         new Thread(){
 
             @Override
             public void run() {
                 super.run();
                 try {
-                    SistemaReceptor.inicializar();
+                    sistemaReceptor = new SistemaReceptor();
                     avisarFinIniciandoSistema();
                 } catch (FileNotFoundException e) {
                     vistaReceptor.mostrarErrorNoReceptor();
@@ -49,13 +50,7 @@ public class ControladorReceptor extends Observable{
                 
             }
         }.start();
-        
-        
         this.avisarIniciandoSistema();
-        
-        
-        
-        
     }
     
     public static ControladorReceptor getInstance(IVistaReceptor vista){
@@ -68,26 +63,20 @@ public class ControladorReceptor extends Observable{
         return instance;
     }
     
-    public void enviarComprobante(Comprobante comprobante,Emisor emisor){
-        SistemaReceptor.getInstance().getTcpdeReceptor().enviarComprobante(comprobante,emisor);
+    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor){
+        sistemaReceptor.enviarComprobante(comprobante,emisor);
     }
     
-    public void mostrarMensaje(Mensaje mensaje){
-        //
-        
-        PrivateKey privateKey = SistemaReceptor.getInstance().getLlavePrivada();
-        
-        this.vistaReceptor.agregarMensaje(this.desencriptador.desencriptar(mensaje,privateKey ));
-        mensaje.onLlegada();
-        
+    public void mostrarMensaje(IMensaje mensaje){
+        this.vistaReceptor.agregarMensaje(mensaje);
     }
     
     public void activarAlerta(){
         this.vistaReceptor.activarAlerta();
     }
 
-    public Receptor getReceptor() {
-        return SistemaReceptor.getInstance().getReceptor();
+    public IDatosReceptor getReceptor() {
+        return sistemaReceptor.getReceptor();
     }
 
     public void updateConectado(boolean estado) {
@@ -104,6 +93,6 @@ public class ControladorReceptor extends Observable{
     }
 
     public String getUsuarioReceptor() {
-        return SistemaReceptor.getInstance().getUsuarioReceptor();
+        return sistemaReceptor.getUsuarioReceptor();
     }
 }

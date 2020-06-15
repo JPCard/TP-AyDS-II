@@ -1,7 +1,7 @@
 package servidormensajeria.persistencia;
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
@@ -12,29 +12,30 @@ import java.util.Iterator;
 
 import org.json.simple.parser.ParseException;
 
-import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IPersistenciaMensajesServidor {
 
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception;
 
-    public void guardarComp(Comprobante comprobante) throws Exception;
+    public void guardarComp(IComprobante comprobante) throws Exception;
 
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception;
 
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception;
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception;
     
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception;
 
     public void avanzaProximoIdMensaje(); //una vez que le mandamos el id al emisor
 
     public int getProximoIdMensaje();
     
-    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws Exception;
+    public void guardarComprobanteNoEnviado(IComprobante comprobante) throws Exception;
     
-    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor);
+    public Collection<IComprobante> getComprobantesNoEnviados(IDatosEmisor emisor);
     
-    public void eliminarComprobantesNoEnviados(Emisor emisor) throws Exception;
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) throws Exception;
 }
     

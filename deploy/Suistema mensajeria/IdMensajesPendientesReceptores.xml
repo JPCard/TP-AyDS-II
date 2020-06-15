@@ -3,14 +3,7 @@
  <object class="java.util.TreeMap">
   <void method="put">
    <string>napopan343123</string>
-   <object class="java.util.ArrayList">
-    <void method="add">
-     <int>6</int>
-    </void>
-    <void method="add">
-     <int>7</int>
-    </void>
-   </object>
+   <object class="java.util.ArrayList"/>
   </void>
  </object>
 </java>

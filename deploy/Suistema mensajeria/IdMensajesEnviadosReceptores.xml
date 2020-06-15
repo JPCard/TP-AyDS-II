@@ -11,21 +11,25 @@
      <int>1</int>
     </void>
     <void method="add">
+     <int>2</int>
+    </void>
+    <void method="add">
      <int>3</int>
+    </void>
+    <void method="add">
+     <int>4</int>
     </void>
     <void method="add">
      <int>5</int>
     </void>
-   </object>
-  </void>
-  <void method="put">
-   <string>receptor2</string>
-   <object class="java.util.ArrayList">
     <void method="add">
-     <int>2</int>
+     <int>6</int>
     </void>
     <void method="add">
-     <int>4</int>
+     <int>7</int>
+    </void>
+    <void method="add">
+     <int>8</int>
     </void>
    </object>
   </void>

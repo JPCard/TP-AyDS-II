@@ -1,6 +1,8 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,12 +15,12 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.TreeMap;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class SincronizacionInicialDirectorios {
-    private Directorio directorio;
+    private IDirectorio directorio;
 
-    public SincronizacionInicialDirectorios(Directorio directorio) {
+    public SincronizacionInicialDirectorios(IDirectorio directorio) {
         super();
         this.directorio = directorio;
     }
@@ -28,7 +30,7 @@ public class SincronizacionInicialDirectorios {
      * Intenta contactar al otro directorio para obtener los destinatarios que hay hasta ahora, si no lo encuentra comienza de cero
      */
     public void cargarListaDestinatariosRegistrados() {
-        Collection<Receptor> destinatariosRegistrados;
+        Collection<IDatosReceptor> destinatariosRegistrados;
         Long tiempoUltModif;
         try {
             Socket socket = new Socket();
@@ -55,7 +57,7 @@ public class SincronizacionInicialDirectorios {
             socketDest.connect(addr2, 500);
             ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-            destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
+            destinatariosRegistrados = (Collection<IDatosReceptor>) inDest.readObject();
 
 
             inDest.close();
@@ -65,20 +67,20 @@ public class SincronizacionInicialDirectorios {
         } catch (IOException e) {
             e.printStackTrace();
             tiempoUltModif = new GregorianCalendar().getTimeInMillis();
-            destinatariosRegistrados = new ArrayList<Receptor>();
+            destinatariosRegistrados = new ArrayList<IDatosReceptor>();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             tiempoUltModif = new GregorianCalendar().getTimeInMillis();
-            destinatariosRegistrados = new ArrayList<Receptor>();
+            destinatariosRegistrados = new ArrayList<IDatosReceptor>();
         }
 
         directorio.setTiempoUltModif(tiempoUltModif);
         //        directorio.setTiempoUltModif(new GregorianCalendar().getTimeInMillis());
 
 
-        TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
+        TreeMap<String, IDatosReceptor> receptores = new TreeMap<String, IDatosReceptor>();
 
-        for (Receptor r : destinatariosRegistrados) {
+        for (IDatosReceptor r : destinatariosRegistrados) {
             receptores.put(r.getUsuario(), r);
             directorio.heartbeatRecibido(r);
         }

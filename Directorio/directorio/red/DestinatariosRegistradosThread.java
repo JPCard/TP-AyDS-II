@@ -1,6 +1,8 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import emisor.controlador.ControladorEmisor;
 
@@ -23,14 +25,14 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class DestinatariosRegistradosThread extends Thread {
-    private Directorio directorio;
+    private IDirectorio directorio;
     private int getDestinatariosPort;
 
 
-    public DestinatariosRegistradosThread(Directorio directorio) {
+    public DestinatariosRegistradosThread(IDirectorio directorio) {
         super();
         this.directorio = directorio;
         this.getDestinatariosPort = directorio.getPuertoRecibeGetDestinatarios();

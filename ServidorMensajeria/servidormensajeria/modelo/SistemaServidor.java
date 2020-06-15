@@ -1,7 +1,7 @@
 package servidormensajeria.modelo;
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IMensaje;
 
 import emisor.modelo.MensajeConComprobante;
 
@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 import java.util.Collection;
 
-import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
 
@@ -27,14 +27,14 @@ import servidormensajeria.red.MensajeListener;
 import servidormensajeria.red.SolicitudComprobantesEmisoresListener;
 import servidormensajeria.red.WatchDogDirectorio;
 
-public class SistemaServidor {
+public class SistemaServidor implements ISistemaServidor {
 
-    private static SistemaServidor instance;
+    
     private IPersistenciaMensajesServidor persistenciaMensajes;
     private TCPConsultaDirectorio tcpParaDirectorio;
 
     //cosas para saber donde estna los usuarios
-    private ArrayList<Receptor> receptores = new ArrayList<Receptor>(); //necesario para el synchronized
+    private ArrayList<IDatosReceptor> receptores = new ArrayList<IDatosReceptor>(); //necesario para el synchronized
     private Long tiempoUltimaActualizacionReceptores = new Long(-1);
 
     private IPersistenciaParametrosServidor persistenciaParametros = new PersistenciaParametrosServidor();
@@ -42,7 +42,7 @@ public class SistemaServidor {
 
 
     public static void main(String[] args) throws Exception {
-        SistemaServidor sistema = getInstance();
+        SistemaServidor sistema = new SistemaServidor();
 
         IPersistenciaParametrosServidor persistencia = sistema.persistenciaParametros;
 
@@ -51,7 +51,7 @@ public class SistemaServidor {
             PersistenciaMensajesFactory.getInstance().crearMetodoPersistenciaMensajes(metodoPersistencia);
 
         sistema.tcpParaDirectorio =
-            new TCPConsultaDirectorio(persistencia.cargarIPDirectorio(),
+            new TCPConsultaDirectorio(sistema,persistencia.cargarIPDirectorio(),
                                   persistencia.cargarPuertoDirectorioTiempoUltModif(), persistencia.cargarPuertoDirectorioDestinatarios(),
 
                                   persistencia.cargarIPDirectorioSecundario(),
@@ -59,16 +59,16 @@ public class SistemaServidor {
                                   persistencia.cargarPuertoDirectorioSecundarioDestinatarios());
 
         sistema.watchDogDirectorio =
-            new Thread(new WatchDogDirectorio(persistencia.cargarIPDirectorio(),
+            new Thread(new WatchDogDirectorio(sistema,persistencia.cargarIPDirectorio(),
                                               persistencia.cargarpuertoDirectorioPrincipalPushReceptores(),
                                               persistencia.cargarIPDirectorioSecundario(),
                                               persistencia.cargarPuertoDirectorioSecundarioPushReceptores()));
 
 
-        new Thread(new MensajeListener()).start();
+        new Thread(new MensajeListener(sistema)).start();
         //        System.out.println("hola");
-        new Thread(new ComprobanteListener()).start();
-        new Thread(new SolicitudComprobantesEmisoresListener()).start();
+        new Thread(new ComprobanteListener(sistema)).start();
+        new Thread(new SolicitudComprobantesEmisoresListener(sistema)).start();
         sistema.watchDogDirectorio.start();
         
         
@@ -95,13 +95,13 @@ public class SistemaServidor {
         }
     }
 
-    public void setReceptores(ArrayList<Receptor> receptores) {
+    public void setReceptores(ArrayList<IDatosReceptor> receptores) {
         synchronized (this.receptores) {
             this.receptores = receptores;
         }
     }
 
-    public ArrayList<Receptor> getReceptores() {
+    public ArrayList<IDatosReceptor> getReceptores() {
         synchronized (this.receptores) {
             return receptores;
         }
@@ -117,14 +117,10 @@ public class SistemaServidor {
         super();
     }
 
-    public static SistemaServidor getInstance() {
-        if (instance == null)
-            instance = new SistemaServidor();
-        return instance;
-    }
 
-    public void arriboMensaje(Mensaje mensaje) {
-        new Thread(new MensajeHandler(mensaje, true)).start();
+
+    public void arriboMensaje(IMensaje mensaje) {
+        new Thread(new MensajeHandler(mensaje, true,this)).start();
     }
 
     public IPersistenciaMensajesServidor getPersistencia() {
@@ -139,7 +135,7 @@ public class SistemaServidor {
      * @param usuarioActual
      * @return null si el receptor no esta conectado o no hay conexion con el directorio, != null si el receptor esta conectado
      */
-    public Receptor getReceptor(String usuarioActual) {
+    public IDatosReceptor getReceptor(String usuarioActual) {
         return getDirectorio().getReceptor(usuarioActual);
     }
 
@@ -148,7 +144,7 @@ public class SistemaServidor {
      * @return null si no hay mensajes para ese receptor, una coleccion de los mensajes para ese receptor en caso contrario
      * @throws Exception
      */
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception {
         return persistenciaMensajes.obtenerMsjsPendientesReceptor(receptor);
     }
 
@@ -157,26 +153,26 @@ public class SistemaServidor {
      * @return null si no hay mensajes enviados de ese emisor, una coleccion de los mensajes enviados de ese emisor en caso contrario
      * @throws Exception
      */
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception {
         return persistenciaMensajes.obtenerMsjsComprobadosEmisor(emisor);
     }
 
 
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
         persistenciaMensajes.guardarMsj(mensaje, usuarioReceptor, entregado);
     }
 
-    public void guardarComp(Comprobante comprobante) throws Exception {
+    public void guardarComp(IComprobante comprobante) throws Exception {
         persistenciaMensajes.guardarComp(comprobante);
     }
 
 
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
         persistenciaMensajes.marcarMensajeEnviado(mensaje, usuarioReceptor, primerIntento);
     }
 
-    public void arriboComprobante(Comprobante comprobante) {
-        new Thread(new ComprobanteHandler(comprobante)).start();
+    public void arriboComprobante(IComprobante comprobante) {
+        new Thread(new ComprobanteHandler(this,comprobante)).start();
     }
 
 
@@ -193,14 +189,14 @@ public class SistemaServidor {
     }
 
 
-    public void eliminarComprobantesNoEnviados(Emisor emisor) {
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) {
         try {
             persistenciaMensajes.eliminarComprobantesNoEnviados(emisor);
         } catch (Exception e) {
         }
     }
 
-    public void envioMensajesAsincronicos(Receptor receptor) {
+    public void envioMensajesAsincronicos(IDatosReceptor receptor) {
         try {
             this.tcpParaDirectorio.envioMensajesAsincronicos(receptor);
         } catch (Exception e) {

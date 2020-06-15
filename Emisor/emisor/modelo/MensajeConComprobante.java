@@ -9,13 +9,16 @@ import java.util.Collection;
 import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
+import receptor.modelo.ISistemaReceptor;
 import receptor.modelo.SistemaReceptor;
 
 public class MensajeConComprobante extends Mensaje implements Serializable {
     private Collection<String> receptoresConfirmados;
     
-    public MensajeConComprobante(Emisor emisor, String asunto, String cuerpo,ArrayList<String> receptores, String receptorObjetivo) {
+    public MensajeConComprobante(IDatosEmisor emisor, String asunto, String cuerpo,ArrayList<String> receptores, String receptorObjetivo) {
         super(emisor, asunto, cuerpo,receptores,receptorObjetivo);
         receptoresConfirmados = new  ArrayList<String>(); //por el momento no hay nadie confirmado
     }
@@ -28,16 +31,14 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
      *Pre: el mensaje tiene id seteado
      */
     @Override
-    public void onLlegada() {
-        super.onLlegada();
-        Comprobante comprobante = new Comprobante(this.getId(),ControladorReceptor.getInstance().getReceptor().getUsuario(),this.getEmisor());
-
-        ControladorReceptor.getInstance().enviarComprobante(comprobante,this.getEmisor());
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        super.onLlegada(llegadaMensaje);
+        llegadaMensaje.arriboMensajeConComprobante(this);
     }
     
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = new MensajeFactory()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -47,7 +48,7 @@ public class MensajeConComprobante extends Mensaje implements Serializable {
     
     @Override
     public String toString() {
-        return "Mensaje con Comprobante\n"+super.toString();
+        return "IMensaje con IComprobante\n"+super.toString();
     }
 
     /**

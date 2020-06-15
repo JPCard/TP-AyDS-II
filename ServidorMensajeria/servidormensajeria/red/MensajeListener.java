@@ -1,7 +1,9 @@
 package servidormensajeria.red;
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,21 +17,23 @@ import java.util.Collection;
 
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 import receptor.modelo.SistemaReceptor;
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class MensajeListener implements Runnable {
+    private ISistemaServidor sistemaServidor;
 
-    public MensajeListener() {
-        super();
+    public MensajeListener(ISistemaServidor sistemaServidor) {
+        this.sistemaServidor = sistemaServidor;
     }
 
     @Override
     public void run() {
         while (true) {
-            try (ServerSocket s = new ServerSocket(SistemaServidor.getInstance().cargarPuertoRecepcionMensajes())) {
+            try (ServerSocket s = new ServerSocket(sistemaServidor.cargarPuertoRecepcionMensajes())) {
                 while (true) {
                     System.out.println("Sistema Servidor de mensajeria: Esperando Mensajes...");
                     try (Socket socket = s.accept()) {
@@ -42,24 +46,24 @@ public class MensajeListener implements Runnable {
                             //OUT 1
                             try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
                                 for (int i = 0; i < cantMensajes; i++) {
-                                    Integer nuevaid = SistemaServidor.getInstance()
+                                    Integer nuevaid = sistemaServidor
                                                                      .getPersistencia()
                                                                      .getProximoIdMensaje();
                                     out.writeObject(nuevaid); //envio al emisor la id con la cual debe rotular su mensaje
-                                    SistemaServidor.getInstance()
+                                    sistemaServidor
                                                    .getPersistencia()
                                                    .avanzaProximoIdMensaje();
                                 }
 
 
                                 //IN 2
-                                Collection<Mensaje> mensajes = (Collection<Mensaje>) in.readObject();
-                                for (Iterator<Mensaje> it = mensajes.iterator(); it.hasNext();) {
-                                    SistemaServidor.getInstance().arriboMensaje(it.next());
+                                Collection<IMensaje> mensajes = (Collection<IMensaje>) in.readObject();
+                                for (Iterator<IMensaje> it = mensajes.iterator(); it.hasNext();) {
+                                    sistemaServidor.arriboMensaje(it.next());
                                 }
 
-                                Mensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
-                                System.out.println("Sistema Servidor de mensajeria: Mensaje de " +
+                                IMensaje primerMensaje = mensajes.iterator().next(); //TODO borrar es de debug
+                                System.out.println("Sistema Servidor de mensajeria: IMensaje de " +
                                                    primerMensaje.getEmisor().getNombre() + " recibido");
                                 //TODO borrar
                                 System.out.println("Dice que asunto: " + primerMensaje.getAsunto());
@@ -79,7 +83,7 @@ public class MensajeListener implements Runnable {
         }
     }
 
-    public void enviarComprobante(Comprobante comprobante, Emisor emisor) {
+    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor) {
 
         try {
             Socket socket = new Socket(emisor.getIP(), emisor.getPuerto());

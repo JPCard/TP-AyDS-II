@@ -3,7 +3,7 @@ package receptor.modelo;
 import java.io.Serializable;
 
 public class Heartbeat implements Serializable {
-    private Receptor receptor;
+    private IDatosReceptor receptor;
     private boolean retransmitido = false;
 
     public Heartbeat(){
@@ -16,11 +16,11 @@ public class Heartbeat implements Serializable {
         return "heartbeat del receptor "+this.receptor.getUsuario()+" Retransmitido = "+this.retransmitido;
     }
 
-    public void setReceptor(Receptor receptor) {
+    public void setReceptor(IDatosReceptor receptor) {
         this.receptor = receptor;
     }
 
-    public Heartbeat(Receptor receptor) {
+    public Heartbeat(IDatosReceptor receptor) {
         super();
         this.receptor = receptor;
     }
@@ -29,7 +29,7 @@ public class Heartbeat implements Serializable {
         this.retransmitido = retransmitido;
     }
 
-    public Receptor getReceptor() {
+    public IDatosReceptor getReceptor() {
         return receptor;
     }
 

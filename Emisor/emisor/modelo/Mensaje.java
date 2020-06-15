@@ -8,17 +8,30 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
 
 
-public class Mensaje implements Serializable, Cloneable {
+public class Mensaje implements IMensaje {
     private GregorianCalendar datetime;
     private String asunto;
     private String cuerpo;
-    private Emisor emisor;
+    private IDatosEmisor emisor;
     private int id;
     private ArrayList<String> usuariosReceptores = new ArrayList<String>();
     private String receptorObjetivo;
+    
+    public Mensaje(IDatosEmisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
+                   String receptorObjetivo) {
+        this.datetime = new GregorianCalendar(); //fecha y hora actual
+        this.asunto = asunto;
+        this.cuerpo = cuerpo;
+        this.emisor = emisor;
+        this.receptorObjetivo = receptorObjetivo;
+
+        this.usuariosReceptores = usuariosReceptores;
+        this.id = -1;
+    }
 
    
 
@@ -28,8 +41,8 @@ public class Mensaje implements Serializable, Cloneable {
 
 
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = new MensajeFactory()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_NORMAL, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -46,17 +59,6 @@ public class Mensaje implements Serializable, Cloneable {
         return usuariosReceptores.iterator();
     }
 
-    public Mensaje(Emisor emisor, String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
-                   String receptorObjetivo) {
-        this.datetime = new GregorianCalendar(); //fecha y hora actual
-        this.asunto = asunto;
-        this.cuerpo = cuerpo;
-        this.emisor = emisor;
-        this.receptorObjetivo = receptorObjetivo;
-
-        this.usuariosReceptores = usuariosReceptores;
-        this.id = -1;
-    }
 
 
     public void setReceptorObjetivo(String receptorObjetivo) {
@@ -77,11 +79,11 @@ public class Mensaje implements Serializable, Cloneable {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof Mensaje)) {
+        if (!(object instanceof IMensaje)) {
             return false;
         }
-        final Mensaje other = (Mensaje) object;
-        if (id != other.id) {
+        final IMensaje other = (IMensaje) object;
+        if (id != other.getId()) {
             return false;
         }
         return true;
@@ -108,7 +110,7 @@ public class Mensaje implements Serializable, Cloneable {
         return cuerpo;
     }
 
-    public Emisor getEmisor() {
+    public IDatosEmisor getEmisor() {
         return emisor;
     }
 
@@ -146,7 +148,7 @@ public class Mensaje implements Serializable, Cloneable {
         this.cuerpo = cuerpo;
     }
 
-    public void setEmisor(Emisor emisor) {
+    public void setEmisor(IDatosEmisor emisor) {
         this.emisor = emisor;
     }
 
@@ -164,9 +166,10 @@ public class Mensaje implements Serializable, Cloneable {
      * <b>Post:</b> el mensaje es mostrado al receptor en la vista que corresponda
      * <b>Invariante:</b> datetime, asunto, cuerpo y emisor del mensaje no varían
      */
-    public void onLlegada() {
-        // el mensaje comun no hace nada
-        //
-    }
 
+
+    @Override
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        llegadaMensaje.arriboMensajeSimple(this);
+    }
 }

@@ -1,6 +1,6 @@
 package receptor.vista;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.awt.Color;
 import java.awt.event.WindowEvent;
@@ -30,7 +30,7 @@ import receptor.controlador.ControladorReceptor;
  * @author Mau
  */
 public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor {
-    DefaultListModel<Mensaje> listModel = new DefaultListModel<Mensaje>();
+    DefaultListModel<IMensaje> listModel = new DefaultListModel<IMensaje>();
     private boolean sonando = false;
     private Clip clip = null;
 
@@ -273,7 +273,7 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
     private javax.swing.JButton jButtonSilenciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelConexion;
-    private javax.swing.JList<Mensaje> jListMensajes;
+    private javax.swing.JList<IMensaje> jListMensajes;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -313,7 +313,7 @@ public class VistaReceptor extends javax.swing.JFrame implements IVistaReceptor 
 
 
     @Override
-    public void agregarMensaje(Mensaje mensaje) {
+    public void agregarMensaje(IMensaje mensaje) {
         this.listModel.add(0,mensaje);
         this.repaint();
     }

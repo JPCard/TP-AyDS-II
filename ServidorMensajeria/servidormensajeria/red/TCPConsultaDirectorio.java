@@ -2,7 +2,7 @@ package servidormensajeria.red;
 
 import emisor.controlador.ControladorEmisor;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -25,9 +25,11 @@ import java.util.Iterator;
 
 import java.util.TreeSet;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.DatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 
+import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
 
 public class TCPConsultaDirectorio {
@@ -49,14 +51,15 @@ public class TCPConsultaDirectorio {
 
     private boolean usandoDirSecundario;
 
+    private ISistemaServidor sistemaServidor;
 
 
-    public TCPConsultaDirectorio(String ipDirectorioPrincipal, int puertoDirectorioPrincipalTiempo,
+    public TCPConsultaDirectorio(ISistemaServidor sistemaServidor,String ipDirectorioPrincipal, int puertoDirectorioPrincipalTiempo,
                              int puertoDirectorioPrincipalDestinatarios,
                              String ipDirectorioSecundario,
                              int puertoDirectorioSecundarioTiempo, int puertoDirectorioSecundarioDestinatarios) {
         
-        
+        this.sistemaServidor = sistemaServidor;
         this.ipDirectorioPrincipal = ipDirectorioPrincipal;
         this.puertoDirectorioPrincipalTiempo = puertoDirectorioPrincipalTiempo;
         this.puertoDirectorioPrincipalDestinatarios = puertoDirectorioPrincipalDestinatarios;
@@ -79,8 +82,8 @@ public class TCPConsultaDirectorio {
      */
 
 
-    public Receptor getReceptor(String usuarioActual) {
-        Receptor r = null;
+    public IDatosReceptor getReceptor(String usuarioActual) {
+        IDatosReceptor r = null;
         try {
             r = pedirReceptor(usuarioActual);
         } catch (Exception e) {
@@ -113,24 +116,25 @@ public class TCPConsultaDirectorio {
         public void envioInicialMensajesAsincronicos() {
             this.getReceptor("");
             System.err.println("el magico????");
-            for (Receptor receptor : SistemaServidor.getInstance().getReceptores()) {
+            for (IDatosReceptor receptor : sistemaServidor.getReceptores()) {
                 try {
                     if (receptor.isConectado())
                         this.envioMensajesAsincronicos(receptor);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }
     
     
-    public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajes = SistemaServidor.getInstance().obtenerMsjsPendientesReceptor(receptor);
-        for (Mensaje mensaje : mensajes) {
-            new Thread(new MensajeHandler(mensaje, false)).start();
+    public void envioMensajesAsincronicos(IDatosReceptor receptor) throws Exception {
+        Collection<IMensaje> mensajes = sistemaServidor.obtenerMsjsPendientesReceptor(receptor);
+        for (IMensaje mensaje : mensajes) {
+            new Thread(new MensajeHandler(mensaje, false,sistemaServidor)).start();
         }
     }
     
-    private Receptor pedirReceptor(String usuarioActual) throws IOException, ClassNotFoundException {
+    private IDatosReceptor pedirReceptor(String usuarioActual) throws IOException, ClassNotFoundException {
         Socket socketTiempo = new Socket();
         
         String IPActual; int puertoTiempoActual; int puertoDestActual;
@@ -153,7 +157,7 @@ public class TCPConsultaDirectorio {
         in.close();
         socketTiempo.close();
 
-        if (SistemaServidor.getInstance().getTiempoUltimaActualizacionReceptores() < tiempoUltimaActualizacion) {
+        if (sistemaServidor.getTiempoUltimaActualizacionReceptores() < tiempoUltimaActualizacion) {
 
 
             Socket socketDest = new Socket();
@@ -162,23 +166,23 @@ public class TCPConsultaDirectorio {
             socketDest.connect(addr2, 500);
             ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-            SistemaServidor.getInstance().setReceptores((ArrayList<Receptor>) inDest.readObject());
+            sistemaServidor.setReceptores((ArrayList<IDatosReceptor>) inDest.readObject());
 
 
             inDest.close();
             socketDest.close();
 
 
-            SistemaServidor.getInstance().setTiempoUltimaActualizacionReceptores(tiempoUltimaActualizacion);
+            sistemaServidor.setTiempoUltimaActualizacionReceptores(tiempoUltimaActualizacion);
 
         }
 
 
-        ArrayList<Receptor> receptoresArray = SistemaServidor.getInstance().getReceptores();
+        ArrayList<IDatosReceptor> receptoresArray = sistemaServidor.getReceptores();
         System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
         int indice =
             Collections.binarySearch(receptoresArray,
-                                     new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
+                                     new DatosReceptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
                                                   null)); //este receptor es de mentirita y solo para comparar
         //            System.out.println("INDICE INDICE INDICE " + indice);
         if (indice == -1)

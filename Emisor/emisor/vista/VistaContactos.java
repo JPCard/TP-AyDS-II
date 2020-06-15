@@ -8,14 +8,15 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 
 
-import receptor.modelo.Receptor;
+import receptor.modelo.DatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 /**
  *
  * @author Mau
  */
 public class VistaContactos extends javax.swing.JFrame {
-    private DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
+    private DefaultListModel<IDatosReceptor> listModel = new DefaultListModel<IDatosReceptor>();
 
     /** Creates new form VistaContactos */
     public VistaContactos() {
@@ -133,13 +134,13 @@ public class VistaContactos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<Receptor> jListDestinatarios;
+    private javax.swing.JList<IDatosReceptor> jListDestinatarios;
     private javax.swing.JPanel jPanelDestinatarios;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 
     public void cargarContactos(){
-        Iterator<Receptor> it = ControladorEmisor.getInstance().getContactos();
+        Iterator<IDatosReceptor> it = ControladorEmisor.getInstance().getContactos();
         while(it.hasNext()){
             this.listModel.addElement(it.next());
         }

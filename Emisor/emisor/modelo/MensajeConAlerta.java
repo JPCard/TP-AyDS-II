@@ -6,11 +6,12 @@ import java.util.ArrayList;
 
 import receptor.controlador.ControladorReceptor;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ILlegadaMensaje;
 
 public class MensajeConAlerta extends Mensaje implements Serializable {
 
-    public MensajeConAlerta(Emisor emisor, String asunto, String cuerpo, ArrayList<String> receptores,
+    public MensajeConAlerta(IDatosEmisor emisor, String asunto, String cuerpo, ArrayList<String> receptores,
                             String receptorObjetivo) {
         super(emisor, asunto, cuerpo, receptores, receptorObjetivo);
     }
@@ -20,14 +21,16 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
     } //para serializacion
 
     @Override
-    public void onLlegada() {
-        super.onLlegada();
-        ControladorReceptor.getInstance().activarAlerta();
+    public void onLlegada(ILlegadaMensaje llegadaMensaje) {
+        
+        super.onLlegada(llegadaMensaje);
+        llegadaMensaje.arriboMensajeConAlerta(this);
     }
 
+
     @Override
-    public Mensaje clone() {
-        Mensaje m = MensajeFactory.getInstance()
+    public IMensaje clone() {
+        IMensaje m = new MensajeFactory()
                .crearMensaje(this.getEmisor(), this.getAsunto(), this.getCuerpo(),
                              AbstractMensajeFactory.TipoMensaje.MSJ_CON_ALERTA, this.getUsuariosReceptores(),
                              this.getReceptorObjetivo());
@@ -37,6 +40,6 @@ public class MensajeConAlerta extends Mensaje implements Serializable {
 
     @Override
     public String toString() {
-        return "Mensaje con Alerta\n" + super.toString();
+        return "IMensaje con Alerta\n" + super.toString();
     }
 }

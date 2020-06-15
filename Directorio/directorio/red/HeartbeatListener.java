@@ -1,6 +1,6 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
 
 import directorio.modelo.DirectorioMain;
 
@@ -23,14 +23,14 @@ import java.security.AccessControlContext;
 import java.util.GregorianCalendar;
 
 import receptor.modelo.Heartbeat;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
-public class HeartbeatThread extends Thread {
-    private Directorio directorio;
+public class HeartbeatListener extends Thread {
+    private IDirectorio directorio;
     private final int HEARTBEAT_PORT;
 
 
-    public HeartbeatThread(Directorio directorio) {
+    public HeartbeatListener(IDirectorio directorio) {
         super();
         this.directorio = directorio;
         this.HEARTBEAT_PORT = directorio.getPuertoRecibeHeartbeats();
@@ -60,11 +60,11 @@ public class HeartbeatThread extends Thread {
                             
                             if (!heartbeat.isRetransmitido()) { //avisar a los otros directorios
                                 heartbeat.setRetransmitido(true);
-                                new Thread(new HeartbeatRetransmitirThread(heartbeat)).start();
+                                new Thread(new HeartbeatRetransmitirThread(directorio,heartbeat)).start();
 
                             }
 
-                            new Thread(new HeartbeatHandler(heartbeat)).start();
+                            new Thread(new HeartbeatHandler(directorio,heartbeat)).start();
                             
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();

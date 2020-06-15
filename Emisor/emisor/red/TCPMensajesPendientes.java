@@ -1,6 +1,8 @@
 package emisor.red;
 
-import emisor.modelo.Mensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
+import emisor.modelo.ISistemaEmisor;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.IOException;
@@ -15,16 +17,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import receptor.modelo.Comprobante;
+import receptor.modelo.IComprobante;
 
-public class TCPMensajesPendientes implements Runnable{
+public class TCPMensajesPendientes implements Runnable {
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
-    
-    
-    public TCPMensajesPendientes(String ipServidorMensajeria, int puertoServidorMensajeria) {
+    private ISistemaEmisor sistemaEmisor;
+
+
+    public TCPMensajesPendientes(String ipServidorMensajeria, int puertoServidorMensajeria,
+                                 ISistemaEmisor sistemaEmisor) {
         this.ipServidorMensajeria = ipServidorMensajeria;
         this.puertoServidorMensajeria = puertoServidorMensajeria;
+        this.sistemaEmisor = sistemaEmisor;
     }
 
 
@@ -41,7 +46,7 @@ public class TCPMensajesPendientes implements Runnable{
 
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 
-                Collection<Mensaje> mensajesPostCifrado = SistemaEmisor.getInstance().getMensajesNoEnviados();
+                Collection<IMensaje> mensajesPostCifrado = sistemaEmisor.getMensajesNoEnviados();
                 
                 int cantMensajes = mensajesPostCifrado.size();
                 //OUT 1
@@ -50,14 +55,14 @@ public class TCPMensajesPendientes implements Runnable{
                 //IN 1
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                 
-                Iterator<Mensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
+                Iterator<IMensaje> itMensajesCifrados = mensajesPostCifrado.iterator();
                 int nextId;
                 int viejaId;
                 
                 HashMap<Integer,Integer> cambiadorDeIds = new HashMap<Integer,Integer>(); //<ViejaId,NuevaId>
                 
                 while(itMensajesCifrados.hasNext()){
-                    Mensaje mensaje = itMensajesCifrados.next();
+                    IMensaje mensaje = itMensajesCifrados.next();
                     viejaId = mensaje.getId();
                     
                     System.err.println("el usuario de este mensaje es (receptor): +"+mensaje.getReceptorObjetivo());
@@ -77,12 +82,12 @@ public class TCPMensajesPendientes implements Runnable{
                 out.close();
                 
                 for(Integer i:cambiadorDeIds.keySet()){
-                    SistemaEmisor.getInstance().actualizarIdMensaje(i,cambiadorDeIds.get(i));
+                    sistemaEmisor.actualizarIdMensaje(i,cambiadorDeIds.get(i));
                 }
                 
-                SistemaEmisor.getInstance().marcarMensajesPendientesComoEnviados(mensajesPostCifrado);
+                sistemaEmisor.marcarMensajesPendientesComoEnviados(mensajesPostCifrado);
                 
-                hayParaEnviar = SistemaEmisor.getInstance().quedanMensajesPendientes();
+                hayParaEnviar = sistemaEmisor.quedanMensajesPendientes();
                 
             } catch (IOException e) {
                 System.out.println("Hilo enviar mensajes pendientes: Servidor de Mensajeria Fuera de linea. Reintentando...");

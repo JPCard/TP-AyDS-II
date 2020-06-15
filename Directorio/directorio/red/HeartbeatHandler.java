@@ -1,19 +1,23 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import receptor.modelo.Heartbeat;
 
 public class HeartbeatHandler implements Runnable{
-    
+    private IDirectorio directorio;
     private Heartbeat heartbeat;
-    public HeartbeatHandler(Heartbeat heartbeat) {
-        super();
+
+
+    public HeartbeatHandler(IDirectorio directorio, Heartbeat heartbeat) {
+        this.directorio = directorio;
         this.heartbeat = heartbeat;
     }
 
     @Override
     public void run() {
-        Directorio.getInstance().heartbeatRecibido(heartbeat.getReceptor());
+        directorio.heartbeatRecibido(heartbeat.getReceptor());
     }
 }

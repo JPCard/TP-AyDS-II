@@ -12,9 +12,13 @@ import emisor.persistencia.PersistenciaEmisor;
 
 import emisor.persistencia.PersistenciaMensajesEmisorXML;
 
+import emisor.red.IEnvioMensaje;
+import emisor.red.IRedComprobantes;
 import emisor.red.TCPDestinatariosRegistrados;
 import emisor.red.TCPMensajesPendientes;
-import emisor.red.TCPdeEmisor;
+import emisor.red.TCPComprobantes;
+
+import emisor.red.TCPEnvioMensaje;
 
 import java.io.FileNotFoundException;
 
@@ -27,8 +31,8 @@ import java.util.Iterator;
 
 import java.util.TreeSet;
 
-import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IDatosReceptor;
 
 //jsoneando
 import java.io.FileReader;
@@ -41,92 +45,87 @@ import java.util.Collections;
 import org.json.simple.*;
 import org.json.simple.parser.ParseException;
 
-public class SistemaEmisor {
-    private Emisor emisor;
-    private TCPdeEmisor tcpdeEmisor;
-    private IEncriptacion encriptacion;
-    private static SistemaEmisor instance;
+import receptor.modelo.DatosReceptor;
 
+public class SistemaEmisor implements ISistemaEmisor {
+    private IDatosEmisor emisor;
+    private IRedComprobantes iRedComprobantes;
+    private IEncriptacion encriptacion;
 
     private IPersistenciaMensajesEmisor persistenciaMensajes;
 
     private IPersistenciaEmisor persistencia = new PersistenciaEmisor();
-    private Thread TCPMensajesPendientes = null;
+    private Thread hiloMensajesPendientes = null;
+    private IEnvioMensaje tcpEnvioMensaje;
 
+    private AbstractMensajeFactory mensajeFactory = new MensajeFactory();
 
-    private SistemaEmisor() throws Exception {
+    public SistemaEmisor() throws Exception {
         super();
         this.persistenciaMensajes = new PersistenciaMensajesEmisorXML();
         encriptacion = new EncriptacionRSA();
         emisor = persistencia.cargarEmisor();
 
-        this.tcpdeEmisor =
-            new TCPdeEmisor(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
-                            persistencia.cargarPuertoServidorSolicitarMensajesEmisor());
-
-
-    }
-
-    public static void inicializar() throws Exception {
-        if (instance == null) {
-            instance = new SistemaEmisor();
-        }
-
-        Thread hiloenviar = new Thread(instance.tcpdeEmisor);
-        hiloenviar.start();
-        Thread hiloDestinatarios =
-            new Thread(new TCPDestinatariosRegistrados(instance.persistencia.cargarIPDirectorio(),
-                                                       instance.persistencia.cargarPuertoDirectorioTiempo(),
-                                                       instance.persistencia.cargarPuertoDirectorioDest(),
-                                                       instance.persistencia.cargarIPDirectorioSecundario(),
-                                                       instance.persistencia.cargarPuertoDirectorioSecundarioTiempo(),
-                                                       instance.persistencia.cargarPuertoDirectorioSecundarioDest()));
-        hiloDestinatarios.start();
+        this.iRedComprobantes =
+            new TCPComprobantes(persistencia.cargarIPServidorMensajeria(), persistencia.cargarPuertoServidorMensajeria(),
+                            persistencia.cargarPuertoServidorSolicitarMensajesEmisor(),this);
+        
+        Thread hiloComprobantes = new Thread(iRedComprobantes);
+        hiloComprobantes.start();
+        
+        this.tcpEnvioMensaje = new TCPEnvioMensaje(persistencia.cargarIPServidorMensajeria(),persistencia.cargarPuertoServidorMensajeria());
+        
+        
+        Thread hiloPedirDestinatarios =
+            new Thread(new TCPDestinatariosRegistrados(persistencia.cargarIPDirectorio(),
+                                                       persistencia.cargarPuertoDirectorioTiempo(),
+                                                       persistencia.cargarPuertoDirectorioDest(),
+                                                       persistencia.cargarIPDirectorioSecundario(),
+                                                       persistencia.cargarPuertoDirectorioSecundarioTiempo(),
+                                                       persistencia.cargarPuertoDirectorioSecundarioDest()));
+        hiloPedirDestinatarios.start();
 
         System.out.println("Hilos de red comenzados");
 
-        if (instance.persistenciaMensajes.quedanMensajesPendientes())
-            instance.inciarHiloMensajesPendientes();
-
+        if (this.persistenciaMensajes.quedanMensajesPendientes())
+            this.inciarHiloMensajesPendientes();
     }
 
 
-    public static SistemaEmisor getInstance() {
-        return instance;
-    }
 
 
-    public Emisor getEmisor() {
+
+    public IDatosEmisor getEmisor() {
         return emisor;
     }
 
-    public TCPdeEmisor getTcpdeEmisor() {
-        return tcpdeEmisor;
+    public IRedComprobantes getTcpdeEmisor() {
+        return iRedComprobantes;
     }
 
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
 
-        TreeSet<Receptor> contactos = this.getEmisor()
+        TreeSet<IDatosReceptor> contactos = this.getEmisor()
                                           .getAgenda()
                                           .getContactos();
 
-        ArrayList<Receptor> contactosArr = new ArrayList(contactos);
+        ArrayList<IDatosReceptor> contactosArr = new ArrayList(contactos);
 
-        ArrayList<Mensaje> mensajesCifrados = new ArrayList<Mensaje>();
-        ArrayList<Mensaje> mensajesPreCifrado = new ArrayList<Mensaje>();
+        ArrayList<IMensaje> mensajesCifrados = new ArrayList<IMensaje>();
+        ArrayList<IMensaje> mensajesPreCifrado = new ArrayList<IMensaje>();
         for (String receptorActual : usuariosReceptores) {
-            Mensaje mensajeCifrado =
-                MensajeFactory.getInstance()
+            IMensaje mensajeCifrado =
+                this.mensajeFactory
                 .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
 
-            Mensaje mensajePreCifrado =
-                MensajeFactory.getInstance()
+            IMensaje mensajePreCifrado =
+            mensajeFactory
                 .crearMensaje(this.emisor, asunto, cuerpo, tipoMensaje, usuariosReceptores, receptorActual);
 
             int indice =
                 Collections.binarySearch(contactosArr,
-                                         new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual,
+                                         new DatosReceptor("123213", 12312, "AAAAAAAAAA", receptorActual,
                                                       null)); //este receptor es de mentirita y solo para comparar
 
 
@@ -137,18 +136,18 @@ public class SistemaEmisor {
             mensajesCifrados.add(this.encriptacion.encriptar(mensajeCifrado, publicKey));
         }
 
-        boolean logroEnviar = this.getTcpdeEmisor().enviarMensaje(mensajesPreCifrado, mensajesCifrados);
+        boolean logroEnviar = this.tcpEnvioMensaje.enviarMensaje(mensajesPreCifrado, mensajesCifrados);
 
 
         if (!logroEnviar) { //aca setear id negativa
 
-            Iterator<Mensaje> itPre = mensajesPreCifrado.iterator();
-            Iterator<Mensaje> itPost = mensajesCifrados.iterator();
+            Iterator<IMensaje> itPre = mensajesPreCifrado.iterator();
+            Iterator<IMensaje> itPost = mensajesCifrados.iterator();
 
 
             while (itPre.hasNext()) {
                 //
-                Mensaje mensajeCifrado = itPost.next();
+                IMensaje mensajeCifrado = itPost.next();
 
                 itPre.next().setId(this.persistenciaMensajes.getNextIdNoEnviados());
                 mensajeCifrado.setId(this.persistenciaMensajes.getNextIdNoEnviados());
@@ -161,7 +160,7 @@ public class SistemaEmisor {
         }
 
         //aca guardar
-        for (Mensaje mensaje : mensajesPreCifrado) {
+        for (IMensaje mensaje : mensajesPreCifrado) {
             guardarMensaje(mensaje);
         }
 
@@ -172,7 +171,7 @@ public class SistemaEmisor {
     }
 
 
-    public void guardarMensaje(Mensaje mensajeSinEncriptar) {
+    public void guardarMensaje(IMensaje mensajeSinEncriptar) {
 
         if (mensajeSinEncriptar instanceof MensajeConComprobante) {
             System.out.println(mensajeSinEncriptar);
@@ -182,7 +181,7 @@ public class SistemaEmisor {
         }
     }
 
-    public Iterator<Receptor> consultarAgenda() {
+    public Iterator<IDatosReceptor> consultarAgenda() {
         return this.emisor.consultarAgenda();
     }
 
@@ -193,7 +192,7 @@ public class SistemaEmisor {
                    .iterator();
     }
 
-    public void agregarComprobante(Comprobante comprobante) {
+    public void agregarComprobante(IComprobante comprobante) {
         //System.out.println("me llamaron");
         //        int idMensaje = comprobante.getidMensaje();
         //        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
@@ -215,9 +214,9 @@ public class SistemaEmisor {
 
     }
 
-    public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
+    public void setAgenda(Collection<IDatosReceptor> destinatariosRegistrados) {
         Agenda agenda = new Agenda();
-        TreeSet<Receptor> contactosT = new TreeSet<Receptor>(destinatariosRegistrados);
+        TreeSet<IDatosReceptor> contactosT = new TreeSet<IDatosReceptor>(destinatariosRegistrados);
 
 
         agenda.setContactos(contactosT);
@@ -228,14 +227,14 @@ public class SistemaEmisor {
 
     public void cargarComprobantesAsincronicos() {
 
-        Collection<Comprobante> comprobantes = instance.tcpdeEmisor.solicitarComprobantesAsincronicos();
+        Collection<IComprobante> comprobantes = iRedComprobantes.solicitarComprobantesAsincronicos();
         if (comprobantes != null && !comprobantes.isEmpty())
-            for (Comprobante comprobante : comprobantes) {
+            for (IComprobante comprobante : comprobantes) {
                 this.persistenciaMensajes.guardarComp(comprobante);
             }
     }
 
-    public Collection<Mensaje> getMensajesNoEnviados() {
+    public Collection<IMensaje> getMensajesNoEnviados() {
         return this.persistenciaMensajes.getMensajesNoEnviados();
     }
 
@@ -243,7 +242,7 @@ public class SistemaEmisor {
     /**
      * Marca los mensajes que estaban esperando ser enviados. Los marca como enviados.
      */
-    public void marcarMensajesPendientesComoEnviados(Collection<Mensaje> mensajesPendientes) {
+    public void marcarMensajesPendientesComoEnviados(Collection<IMensaje> mensajesPendientes) {
         this.persistenciaMensajes.marcarMensajesPendientesComoEnviados(mensajesPendientes);
     }
 
@@ -256,11 +255,11 @@ public class SistemaEmisor {
     }
 
     private void inciarHiloMensajesPendientes() {
-        if (this.TCPMensajesPendientes == null || !this.TCPMensajesPendientes.isAlive()) {
-            this.TCPMensajesPendientes =
-                new Thread(new TCPMensajesPendientes(this.tcpdeEmisor.getIpServidorMensajeria(),
-                                                     this.tcpdeEmisor.getPuertoServidorMensajeria()));
-            this.TCPMensajesPendientes.start();
+        if (this.hiloMensajesPendientes == null || !this.hiloMensajesPendientes.isAlive()) {
+            this.hiloMensajesPendientes =
+                new Thread(new TCPMensajesPendientes(iRedComprobantes.getIpServidorMensajeria(),
+                                                     iRedComprobantes.getPuertoServidorMensajeria(),this));
+            this.hiloMensajesPendientes.start();
         }
 
     }

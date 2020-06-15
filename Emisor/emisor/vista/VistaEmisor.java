@@ -35,7 +35,8 @@ import javax.swing.JPanel;
 
 import javax.swing.ListSelectionModel;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 /**
  *
@@ -45,7 +46,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     public static final int ICONO_CONECTADO_HEIGHT = 31;
     public static final int MAX_CHAR_ASUNTO = 122;
     public static final int MAX_CHAR_CUERPO = 122;
-    DefaultListModel<Receptor> listModel = new DefaultListModel<Receptor>();
+    DefaultListModel<IDatosReceptor> listModel = new DefaultListModel<IDatosReceptor>();
 
 
     /** Creates new form VistaEmisor */
@@ -753,7 +754,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     private javax.swing.JLabel jLabelCantCaracteresAsunto;
     private javax.swing.JLabel jLabelCantCaracteresCuerpo;
     private javax.swing.JLabel jLabelConexionDirectorio;
-    private javax.swing.JList<Receptor> jListDestinatarios;
+    private javax.swing.JList<IDatosReceptor> jListDestinatarios;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -802,8 +803,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
     }
 
     @Override
-    public ArrayList<Receptor> getDestinatarios() {
-        return new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+    public ArrayList<IDatosReceptor> getDestinatarios() {
+        return new ArrayList<IDatosReceptor>(this.jListDestinatarios.getSelectedValuesList());
     }
 
     @Override
@@ -818,7 +819,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void envioExitoso() {
         limpiarDatosEnvio();
-        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(this, "IMensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
     
     private void limpiarDatosEnvio(){
@@ -827,20 +828,20 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.jListDestinatarios.clearSelection();
     }
 
-    public void cargarContactos(Collection<Receptor> destinatariosRegistrados) {
-        Iterator<Receptor> it = destinatariosRegistrados.iterator();
+    public void cargarContactos(Collection<IDatosReceptor> destinatariosRegistrados) {
+        Iterator<IDatosReceptor> it = destinatariosRegistrados.iterator();
 
-        HashMap<String, Receptor> seleccionadosHashmap = new HashMap<String, Receptor>();
-        ArrayList<Receptor> seleccionadosArrayList =
-            new ArrayList<Receptor>(this.jListDestinatarios.getSelectedValuesList());
+        HashMap<String, IDatosReceptor> seleccionadosHashmap = new HashMap<String, IDatosReceptor>();
+        ArrayList<IDatosReceptor> seleccionadosArrayList =
+            new ArrayList<IDatosReceptor>(this.jListDestinatarios.getSelectedValuesList());
 
 
         //para hacer ruiditos de conectado y desconectado
         while (it.hasNext()) {
-            Receptor r = it.next();
+            IDatosReceptor r = it.next();
             int posrviejo = this.listModel.indexOf(r);
             if (posrviejo != -1) {
-                Receptor rviejo = listModel.getElementAt(posrviejo);
+                IDatosReceptor rviejo = listModel.getElementAt(posrviejo);
 
                 if (rviejo.isConectado() && !r.isConectado()) {
                     try {
@@ -904,7 +905,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         //fin de eso
 
 
-        for (Receptor r : seleccionadosArrayList) {
+        for (IDatosReceptor r : seleccionadosArrayList) {
             seleccionadosHashmap.put(r.getUsuario(), r);
         }
 
@@ -913,7 +914,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         this.deleteAllPanelesEstadoConexion();
         int i = 0;
         while (it.hasNext()) { //por ahora tomamos que los nuevos son los de abajo aunque no esten alfabeticamente asi
-            Receptor receptor = it.next();
+            IDatosReceptor receptor = it.next();
 
             this.cargarContacto(receptor);
             //System.out.println("Se agrego en lista "+receptor);
@@ -937,7 +938,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
      * Pre: !this.listModel.contains(receptor)
      * @param receptor
      */
-    public void cargarContacto(Receptor receptor) {
+    public void cargarContacto(IDatosReceptor receptor) {
         this.listModel.addElement(receptor);
         System.out.println(listModel.toString());
         //System.out.println("Se agrego "+ receptor);

@@ -1,7 +1,9 @@
 package servidormensajeria.persistencia;
 
-import emisor.modelo.Emisor;
-import emisor.modelo.Mensaje;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IDatosEmisor;
+import emisor.modelo.IMensaje;
+import emisor.modelo.IMensaje;
 import emisor.modelo.MensajeConAlerta;
 import emisor.modelo.MensajeConComprobante;
 
@@ -25,14 +27,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import receptor.modelo.Comprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IComprobante;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesServidor {
-    public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,Mensaje>
-    public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,Mensaje>
-    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<nombreEmisor,Collection<Comprobante>>
+    public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,IMensaje>
+    public static final String MENSAJES_CONALERTA_FILE_PATH = "Mensajes_ConAlerta.xml"; //<idMensaje,IMensaje>
+    public static final String MENSAJES_CONCOMPROBANTE_FILE_PATH = "Mensajes_ConComprobante.xml"; //<idMensaje,IMensaje>
+    public static final String COMPROBANTES_SIN_ENVIAR_FILE_PATH = "Comprobantes_Sin_Enviar.xml"; //<nombreEmisor,Collection<IComprobante>>
     public static final String MENSAJES_ENVIADOS_RECEPTORES_FILE_PATH =
         "IdMensajesEnviadosReceptores.xml"; //<usuarioReceptor,Collection<idMensaje>>
     public static final String MENSAJES_PENDIENTES_RECEPTORES_FILE_PATH =
@@ -40,9 +44,9 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     public static final String MENSAJES_CON_COMPROBANTE_EMISORES_FILE_PATH =
         "IdMensajesConComprobanteEmisores.xml"; //<nombreEmisor, <Collection<idMensaje> >
 
-    private TreeMap<Integer, Mensaje> mensajes; //usamos TreeMap porque es serializable
+    private TreeMap<Integer, IMensaje> mensajes; //usamos TreeMap porque es serializable
 
-    private TreeMap<Integer, Mensaje> mensajesComunes = new TreeMap<Integer, Mensaje>(); //SDMOP
+    private TreeMap<Integer, IMensaje> mensajesComunes = new TreeMap<Integer, IMensaje>(); //SDMOP
     private TreeMap<Integer, MensajeConAlerta> mensajesConAlerta = new TreeMap<Integer, MensajeConAlerta>(); //SDMOP
     private TreeMap<Integer, MensajeConComprobante> mensajesConComprobante =
         new TreeMap<Integer, MensajeConComprobante>(); //SDMOP
@@ -52,7 +56,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     private TreeMap<String, Collection<Integer>> idMensajesConComprobEmisores;
 
     private Integer proximoIdMensaje;
-    private HashMap<String,Collection<Comprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<Comprobante>>
+    private HashMap<String,Collection<IComprobante>> comprobantesNoEnviados;//<nombreEmisor,Collection<IComprobante>>
 
     public PersistenciaMensajesServidorXML() {
         super();
@@ -82,10 +86,10 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
             try {
                 XMLDecoder decoderNormales =
                     new XMLDecoder(new BufferedInputStream(new FileInputStream(MENSAJES_COMUNES_FILE_PATH)));
-                this.mensajesComunes = (TreeMap<Integer, Mensaje>) decoderNormales.readObject();
+                this.mensajesComunes = (TreeMap<Integer, IMensaje>) decoderNormales.readObject();
                 decoderNormales.close();
             } catch (IOException e) {
-                mensajesComunes = new TreeMap<Integer, Mensaje>();
+                mensajesComunes = new TreeMap<Integer, IMensaje>();
             }
             
             try{
@@ -108,19 +112,19 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                 this.mensajesConComprobante = new TreeMap<Integer,MensajeConComprobante>();
             }
 
-            mensajes = new TreeMap<Integer, Mensaje>();
+            mensajes = new TreeMap<Integer, IMensaje>();
             //a ensamblar
-            for (Mensaje mensaje : mensajesComunes.values())
+            for (IMensaje mensaje : mensajesComunes.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
-            for (Mensaje mensaje : mensajesConAlerta.values())
+            for (IMensaje mensaje : mensajesConAlerta.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
-            for (Mensaje mensaje : mensajesConComprobante.values())
+            for (IMensaje mensaje : mensajesConComprobante.values())
                 mensajes.put(mensaje.getId(), mensaje);
 
             if (mensajes == null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                mensajes = new TreeMap<Integer, Mensaje>();
+                mensajes = new TreeMap<Integer, IMensaje>();
 
     }
 
@@ -170,13 +174,13 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
         try {
             XMLDecoder decoder =
                 new XMLDecoder(new BufferedInputStream(new FileInputStream(COMPROBANTES_SIN_ENVIAR_FILE_PATH)));
-            this.comprobantesNoEnviados = (HashMap<String, Collection<Comprobante>>) decoder.readObject();
+            this.comprobantesNoEnviados = (HashMap<String, Collection<IComprobante>>) decoder.readObject();
             decoder.close();
             if (comprobantesNoEnviados ==
                 null) //se fija si es null porque puede pasar si el archivo existe pero esta vacio
-                comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+                comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         } catch (IOException e) {
-            comprobantesNoEnviados = new HashMap<String, Collection<Comprobante>>();
+            comprobantesNoEnviados = new HashMap<String, Collection<IComprobante>>();
         }
     }
 
@@ -190,7 +194,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      * @throws Exception
      */
     @Override
-    public void guardarMsj(Mensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
+    public void guardarMsj(IMensaje mensaje, String usuarioReceptor, boolean entregado) throws Exception {
         //System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
         try {
             synchronized (mensajes) {
@@ -215,7 +219,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
                             encoder.writeObject(mensajesConComprobante);
                             encoder.close();
                         }
-                    } else if (mensaje instanceof Mensaje) { //SDMOP
+                    } else if (mensaje instanceof IMensaje) { //SDMOP
                         this.mensajesComunes.put(mensaje.getId(), mensaje);
 
                         synchronized (MENSAJES_COMUNES_FILE_PATH) {
@@ -291,7 +295,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public void guardarComp(Comprobante comprobante) throws Exception {
+    public void guardarComp(IComprobante comprobante) throws Exception {
 
         MensajeConComprobante mensaje;
         synchronized (mensajes) {
@@ -312,8 +316,8 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public Collection<Mensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
-        Collection<Mensaje> mensajesParaReceptor = new ArrayList<Mensaje>();
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception {
+        Collection<IMensaje> mensajesParaReceptor = new ArrayList<IMensaje>();
 
         synchronized (idMensajesEntregarRecep) {
             Collection<Integer> idMensajesEntregarRecepAct = idMensajesEntregarRecep.get(receptor.getUsuario());
@@ -330,7 +334,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(Emisor emisor) throws Exception {
+    public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception {
         Collection<MensajeConComprobante> mensajesComprobados = new ArrayList<MensajeConComprobante>();
         String nombreEmisor = emisor.getNombre();
         synchronized (idMensajesConComprobEmisores) {
@@ -354,7 +358,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
      * @throws Exception
      */
     @Override
-    public void marcarMensajeEnviado(Mensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
+    public void marcarMensajeEnviado(IMensaje mensaje, String usuarioReceptor, boolean primerIntento) throws Exception {
 
         if (!primerIntento) { //si estaba marcado para entregar hay que sacar
             synchronized (idMensajesEntregarRecep) {
@@ -414,11 +418,11 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public void guardarComprobanteNoEnviado(Comprobante comprobante) throws FileNotFoundException {
+    public void guardarComprobanteNoEnviado(IComprobante comprobante) throws FileNotFoundException {
         synchronized(comprobantesNoEnviados){
-            Collection<Comprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
+            Collection<IComprobante> coleccion = this.comprobantesNoEnviados.get(comprobante.getEmisorOriginal().getNombre());
             if(coleccion==null){
-                coleccion = new ArrayList<Comprobante>();
+                coleccion = new ArrayList<IComprobante>();
                 this.comprobantesNoEnviados.put(comprobante.getEmisorOriginal().getNombre(),coleccion);
             }
                     
@@ -437,14 +441,14 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     
     
     @Override
-    public Collection<Comprobante> getComprobantesNoEnviados(Emisor emisor){
+    public Collection<IComprobante> getComprobantesNoEnviados(IDatosEmisor emisor){
         synchronized(comprobantesNoEnviados){
             return this.comprobantesNoEnviados.get(emisor.getNombre());
         }
     }
     
     @Override
-    public void eliminarComprobantesNoEnviados(Emisor emisor) throws FileNotFoundException{
+    public void eliminarComprobantesNoEnviados(IDatosEmisor emisor) throws FileNotFoundException{
         synchronized(comprobantesNoEnviados){
             this.comprobantesNoEnviados.get(emisor.getNombre()).clear();
             

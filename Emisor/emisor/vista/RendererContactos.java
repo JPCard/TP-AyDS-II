@@ -9,7 +9,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class RendererContactos extends DefaultListCellRenderer {
     protected static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
@@ -22,7 +23,7 @@ public class RendererContactos extends DefaultListCellRenderer {
     
     public Component getListCellRendererComponent(JList list, Object value,
           int index, boolean isSelected, boolean cellHasFocus) {
-            Receptor receptor =  (Receptor) value;
+        IDatosReceptor receptor =  (IDatosReceptor) value;
           JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
                   isSelected, cellHasFocus);
         renderer.setText("<html>"+receptor.descripcionCompleta().replaceAll("\n","<br>")+"</html>");
