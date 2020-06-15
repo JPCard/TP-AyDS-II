@@ -1,6 +1,8 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,9 +18,9 @@ import java.util.TreeMap;
 import receptor.modelo.Receptor;
 
 public class SincronizacionInicialDirectorios {
-    private Directorio directorio;
+    private IDirectorio directorio;
 
-    public SincronizacionInicialDirectorios(Directorio directorio) {
+    public SincronizacionInicialDirectorios(IDirectorio directorio) {
         super();
         this.directorio = directorio;
     }

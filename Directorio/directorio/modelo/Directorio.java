@@ -29,7 +29,7 @@ import java.util.TreeSet;
 import receptor.modelo.IComprobante;
 import receptor.modelo.Receptor;
 
-public class Directorio {
+public class Directorio implements IDirectorio {
     private static int TIEMPO_TIMEOUT = 2000;
     private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
@@ -48,6 +48,8 @@ public class Directorio {
     private int otroDirectorioPuertoDestinatarios;
     private int otroDirectorioPuertoHeartbeats;
     private int otroDirectorioPuertoUltimoCambio;
+    
+    private ReceptoresAsincronicos receptoresAsincronicos;
 
     public int getPuertoRecibeHeartbeats() {
         return puertoRecibeHeartbeats;
@@ -64,15 +66,10 @@ public class Directorio {
     public IPersistenciaDirectorio getPersistenciaDirectorio() {
         return persistenciaDirectorio;
     }
-    private static Directorio instance = null;
 
-    public static Directorio getInstance() {
-        if (instance == null)
-            instance = new Directorio();
-        return instance;
-    }
+  
 
-    private Directorio() {
+    public Directorio() {
         super();
         this.persistenciaDirectorio = new PersistenciaDirectorio();
 
@@ -87,6 +84,9 @@ public class Directorio {
             this.otroDirectorioPuertoDestinatarios = this.persistenciaDirectorio.cargarPuertoGetDestinatariosOtroDirectorio();
             this.otroDirectorioPuertoHeartbeats = this.persistenciaDirectorio.cargarPuertoHeartbeatsOtroDirectorio();
             this.otroDirectorioPuertoUltimoCambio = this.persistenciaDirectorio.cargarPuertoUltimoCambioOtroDirectorio();
+            
+            
+            this.receptoresAsincronicos = new ReceptoresAsincronicos(this);
             
         } catch (Exception e) {
             //e.printStackTrace();
@@ -161,7 +161,9 @@ public class Directorio {
 
     private void notificarNuevoReceptor(Receptor receptor) {
 //        System.out.println("apache");
-        ReceptoresAsincronicos.avisarReceptorSeConecto(receptor);
+
+        
+        receptoresAsincronicos.avisarReceptorSeConecto(receptor);
     }
 
 

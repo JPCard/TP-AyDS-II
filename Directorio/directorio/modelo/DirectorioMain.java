@@ -1,7 +1,7 @@
 package directorio.modelo;
 
 import directorio.red.DestinatariosRegistradosThread;
-import directorio.red.HeartbeatThread;
+import directorio.red.HeartbeatListener;
 import directorio.red.SincronizacionInicialDirectorios;
 import directorio.red.UltimoCambioThread;
 
@@ -11,16 +11,16 @@ public class DirectorioMain {
     }
 
     public static void main(String[] args) {
-        Directorio.getInstance();
-        System.out.println("Directorio creado");
+        IDirectorio directorio = new Directorio();
+        System.out.println("IDirectorio creado");
         
-        new SincronizacionInicialDirectorios(Directorio.getInstance()).cargarListaDestinatariosRegistrados();
+        new SincronizacionInicialDirectorios(directorio).cargarListaDestinatariosRegistrados();
         System.out.println("Sincronizacion con el otro directorio completada");
         //este estaba segundo pero lo puse primero
-        DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(Directorio.getInstance());
+        DestinatariosRegistradosThread destinatariosRegistrados = new DestinatariosRegistradosThread(directorio);
         destinatariosRegistrados.start();
         
-        HeartbeatThread heartbeat = new HeartbeatThread(Directorio.getInstance());
+        HeartbeatListener heartbeat = new HeartbeatListener(directorio);
         heartbeat.start();
         
         
@@ -28,7 +28,7 @@ public class DirectorioMain {
         
         
         
-        UltimoCambioThread ultimoCambioThread = new UltimoCambioThread(Directorio.getInstance());
+        UltimoCambioThread ultimoCambioThread = new UltimoCambioThread(directorio);
         ultimoCambioThread.start();
 
         

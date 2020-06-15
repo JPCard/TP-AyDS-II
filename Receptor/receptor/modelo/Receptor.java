@@ -1,7 +1,7 @@
 package receptor.modelo;
 
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
 
 import java.io.Serializable;
 

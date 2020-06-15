@@ -1,6 +1,6 @@
 package receptor.modelo;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
 
 import directorio.modelo.DirectorioMain;
 

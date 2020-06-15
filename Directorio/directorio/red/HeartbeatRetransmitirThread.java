@@ -1,6 +1,8 @@
 package directorio.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
+
+import directorio.modelo.IDirectorio;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -12,7 +14,7 @@ import receptor.modelo.Heartbeat;
 
 public class HeartbeatRetransmitirThread implements Runnable {
     private Heartbeat heartbeat;
-
+    private IDirectorio directorio;
 
     public HeartbeatRetransmitirThread(Heartbeat heartbeat) {
         super();
@@ -22,12 +24,12 @@ public class HeartbeatRetransmitirThread implements Runnable {
     @Override
     public void run() {
         try {
-            Directorio.getInstance().getIpOtroDirectorio();
+            directorio.getIpOtroDirectorio();
 
             Socket socketRetransmitir = new Socket();
             InetSocketAddress addr =
-                new InetSocketAddress(Directorio.getInstance().getIpOtroDirectorio(),
-                                      Directorio.getInstance().getOtroDirectorioPuertoHeartbeats());
+                new InetSocketAddress(directorio.getIpOtroDirectorio(),
+                                      directorio.getOtroDirectorioPuertoHeartbeats());
 
             socketRetransmitir.connect(addr, 500);
 

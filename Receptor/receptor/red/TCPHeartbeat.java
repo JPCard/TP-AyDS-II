@@ -1,6 +1,6 @@
 package receptor.red;
 
-import directorio.modelo.Directorio;
+import directorio.modelo.IDirectorio;
 
 
 
