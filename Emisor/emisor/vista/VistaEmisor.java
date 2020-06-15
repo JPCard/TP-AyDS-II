@@ -523,7 +523,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
         jPanelBotonAviso.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        jButtonEnviarAviso.setText("Enviar mensaje con aviso");
+        jButtonEnviarAviso.setText("Enviar mensaje con alerta");
         jButtonEnviarAviso.setMaximumSize(new java.awt.Dimension(140, 40));
         jButtonEnviarAviso.setMinimumSize(new java.awt.Dimension(140, 40));
         jButtonEnviarAviso.setPreferredSize(new java.awt.Dimension(140, 40));
