@@ -111,7 +111,7 @@ public class TCPConsultaDirectorio {
      * este receptor tiene mensajes pendientes en la persistencia del sistema de mensajeria
      * El sistema de mensajeria se abre despues que el directorio ya tenga conectado al receptor dado
      * (En este caso el aviso se que se conecto el receptor nunca llegara, por qu ya esta)
-     * por si acaso le mand oa todos
+     * por si acaso le mando a todos
      */
         public void envioInicialMensajesAsincronicos() {
             this.getReceptor("");
