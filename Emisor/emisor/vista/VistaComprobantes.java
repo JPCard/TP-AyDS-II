@@ -103,15 +103,12 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaCuerpo = new javax.swing.JTextArea();
         jPanelDestinatarios = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jListReceptores = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mensajes con Comprobante");
-        setMinimumSize(new java.awt.Dimension(1000, 450));
-        setPreferredSize(new java.awt.Dimension(1000, 300));
+        setMinimumSize(new java.awt.Dimension(662, 450));
 
         jPanelPrincipal.setLayout(new java.awt.BorderLayout(20, 20));
 
@@ -143,8 +140,6 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
         jPanelPrincipal.add(jPanelMensajes, java.awt.BorderLayout.WEST);
 
         jPanelContenido.setBorder(javax.swing.BorderFactory.createTitledBorder("Mensaje"));
-        jPanelContenido.setMinimumSize(new java.awt.Dimension(200, 125));
-        jPanelContenido.setPreferredSize(new java.awt.Dimension(200, 239));
         jPanelContenido.setLayout(new java.awt.BorderLayout(20, 20));
 
         jPanelAsunto.setBorder(javax.swing.BorderFactory.createTitledBorder("Asunto"));
@@ -173,29 +168,20 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
 
         jPanelPrincipal.add(jPanelContenido, java.awt.BorderLayout.CENTER);
 
-        jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(250, 130));
-        jPanelDestinatarios.setPreferredSize(new java.awt.Dimension(250, 300));
-        jPanelDestinatarios.setLayout(new java.awt.GridLayout(3, 0));
-        jPanelDestinatarios.add(jPanel1);
+        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder("Receptor"));
+        jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(130, 130));
+        jPanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Destinatario"));
-        jPanel2.setMinimumSize(new java.awt.Dimension(100, 71));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         jScrollPane4.setMinimumSize(new java.awt.Dimension(200, 50));
 
-        jListReceptores.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jListReceptores.setModel(listModelReceptores
         );
         jListReceptores.setMaximumSize(new java.awt.Dimension(3300, 8000));
-        jListReceptores.setMinimumSize(new java.awt.Dimension(200, 500));
-        jListReceptores.setPreferredSize(new java.awt.Dimension(200, 1000));
+        jListReceptores.setMinimumSize(new java.awt.Dimension(300, 500));
+        jListReceptores.setPreferredSize(new java.awt.Dimension(150, 1000));
         jScrollPane4.setViewportView(jListReceptores);
 
-        jPanel2.add(jScrollPane4, java.awt.BorderLayout.CENTER);
-
-        jPanelDestinatarios.add(jPanel2);
+        jPanelDestinatarios.add(jScrollPane4, java.awt.BorderLayout.CENTER);
 
         jPanelPrincipal.add(jPanelDestinatarios, java.awt.BorderLayout.EAST);
 
@@ -305,8 +291,6 @@ public class VistaComprobantes extends javax.swing.JFrame implements IVistaCompr
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<MensajeConComprobante> jListMensajes;
     private javax.swing.JList<String> jListReceptores;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanelAsunto;
     private javax.swing.JPanel jPanelContenido;
     private javax.swing.JPanel jPanelCuerpo;

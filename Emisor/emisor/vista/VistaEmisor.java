@@ -147,7 +147,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
         jPanelPrincipal.setPreferredSize(new java.awt.Dimension(878, 150));
         jPanelPrincipal.setLayout(new java.awt.BorderLayout(20, 0));
 
-        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Destinatarios", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
+        jPanelDestinatarios.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Receptores", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanelDestinatarios.setMinimumSize(new java.awt.Dimension(600, 200));
         jPanelDestinatarios.setPreferredSize(new java.awt.Dimension(300, 200));
         jPanelDestinatarios.setLayout(new java.awt.BorderLayout());
@@ -819,7 +819,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVistaEmisor {
 
     public void envioExitoso() {
         limpiarDatosEnvio();
-        JOptionPane.showConfirmDialog(this, "IMensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showConfirmDialog(this, "Mensaje enviado", "Exito", JOptionPane.PLAIN_MESSAGE);
     }
     
     private void limpiarDatosEnvio(){
