@@ -45,4 +45,6 @@ public interface ISistemaEmisor {
     void actualizarIdMensaje(Integer viejaId, Integer nuevaId);
 
     String getNombreEmisor();
+
+    public void updateConectado(boolean estado);
 }

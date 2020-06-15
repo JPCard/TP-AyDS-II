@@ -133,7 +133,6 @@ public class ControladorEmisor extends Observable {
 
     public void agregarComprobante(IComprobante comprobante) {
         
-        sistemaEmisor.agregarComprobante(comprobante);
         if(vistaComprobantes != null)
             vistaComprobantes.actualizarComprobanteRecibidos(comprobante);
     }
@@ -163,7 +162,6 @@ public class ControladorEmisor extends Observable {
     }
 
     public void setAgenda(Collection<IDatosReceptor> destinatariosRegistrados) {
-        sistemaEmisor.setAgenda(destinatariosRegistrados);
         this.vistaPrincipal.cargarContactos(destinatariosRegistrados);
     }
 
