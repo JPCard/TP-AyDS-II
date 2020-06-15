@@ -25,7 +25,8 @@ import java.util.Iterator;
 
 import java.util.TreeSet;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.DatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 
 import servidormensajeria.modelo.ISistemaServidor;
@@ -81,8 +82,8 @@ public class TCPConsultaDirectorio {
      */
 
 
-    public Receptor getReceptor(String usuarioActual) {
-        Receptor r = null;
+    public IDatosReceptor getReceptor(String usuarioActual) {
+        IDatosReceptor r = null;
         try {
             r = pedirReceptor(usuarioActual);
         } catch (Exception e) {
@@ -115,7 +116,7 @@ public class TCPConsultaDirectorio {
         public void envioInicialMensajesAsincronicos() {
             this.getReceptor("");
             System.err.println("el magico????");
-            for (Receptor receptor : sistemaServidor.getReceptores()) {
+            for (IDatosReceptor receptor : sistemaServidor.getReceptores()) {
                 try {
                     if (receptor.isConectado())
                         this.envioMensajesAsincronicos(receptor);
@@ -126,14 +127,14 @@ public class TCPConsultaDirectorio {
         }
     
     
-    public void envioMensajesAsincronicos(Receptor receptor) throws Exception {
+    public void envioMensajesAsincronicos(IDatosReceptor receptor) throws Exception {
         Collection<IMensaje> mensajes = sistemaServidor.obtenerMsjsPendientesReceptor(receptor);
         for (IMensaje mensaje : mensajes) {
             new Thread(new MensajeHandler(mensaje, false,sistemaServidor)).start();
         }
     }
     
-    private Receptor pedirReceptor(String usuarioActual) throws IOException, ClassNotFoundException {
+    private IDatosReceptor pedirReceptor(String usuarioActual) throws IOException, ClassNotFoundException {
         Socket socketTiempo = new Socket();
         
         String IPActual; int puertoTiempoActual; int puertoDestActual;
@@ -165,7 +166,7 @@ public class TCPConsultaDirectorio {
             socketDest.connect(addr2, 500);
             ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-            sistemaServidor.setReceptores((ArrayList<Receptor>) inDest.readObject());
+            sistemaServidor.setReceptores((ArrayList<IDatosReceptor>) inDest.readObject());
 
 
             inDest.close();
@@ -177,11 +178,11 @@ public class TCPConsultaDirectorio {
         }
 
 
-        ArrayList<Receptor> receptoresArray = sistemaServidor.getReceptores();
+        ArrayList<IDatosReceptor> receptoresArray = sistemaServidor.getReceptores();
         System.out.println("Sobre el crash de nullpointer el usuarioactual es: " + usuarioActual);
         int indice =
             Collections.binarySearch(receptoresArray,
-                                     new Receptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
+                                     new DatosReceptor("123213", 12312, "AAAAAAAAAA", usuarioActual,
                                                   null)); //este receptor es de mentirita y solo para comparar
         //            System.out.println("INDICE INDICE INDICE " + indice);
         if (indice == -1)

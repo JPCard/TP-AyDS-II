@@ -13,7 +13,8 @@ import java.util.Iterator;
 import org.json.simple.parser.ParseException;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IPersistenciaMensajesServidor {
 
@@ -21,7 +22,7 @@ public interface IPersistenciaMensajesServidor {
 
     public void guardarComp(IComprobante comprobante) throws Exception;
 
-    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception;
 
     public Collection<MensajeConComprobante> obtenerMsjsComprobadosEmisor(IDatosEmisor emisor) throws Exception;
     

@@ -10,7 +10,7 @@ import java.net.Socket;
 
 import java.util.Collection;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
@@ -53,7 +53,7 @@ public class WatchDogDirectorio implements Runnable{
                         System.out.println("Nuevo receptor: toca enviarle mensajes q le faltan");
 
                         try (ObjectInputStream in = new ObjectInputStream(socket.getInputStream())) {
-                            Receptor receptor = (Receptor) in.readObject();
+                            IDatosReceptor receptor = (IDatosReceptor) in.readObject();
                             sistemaServidor.envioMensajesAsincronicos(receptor);
                         } catch (Exception e) {
                             System.out.println("mmm!");

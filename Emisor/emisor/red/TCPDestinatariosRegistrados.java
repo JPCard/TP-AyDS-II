@@ -15,7 +15,7 @@ import java.util.Collection;
 
 import java.util.Iterator;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
@@ -87,9 +87,9 @@ public class TCPDestinatariosRegistrados implements IDestinatariosRegistrados {
                         socketDest.connect(addr2, 500);
                         ObjectInputStream inDest = new ObjectInputStream(socketDest.getInputStream());
 
-                        Collection<Receptor> destinatariosRegistrados;
+                        Collection<IDatosReceptor> destinatariosRegistrados;
                         System.out.println("esperando  los receptores");
-                        destinatariosRegistrados = (Collection<Receptor>) inDest.readObject();
+                        destinatariosRegistrados = (Collection<IDatosReceptor>) inDest.readObject();
                         System.out.println("me llegaron son " + destinatariosRegistrados.toString());
                         //                        System.out.println("EL CONROLADOR EMISOR ES: "+ControladorEmisor.getInstance());
                         //                        System.out.println("LA AGENDA ES :"+destinatariosRegistrados);

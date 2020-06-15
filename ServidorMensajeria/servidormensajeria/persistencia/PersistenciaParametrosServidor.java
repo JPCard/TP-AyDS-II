@@ -22,7 +22,7 @@ import org.json.simple.parser.ParseException;
 
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class PersistenciaParametrosServidor implements IPersistenciaParametrosServidor {
     public static final String PARAMETROS_FILE_PATH = "ParametrosSistemaMensajeria.json";

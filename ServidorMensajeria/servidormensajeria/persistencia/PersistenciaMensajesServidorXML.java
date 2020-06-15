@@ -29,7 +29,8 @@ import java.util.TreeMap;
 
 import receptor.modelo.IComprobante;
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesServidor {
     public static final String MENSAJES_COMUNES_FILE_PATH = "Mensajes_Normales.xml"; //<idMensaje,IMensaje>
@@ -315,7 +316,7 @@ public class PersistenciaMensajesServidorXML implements IPersistenciaMensajesSer
     }
 
     @Override
-    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception {
         Collection<IMensaje> mensajesParaReceptor = new ArrayList<IMensaje>();
 
         synchronized (idMensajesEntregarRecep) {

@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 

@@ -19,44 +19,18 @@ import receptor.controlador.ControladorReceptor;
 import receptor.modelo.IComprobante;
 import receptor.modelo.SistemaReceptor;
 
-public class TCPdeReceptor  implements Runnable{
+public class TCPEnvioComprobante implements IEnvioComprobante {
     
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
     
-    public TCPdeReceptor(String ipServidorMensajeria, int puertoServidorMensajeria) {
+    public TCPEnvioComprobante(String ipServidorMensajeria, int puertoServidorMensajeria) {
         this.ipServidorMensajeria = ipServidorMensajeria;
         this.puertoServidorMensajeria = puertoServidorMensajeria;
     }
 
     
-    public void run(){
-            
-        while(true){
-            try (ServerSocket s = new ServerSocket(SistemaReceptor.getInstance().getPuerto());) {
-                     
-    
-                    while (true) {
-                        try(Socket socket = s.accept()){
-                            
-                            try(ObjectInputStream in = new ObjectInputStream(socket.getInputStream())){
-                        
-                        IMensaje mensaje = (IMensaje) in.readObject();
-                        
-                        ControladorReceptor.getInstance().mostrarMensaje(mensaje);
-                        
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                        }
-                    }
-                    }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-    
+   
     public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor){
         
         try {

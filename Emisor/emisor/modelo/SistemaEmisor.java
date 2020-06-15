@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 //jsoneando
 import java.io.FileReader;
@@ -44,6 +44,8 @@ import java.util.Collections;
 
 import org.json.simple.*;
 import org.json.simple.parser.ParseException;
+
+import receptor.modelo.DatosReceptor;
 
 public class SistemaEmisor {
     private IDatosEmisor emisor;
@@ -114,11 +116,11 @@ public class SistemaEmisor {
     public boolean enviarMensaje(String asunto, String cuerpo, ArrayList<String> usuariosReceptores,
                                  TipoMensaje tipoMensaje) {
 
-        TreeSet<Receptor> contactos = this.getEmisor()
+        TreeSet<IDatosReceptor> contactos = this.getEmisor()
                                           .getAgenda()
                                           .getContactos();
 
-        ArrayList<Receptor> contactosArr = new ArrayList(contactos);
+        ArrayList<IDatosReceptor> contactosArr = new ArrayList(contactos);
 
         ArrayList<IMensaje> mensajesCifrados = new ArrayList<IMensaje>();
         ArrayList<IMensaje> mensajesPreCifrado = new ArrayList<IMensaje>();
@@ -133,7 +135,7 @@ public class SistemaEmisor {
 
             int indice =
                 Collections.binarySearch(contactosArr,
-                                         new Receptor("123213", 12312, "AAAAAAAAAA", receptorActual,
+                                         new DatosReceptor("123213", 12312, "AAAAAAAAAA", receptorActual,
                                                       null)); //este receptor es de mentirita y solo para comparar
 
 
@@ -189,7 +191,7 @@ public class SistemaEmisor {
         }
     }
 
-    public Iterator<Receptor> consultarAgenda() {
+    public Iterator<IDatosReceptor> consultarAgenda() {
         return this.emisor.consultarAgenda();
     }
 
@@ -222,9 +224,9 @@ public class SistemaEmisor {
 
     }
 
-    public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
+    public void setAgenda(Collection<IDatosReceptor> destinatariosRegistrados) {
         Agenda agenda = new Agenda();
-        TreeSet<Receptor> contactosT = new TreeSet<Receptor>(destinatariosRegistrados);
+        TreeSet<IDatosReceptor> contactosT = new TreeSet<IDatosReceptor>(destinatariosRegistrados);
 
 
         agenda.setContactos(contactosT);

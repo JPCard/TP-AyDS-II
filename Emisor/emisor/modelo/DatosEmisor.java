@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 import java.util.Iterator;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class DatosEmisor implements IDatosEmisor {
     private String IP; //{id}
@@ -94,7 +94,7 @@ public class DatosEmisor implements IDatosEmisor {
     
 
 
-    public Iterator<Receptor> consultarAgenda() {
+    public Iterator<IDatosReceptor> consultarAgenda() {
         return this.agenda.getIteratorContactos();
     }
     

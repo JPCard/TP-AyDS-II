@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.SistemaServidor;
 
@@ -23,7 +23,7 @@ public class ReceptoresAsincronicos {
     }
 
 
-    public void avisarReceptorSeConecto(Receptor receptor) {
+    public void avisarReceptorSeConecto(IDatosReceptor receptor) {
         
         try {
             Socket socket = new Socket();

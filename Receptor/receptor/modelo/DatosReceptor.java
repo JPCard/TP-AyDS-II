@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.security.PublicKey;
 
 
-public class Receptor implements Serializable, Comparable<Receptor> {
+public class DatosReceptor implements IDatosReceptor {
     private String IP;
     private int puerto;
     private String nombre;
@@ -17,7 +17,7 @@ public class Receptor implements Serializable, Comparable<Receptor> {
     private PublicKey llavePublica;
     
     
-    public Receptor(String IP, int puerto, String nombre, String usuario, PublicKey llavePublica) {
+    public DatosReceptor(String IP, int puerto, String nombre, String usuario, PublicKey llavePublica) {
         this.IP = IP;
         this.puerto = puerto;
         this.nombre = nombre;
@@ -25,7 +25,7 @@ public class Receptor implements Serializable, Comparable<Receptor> {
         this.llavePublica = llavePublica;
     }
 
-    public Receptor() {
+    public DatosReceptor() {
         super();
     }
     
@@ -42,11 +42,11 @@ public class Receptor implements Serializable, Comparable<Receptor> {
         if (this == object) {
             return true;
         }
-        if (!(object instanceof Receptor)) {
+        if (!(object instanceof IDatosReceptor)) {
             return false;
         }
-        final Receptor other = (Receptor) object;
-        if (!(usuario == null ? other.usuario == null : usuario.equals(other.usuario))) {
+        final IDatosReceptor other = (IDatosReceptor) object;
+        if (!(usuario == null ? other.getUsuario() == null : usuario.equals(other.getUsuario()))) {
             return false;
         }
         return true;
@@ -117,7 +117,7 @@ public class Receptor implements Serializable, Comparable<Receptor> {
 
 
     @Override
-    public int compareTo(Receptor receptor) {
+    public int compareTo(IDatosReceptor receptor) {
         return this.getUsuario().compareTo(receptor.getUsuario());
     }
 
@@ -127,7 +127,7 @@ public class Receptor implements Serializable, Comparable<Receptor> {
      * @param receptor2
      * @return el estado de verdad de la afirmacion de que receptor1 y receptor2 tienen los mismos datos no identificatorios
      */
-    public static boolean equalsDatosNoIdentif(Receptor receptor1, Receptor receptor2) {
+    public static boolean equalsDatosNoIdentif(IDatosReceptor receptor1, IDatosReceptor receptor2) {
         return (receptor1.getIP()).equals(receptor2.getIP()) && (receptor1.getPuerto() == receptor2.getPuerto()) &&
                (receptor1.getNombre()).equals(receptor2.getNombre());
     }

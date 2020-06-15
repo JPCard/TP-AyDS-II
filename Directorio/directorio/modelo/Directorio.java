@@ -26,12 +26,14 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import receptor.modelo.DatosReceptor;
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class Directorio implements IDirectorio {
     private static int TIEMPO_TIMEOUT = 2000;
-    private TreeMap<String, Receptor> receptores = new TreeMap<String, Receptor>();
+    private TreeMap<String, IDatosReceptor> receptores = new TreeMap<String, IDatosReceptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
     private Long tiempoUltModif = new GregorianCalendar().getTimeInMillis(); //en estado inicial ya esta modificado
     private IPersistenciaDirectorio persistenciaDirectorio;
@@ -114,7 +116,7 @@ public class Directorio implements IDirectorio {
      *
      * @return Coleccion ordenada por usuario de receptores
      */
-    public Collection<Receptor> getReceptores() {
+    public Collection<IDatosReceptor> getReceptores() {
         synchronized (receptores) {
             return new ArrayList(receptores.values()); //para poder serializar y mandar por red
         }
@@ -128,15 +130,15 @@ public class Directorio implements IDirectorio {
      * Este metodo debe llamarse cuando se agrega un nuevo receptor o cuando se modifica un receptor
      * @param receptor
      */
-    public void heartbeatRecibido(Receptor receptor) {
+    public void heartbeatRecibido(IDatosReceptor receptor) {
 
         synchronized (receptores) {
             synchronized (tiempos) {
                 this.tiempos.put(receptor.getUsuario(), GregorianCalendar.getInstance().getTimeInMillis());
             }
             if (this.receptores.containsKey(receptor.getUsuario())) {
-                Receptor receptorAnt = receptores.remove(receptor.getUsuario());
-                if (!receptorAnt.isConectado() || !Receptor.equalsDatosNoIdentif(receptorAnt, receptor)) {
+                IDatosReceptor receptorAnt = receptores.remove(receptor.getUsuario());
+                if (!receptorAnt.isConectado() || !DatosReceptor.equalsDatosNoIdentif(receptorAnt, receptor)) {
                     if (!receptorAnt.isConectado())
                         notificarNuevoReceptor(receptor); //volvio! avisemos
                     //detecta si alguien cambia de estado de conexion (de desconectado a conectado), IP, puerto o nombre
@@ -159,7 +161,7 @@ public class Directorio implements IDirectorio {
 
     }
 
-    private void notificarNuevoReceptor(Receptor receptor) {
+    private void notificarNuevoReceptor(IDatosReceptor receptor) {
 //        System.out.println("apache");
 
         
@@ -167,7 +169,7 @@ public class Directorio implements IDirectorio {
     }
 
 
-    public Collection<Receptor> listaDestinatariosRegistrados() {
+    public Collection<IDatosReceptor> listaDestinatariosRegistrados() {
         System.out.println("==============================A");
         Long tiempoActual = GregorianCalendar.getInstance().getTimeInMillis();
         System.out.println("==============================B");
@@ -179,7 +181,7 @@ public class Directorio implements IDirectorio {
             synchronized (tiempos) {
                 System.out.println("LLEGAMOS EEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 for (Object obj : receptores.values()) {
-                    Receptor receptor = (Receptor) obj;
+                    IDatosReceptor receptor = (IDatosReceptor) obj;
                     boolean online;
 
                     online = (tiempoActual - this.tiempos.get(receptor.getUsuario())) <= TIEMPO_TIMEOUT;
@@ -228,7 +230,7 @@ public class Directorio implements IDirectorio {
         return otroDirectorioPuertoHeartbeats;
     }
 
-    public void setReceptores(TreeMap<String, Receptor> receptores) {
+    public void setReceptores(TreeMap<String, IDatosReceptor> receptores) {
         synchronized(receptores){
             this.receptores = receptores;
         }

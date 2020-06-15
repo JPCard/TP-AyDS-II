@@ -23,7 +23,7 @@ import java.security.AccessControlContext;
 import java.util.GregorianCalendar;
 
 import receptor.modelo.Heartbeat;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class HeartbeatListener extends Thread {
     private IDirectorio directorio;

@@ -15,13 +15,13 @@ import java.net.Socket;
 import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Heartbeat;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.ISistemaReceptor;
 import receptor.modelo.SistemaReceptor;
 
-public class TCPHeartbeat implements Runnable {
+public class TCPHeartbeat implements IConexionDirectorio {
     private String IPDirectorioPrincipal;
-    private int puertoHeartbeatPrincipal;
-    public static final int TIEMPO_HEARTBEAT = 1500; // en MS
+    private int puertoHeartbeatPrincipal; // en MS
     
     private String IPDirectorioSecundario;
     private int puertoHeartbeatSecundario;
@@ -31,8 +31,13 @@ public class TCPHeartbeat implements Runnable {
     private String IPDirectorioActual;
     private int puertoHeartbeatActual;
 
-    public TCPHeartbeat(String IPDirectorioPrincipal, int puertoHeartbeatPrincipal, String IPDirectorioSecundario,
+    private ISistemaReceptor sistemaReceptor;
+
+    public TCPHeartbeat(ISistemaReceptor sistemaReceptor,String IPDirectorioPrincipal, int puertoHeartbeatPrincipal, String IPDirectorioSecundario,
                         int puertoHeartbeatSecundario) {
+        
+        this.sistemaReceptor = sistemaReceptor;
+        
         this.IPDirectorioPrincipal = IPDirectorioPrincipal;
         this.puertoHeartbeatPrincipal = puertoHeartbeatPrincipal;
         this.IPDirectorioSecundario = IPDirectorioSecundario;
@@ -40,6 +45,8 @@ public class TCPHeartbeat implements Runnable {
         
         this.usandoDirSecundario = true;
         this.cambiarDirectorioActivo();
+        
+        
     }
 
     @Override
@@ -54,7 +61,7 @@ public class TCPHeartbeat implements Runnable {
             try {
 
                 while (true) {
-                    Receptor receptor = SistemaReceptor.getInstance().getReceptor();
+                    IDatosReceptor receptor = sistemaReceptor.getReceptor();
                     Heartbeat heartbeat = new Heartbeat(receptor);
                     
                     Socket socket = new Socket();

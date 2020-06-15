@@ -1,7 +1,7 @@
 package emisor.vista;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IVistaContactos {
-    public void agregarContacto(Receptor r);
+    public void agregarContacto(IDatosReceptor r);
 }

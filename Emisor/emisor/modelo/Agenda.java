@@ -16,19 +16,19 @@ import java.util.Iterator;
 
 import java.util.TreeSet;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class Agenda implements Serializable{
-    private TreeSet<Receptor> contactos = new TreeSet<Receptor>();
+    private TreeSet<IDatosReceptor> contactos = new TreeSet<IDatosReceptor>();
     
     public Agenda() {
     }
 
-    public void setContactos(TreeSet<Receptor> contactos) {
+    public void setContactos(TreeSet<IDatosReceptor> contactos) {
         this.contactos = contactos;
     }
 
-    public TreeSet<Receptor> getContactos() {
+    public TreeSet<IDatosReceptor> getContactos() {
         return contactos;
     }
 
@@ -38,7 +38,7 @@ public class Agenda implements Serializable{
      */
    
     
-    public Iterator<Receptor> getIteratorContactos(){
+    public Iterator<IDatosReceptor> getIteratorContactos(){
         return contactos.iterator();
     }
     

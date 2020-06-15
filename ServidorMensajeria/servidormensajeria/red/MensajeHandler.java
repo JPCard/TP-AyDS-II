@@ -11,7 +11,7 @@ import java.net.Socket;
 
 import java.util.Iterator;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.modelo.ISistemaServidor;
 import servidormensajeria.modelo.SistemaServidor;
@@ -37,7 +37,7 @@ public class MensajeHandler implements Runnable {
         //se termino xq los mensajes son 1 a 1while (usuarios.hasNext()) {
             String usuarioActual = mensaje.getReceptorObjetivo();
 
-            Receptor receptorActual = sistemaServidor.getReceptor(usuarioActual);
+            IDatosReceptor receptorActual = sistemaServidor.getReceptor(usuarioActual);
             boolean enviado;
             if (receptorActual != null) {
 //                System.out.println("le voy a mandar a este tipo");

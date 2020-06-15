@@ -22,7 +22,7 @@ import javax.swing.JList;
 
 import receptor.modelo.IComprobante;
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import receptor.vista.RendererMensajesRecibidos;
 

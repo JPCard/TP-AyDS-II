@@ -44,7 +44,8 @@ import java.util.TreeMap;
 
 import receptor.modelo.IComprobante;
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesServidor {
    
@@ -288,7 +289,7 @@ public class PersistenciaMensajesServidorJSON implements IPersistenciaMensajesSe
     }
 
     @Override
-    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception {
         Collection<IMensaje> mensajesParaReceptor = new ArrayList<IMensaje>();
 
         synchronized (idMensajesEntregarRecep) {

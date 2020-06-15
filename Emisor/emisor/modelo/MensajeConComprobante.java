@@ -10,7 +10,7 @@ import receptor.controlador.ControladorReceptor;
 
 import receptor.modelo.Comprobante;
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 import receptor.modelo.SistemaReceptor;
 
 public class MensajeConComprobante extends Mensaje implements Serializable {

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IDirectorio {
     int getPuertoRecibeHeartbeats();
@@ -29,7 +29,7 @@ public interface IDirectorio {
      *
      * @return Coleccion ordenada por usuario de receptores
      */
-    Collection<Receptor> getReceptores();
+    Collection<IDatosReceptor> getReceptores();
 
     HashMap<String, Long> getTiempos();
 
@@ -37,9 +37,9 @@ public interface IDirectorio {
      * Este metodo debe llamarse cuando se agrega un nuevo receptor o cuando se modifica un receptor
      * @param receptor
      */
-    void heartbeatRecibido(Receptor receptor);
+    void heartbeatRecibido(IDatosReceptor receptor);
 
-    Collection<Receptor> listaDestinatariosRegistrados();
+    Collection<IDatosReceptor> listaDestinatariosRegistrados();
 
     long getTiempoUltModif();
 
@@ -49,5 +49,5 @@ public interface IDirectorio {
 
     int getOtroDirectorioPuertoHeartbeats();
 
-    void setReceptores(TreeMap<String, Receptor> receptores);
+    void setReceptores(TreeMap<String, IDatosReceptor> receptores);
 }

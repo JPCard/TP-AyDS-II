@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 
 public class Mensaje implements IMensaje {

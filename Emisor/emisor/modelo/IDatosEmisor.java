@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import java.util.Iterator;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IDatosEmisor extends Cloneable, Serializable {
     @Override
@@ -32,5 +32,5 @@ public interface IDatosEmisor extends Cloneable, Serializable {
 
     String getNombre();
 
-    Iterator<Receptor> consultarAgenda();
+    Iterator<IDatosReceptor> consultarAgenda();
 }

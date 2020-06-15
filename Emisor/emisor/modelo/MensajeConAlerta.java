@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import receptor.controlador.ControladorReceptor;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class MensajeConAlerta extends Mensaje implements Serializable {
 

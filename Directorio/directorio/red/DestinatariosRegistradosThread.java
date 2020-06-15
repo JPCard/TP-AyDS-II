@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public class DestinatariosRegistradosThread extends Thread {
     private IDirectorio directorio;

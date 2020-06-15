@@ -42,7 +42,9 @@ import org.json.simple.parser.ParseException;
 
 import receptor.controlador.ControladorReceptor;
 
-import receptor.modelo.Receptor;
+import receptor.modelo.DatosReceptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class PersistenciaReceptor implements IPersistenciaReceptor {
     private static final String PARAMETROS_FILE_PATH = "ParametrosReceptor.json";
@@ -59,7 +61,7 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
     
     private String ipServidorMensajeria;
     private int puertoServidorMensajeria;
-    private Receptor receptor;
+    private IDatosReceptor receptor;
     private KeyPair llaves;
 
 
@@ -146,8 +148,8 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
             this.puertoDirectorioSecundarioConexion = Integer.parseInt(obj2.get("DirectorioSecundario_PuertoConexion").toString());
 
 
-            Receptor receptor =
-                new Receptor(obj2.get("IPPropia").toString(), Integer.parseInt(obj2.get("PuertoPropio").toString()),
+            IDatosReceptor receptor =
+                new DatosReceptor(obj2.get("IPPropia").toString(), Integer.parseInt(obj2.get("PuertoPropio").toString()),
                              obj2.get("Nombre").toString(), obj2.get("Usuario").toString(),this.llaves.getPublic());
             this.receptor = receptor;
             System.out.println("Programa receptor: datos cargados");
@@ -164,7 +166,7 @@ public class PersistenciaReceptor implements IPersistenciaReceptor {
 
 
     @Override
-    public Receptor cargarReceptor() throws FileNotFoundException {
+    public IDatosReceptor cargarReceptor() throws FileNotFoundException {
         if (!this.cargado) {
             this.cargarLlaves(LLAVE_PRIVADA_FILE_PATH, LLAVE_PUBLICA_FILE_PATH);
             this.cargarJSON(PARAMETROS_FILE_PATH);

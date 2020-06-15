@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
 
@@ -24,9 +24,9 @@ public interface ISistemaServidor {
 
     Long getTiempoUltimaActualizacionReceptores();
 
-    void setReceptores(ArrayList<Receptor> receptores);
+    void setReceptores(ArrayList<IDatosReceptor> receptores);
 
-    ArrayList<Receptor> getReceptores();
+    ArrayList<IDatosReceptor> getReceptores();
 
     void setTiempoUltimaActualizacionReceptores(long tiempoUltimaActualizacionReceptores);
 
@@ -40,14 +40,14 @@ public interface ISistemaServidor {
      * @param usuarioActual
      * @return null si el receptor no esta conectado o no hay conexion con el directorio, != null si el receptor esta conectado
      */
-    Receptor getReceptor(String usuarioActual);
+    IDatosReceptor getReceptor(String usuarioActual);
 
     /**
      * @param receptor
      * @return null si no hay mensajes para ese receptor, una coleccion de los mensajes para ese receptor en caso contrario
      * @throws Exception
      */
-    Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception;
+    Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception;
 
     /**
      * @param emisor
@@ -72,5 +72,5 @@ public interface ISistemaServidor {
 
     void eliminarComprobantesNoEnviados(IDatosEmisor emisor);
 
-    void envioMensajesAsincronicos(Receptor receptor);
+    void envioMensajesAsincronicos(IDatosReceptor receptor);
 }

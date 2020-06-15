@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 import servidormensajeria.persistencia.IPersistenciaMensajesServidor;
 
@@ -34,7 +34,7 @@ public class SistemaServidor implements ISistemaServidor {
     private TCPConsultaDirectorio tcpParaDirectorio;
 
     //cosas para saber donde estna los usuarios
-    private ArrayList<Receptor> receptores = new ArrayList<Receptor>(); //necesario para el synchronized
+    private ArrayList<IDatosReceptor> receptores = new ArrayList<IDatosReceptor>(); //necesario para el synchronized
     private Long tiempoUltimaActualizacionReceptores = new Long(-1);
 
     private IPersistenciaParametrosServidor persistenciaParametros = new PersistenciaParametrosServidor();
@@ -95,13 +95,13 @@ public class SistemaServidor implements ISistemaServidor {
         }
     }
 
-    public void setReceptores(ArrayList<Receptor> receptores) {
+    public void setReceptores(ArrayList<IDatosReceptor> receptores) {
         synchronized (this.receptores) {
             this.receptores = receptores;
         }
     }
 
-    public ArrayList<Receptor> getReceptores() {
+    public ArrayList<IDatosReceptor> getReceptores() {
         synchronized (this.receptores) {
             return receptores;
         }
@@ -135,7 +135,7 @@ public class SistemaServidor implements ISistemaServidor {
      * @param usuarioActual
      * @return null si el receptor no esta conectado o no hay conexion con el directorio, != null si el receptor esta conectado
      */
-    public Receptor getReceptor(String usuarioActual) {
+    public IDatosReceptor getReceptor(String usuarioActual) {
         return getDirectorio().getReceptor(usuarioActual);
     }
 
@@ -144,7 +144,7 @@ public class SistemaServidor implements ISistemaServidor {
      * @return null si no hay mensajes para ese receptor, una coleccion de los mensajes para ese receptor en caso contrario
      * @throws Exception
      */
-    public Collection<IMensaje> obtenerMsjsPendientesReceptor(Receptor receptor) throws Exception {
+    public Collection<IMensaje> obtenerMsjsPendientesReceptor(IDatosReceptor receptor) throws Exception {
         return persistenciaMensajes.obtenerMsjsPendientesReceptor(receptor);
     }
 
@@ -196,7 +196,7 @@ public class SistemaServidor implements ISistemaServidor {
         }
     }
 
-    public void envioMensajesAsincronicos(Receptor receptor) {
+    public void envioMensajesAsincronicos(IDatosReceptor receptor) {
         try {
             this.tcpParaDirectorio.envioMensajesAsincronicos(receptor);
         } catch (Exception e) {

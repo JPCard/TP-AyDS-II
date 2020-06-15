@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
 
 public interface IPersistenciaMensajesEmisor {
     public void guardarMensajeEncriptado(IMensaje mensaje);//si se guarda encriptado es por que no se mando

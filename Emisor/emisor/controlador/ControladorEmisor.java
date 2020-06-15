@@ -28,7 +28,8 @@ import javax.swing.JOptionPane;
 import org.json.simple.parser.ParseException;
 
 import receptor.modelo.IComprobante;
-import receptor.modelo.Receptor;
+import receptor.modelo.IDatosReceptor;
+import receptor.modelo.IDatosReceptor;
 
 public class ControladorEmisor extends Observable {
     public static final String RUTA_ICONO_CARGA = "enviando.gif";
@@ -71,21 +72,21 @@ public class ControladorEmisor extends Observable {
         return instance;
     }
     
-    public void enviarMensajeConComprobante(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+    public void enviarMensajeConComprobante(String asunto, String cuerpo, ArrayList<IDatosReceptor> receptores) {
         this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_CON_COMPROBANTE);
     }
     
-    public void enviarMensajeNormal(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+    public void enviarMensajeNormal(String asunto, String cuerpo, ArrayList<IDatosReceptor> receptores) {
         this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_NORMAL);
     }
     
-    public void enviarMensajeConAlerta(String asunto, String cuerpo, ArrayList<Receptor> receptores) {
+    public void enviarMensajeConAlerta(String asunto, String cuerpo, ArrayList<IDatosReceptor> receptores) {
         this.enviarMensaje(asunto, cuerpo, receptores, AbstractMensajeFactory.TipoMensaje.MSJ_CON_ALERTA);
     }
     
-    public void enviarMensaje(String asunto, String cuerpo, ArrayList<Receptor> receptores, MensajeFactory.TipoMensaje tipo){
+    public void enviarMensaje(String asunto, String cuerpo, ArrayList<IDatosReceptor> receptores, MensajeFactory.TipoMensaje tipo){
         ArrayList<String> usuariosReceptores = new ArrayList<String>();
-        for(Receptor receptor : receptores){
+        for (IDatosReceptor receptor : receptores){
             usuariosReceptores.add(receptor.getUsuario());
         }
         
@@ -119,7 +120,7 @@ public class ControladorEmisor extends Observable {
 
     
     public void consultarAgenda(){
-        Iterator<Receptor> it = SistemaEmisor.getInstance().getEmisor().consultarAgenda();
+        Iterator<IDatosReceptor> it = SistemaEmisor.getInstance().getEmisor().consultarAgenda();
         while(it.hasNext()){
             vistaContactos.agregarContacto(it.next());
         }
@@ -140,7 +141,7 @@ public class ControladorEmisor extends Observable {
         return SistemaEmisor.getInstance().getMensajesConComprobanteIterator();
     }
 
-    public Iterator<Receptor> getContactos() {
+    public Iterator<IDatosReceptor> getContactos() {
         return SistemaEmisor.getInstance().
                              consultarAgenda();
     }
@@ -160,7 +161,7 @@ public class ControladorEmisor extends Observable {
         return SistemaEmisor.getInstance().isComprobado(mensajeSeleccionado,usuarioReceptor);
     }
 
-    public void setAgenda(Collection<Receptor> destinatariosRegistrados) {
+    public void setAgenda(Collection<IDatosReceptor> destinatariosRegistrados) {
         SistemaEmisor.getInstance().setAgenda(destinatariosRegistrados);
         this.vistaPrincipal.cargarContactos(destinatariosRegistrados);
     }
