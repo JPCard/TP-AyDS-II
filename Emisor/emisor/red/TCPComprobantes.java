@@ -108,7 +108,7 @@ public class TCPComprobantes extends RedComprobantes {
                     IComprobante comprobante = (IComprobante) in.readObject();
                     //System.out.println("EL COMPROBANTE ES");
                     //System.out.println(comprobante);
-                    ControladorEmisor.getInstance().agregarComprobante(comprobante);
+                    this.sistemaEmisor.agregarComprobante(comprobante);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }

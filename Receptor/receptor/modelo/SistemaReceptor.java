@@ -105,6 +105,6 @@ public class SistemaReceptor implements ISistemaReceptor,ILlegadaMensaje {
     public void arriboMensajeConComprobante(MensajeConComprobante mensajeConComprobante) {
         IComprobante comprobante = new Comprobante(mensajeConComprobante.getId(),mensajeConComprobante.getReceptorObjetivo(),mensajeConComprobante.getEmisor());
 
-        ControladorReceptor.getInstance().enviarComprobante(comprobante,mensajeConComprobante.getEmisor());
+        enviarComprobante(comprobante,mensajeConComprobante.getEmisor());
     }
 }

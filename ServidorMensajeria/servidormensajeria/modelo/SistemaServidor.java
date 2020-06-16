@@ -119,9 +119,7 @@ public class SistemaServidor implements ISistemaServidor {
 
 
 
-    public void arriboMensaje(IMensaje mensaje) {
-        new Thread(new MensajeHandler(mensaje, true,this)).start();
-    }
+
 
     public IPersistenciaMensajesServidor getPersistencia() {
         return this.persistenciaMensajes;
@@ -171,9 +169,7 @@ public class SistemaServidor implements ISistemaServidor {
         persistenciaMensajes.marcarMensajeEnviado(mensaje, usuarioReceptor, primerIntento);
     }
 
-    public void arriboComprobante(IComprobante comprobante) {
-        new Thread(new ComprobanteHandler(this,comprobante)).start();
-    }
+
 
 
     public int cargarPuertoRecepcionMensajes() throws Exception {

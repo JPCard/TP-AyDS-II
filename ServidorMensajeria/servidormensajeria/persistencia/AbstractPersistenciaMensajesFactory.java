@@ -12,7 +12,7 @@ public abstract class AbstractPersistenciaMensajesFactory {
      * @param metodo
      * @return
      */
-    public IPersistenciaMensajesServidor crearMetodoPersistenciaMensajes(String metodo){
+    public  final IPersistenciaMensajesServidor crearMetodoPersistenciaMensajes(String metodo){
         switch (metodo) {
         case METODO_PERSIST_JSON:
             return crearMetodoPersistenciaMensajesJSON();
@@ -23,9 +23,9 @@ public abstract class AbstractPersistenciaMensajesFactory {
         }
     }
     
-    public abstract IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesXML();
+    protected abstract IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesXML();
     
-    public abstract IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesJSON();
+    protected abstract IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesJSON();
     
     
     

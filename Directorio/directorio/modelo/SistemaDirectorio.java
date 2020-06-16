@@ -31,7 +31,7 @@ import receptor.modelo.IComprobante;
 import receptor.modelo.IDatosReceptor;
 import receptor.modelo.IDatosReceptor;
 
-public class Directorio implements IDirectorio {
+public class SistemaDirectorio implements IDirectorio {
     private static int TIEMPO_TIMEOUT = 2000;
     private TreeMap<String, IDatosReceptor> receptores = new TreeMap<String, IDatosReceptor>();
     private HashMap<String, Long> tiempos = new HashMap<String, Long>(); // <usuarioReceptor,tiempoUltimoHearbeat>
@@ -71,7 +71,7 @@ public class Directorio implements IDirectorio {
 
   
 
-    public Directorio() {
+    public SistemaDirectorio() {
         super();
         this.persistenciaDirectorio = new PersistenciaDirectorio();
 

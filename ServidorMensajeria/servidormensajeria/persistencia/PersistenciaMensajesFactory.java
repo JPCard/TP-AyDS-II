@@ -7,19 +7,19 @@ public class PersistenciaMensajesFactory extends AbstractPersistenciaMensajesFac
     private PersistenciaMensajesFactory() {
     }
 
-    public static AbstractPersistenciaMensajesFactory getInstance(){
+    public static synchronized  AbstractPersistenciaMensajesFactory getInstance(){
         if(instance == null)
             instance = new PersistenciaMensajesFactory();
         return instance;
     }
 
     @Override
-    public IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesXML() {
+    protected IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesXML() {
         return new PersistenciaMensajesServidorXML();
     }
 
     @Override
-    public IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesJSON() {
+    protected IPersistenciaMensajesServidor crearMetodoPersistenciaMensajesJSON() {
         return new PersistenciaMensajesServidorJSON();
     }
 }

@@ -59,13 +59,11 @@ public class ControladorReceptor extends Observable{
         return instance;
     }
     
-    public static ControladorReceptor getInstance(){
+    public static synchronized ControladorReceptor getInstance(){
         return instance;
     }
     
-    public void enviarComprobante(IComprobante comprobante, IDatosEmisor emisor){
-        sistemaReceptor.enviarComprobante(comprobante,emisor);
-    }
+
     
     public void mostrarMensaje(IMensaje mensaje){
         this.vistaReceptor.agregarMensaje(mensaje);

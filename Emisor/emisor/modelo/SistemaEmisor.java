@@ -77,7 +77,7 @@ public class SistemaEmisor implements ISistemaEmisor {
         
         
         Thread hiloPedirDestinatarios =
-            new Thread(new TCPDestinatariosRegistrados(persistencia.cargarIPDirectorio(),
+            new Thread(new TCPDestinatariosRegistrados(this,persistencia.cargarIPDirectorio(),
                                                        persistencia.cargarPuertoDirectorioTiempo(),
                                                        persistencia.cargarPuertoDirectorioDest(),
                                                        persistencia.cargarIPDirectorioSecundario(),
@@ -198,6 +198,7 @@ public class SistemaEmisor implements ISistemaEmisor {
         //        MensajeConComprobante m = mensajesConComprobante.get(idMensaje);
         //        m.addReceptorConfirmado(comprobante.getUsuarioReceptor());
         this.persistenciaMensajes.guardarComp(comprobante);
+        ControladorEmisor.getInstance().agregarComprobante(comprobante);
     }
 
 
@@ -222,6 +223,8 @@ public class SistemaEmisor implements ISistemaEmisor {
         agenda.setContactos(contactosT);
 
         this.getEmisor().setAgenda(agenda);
+        
+        ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
     }
 
 
@@ -266,5 +269,10 @@ public class SistemaEmisor implements ISistemaEmisor {
 
     public String getNombreEmisor() {
         return this.emisor.getNombre();
+    }
+
+    @Override
+    public void updateConectado(boolean estado) {
+        ControladorEmisor.getInstance().updateConectado(estado);
     }
 }

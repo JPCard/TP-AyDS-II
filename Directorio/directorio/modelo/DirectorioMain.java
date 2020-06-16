@@ -11,7 +11,7 @@ public class DirectorioMain {
     }
 
     public static void main(String[] args) {
-        IDirectorio directorio = new Directorio();
+        IDirectorio directorio = new SistemaDirectorio();
         System.out.println("Directorio creado");
         
         new SincronizacionInicialDirectorios(directorio).cargarListaDestinatariosRegistrados();

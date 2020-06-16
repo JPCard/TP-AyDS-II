@@ -2,6 +2,7 @@ package emisor.red;
 
 import emisor.controlador.ControladorEmisor;
 
+import emisor.modelo.ISistemaEmisor;
 import emisor.modelo.SistemaEmisor;
 
 import java.io.ObjectInputStream;
@@ -39,10 +40,15 @@ public class TCPDestinatariosRegistrados implements Runnable {
     private int puertoDirectorioSecundarioTiempo;
     private int puertoDirectorioSecundarioDest;
 
+    private ISistemaEmisor sistemaEmisor;
 
-    public TCPDestinatariosRegistrados(String IPDirectorio, int puertoDirectorioTiempo,
+
+    public TCPDestinatariosRegistrados(ISistemaEmisor sistemaEmisor,String IPDirectorio, int puertoDirectorioTiempo,
                                        int puertoDirectorioDestinatarios, String ipDirectorioSecundario,
                                        int puertoDirectorioSecundarioTiempo, int puertoDirectorioSecundarioDest) {
+        
+        this.sistemaEmisor = sistemaEmisor;
+        
         this.IPDirectorio = IPDirectorio;
         this.puertoDirectorioTiempo = puertoDirectorioTiempo;
         this.puertoDirectorioDestinatarios = puertoDirectorioDestinatarios;
@@ -95,7 +101,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                         //System.out.println("me llegaron son " + destinatariosRegistrados.toString());
                         //                        System.out.println("EL CONROLADOR EMISOR ES: "+ControladorEmisor.getInstance());
                         //                        System.out.println("LA AGENDA ES :"+destinatariosRegistrados);
-                        ControladorEmisor.getInstance().setAgenda(destinatariosRegistrados);
+                        sistemaEmisor.setAgenda(destinatariosRegistrados);
 
                         //for(Iterator<Receptor> it = destinatariosRegistrados.iterator(); it.hasNext(); ){
                         //    System.out.println(it.next().descripcionCompleta());
@@ -106,7 +112,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
                         socketDest.close();
                     } 
 
-                    ControladorEmisor.getInstance().updateConectado(true);
+                    sistemaEmisor.updateConectado(true);
                     Thread.sleep(TIEMPO_ACTUALIZACION_DESTINATARIOS); //no lo actualiza siempre xq es lindo
                 }
 
@@ -114,7 +120,7 @@ public class TCPDestinatariosRegistrados implements Runnable {
             } catch (Exception e) {
 //                e.printStackTrace();
                 this.cambiarDirectorioActivo();
-                ControladorEmisor.getInstance().updateConectado(false);
+                sistemaEmisor.updateConectado(false);
             }
         }
 
